@@ -52,6 +52,19 @@
       document.documentElement.classList.remove('dark');
     }
   </script>
+
+  <!-- Fail-Safe Auto Dismiss for Splash Screen -->
+  <script>
+    setTimeout(function() {
+      var s = document.getElementById('splashScreen');
+      if (s && s.style.display !== 'none') {
+        s.style.transition = 'opacity 0.5s ease';
+        s.style.opacity = '0';
+        s.style.pointerEvents = 'none';
+        setTimeout(function() { s.style.display = 'none'; }, 500);
+      }
+    }, 2800);
+  </script>
 </head>
 <body class="h-full flex flex-col font-sans antialiased overflow-x-hidden text-slate-900 dark:text-purple-50 relative">
 
@@ -327,10 +340,16 @@
           </span>
         </button>
 
-        <div class="hidden sm:flex items-center space-x-2">
-          <h1 class="text-sm font-black text-white">ChainSolve</h1>
-          <span class="px-2 py-0.5 text-[9px] font-black rounded-md bg-emerald-950 text-emerald-300 border border-emerald-500/60 uppercase">PS08</span>
-        </div>
+        <a href="./index.html" class="flex items-center space-x-2 cursor-pointer group" title="Return to Home Dashboard">
+          <span class="px-2.5 py-1.5 rounded-xl bg-purple-900/80 hover:bg-purple-800 text-white border border-purple-400/50 flex items-center space-x-1.5 font-bold text-xs shadow-sm transition">
+            <span>🏠</span>
+            <span class="hidden sm:inline">Home</span>
+          </span>
+          <div class="hidden sm:flex items-center space-x-1.5 pl-1">
+            <h1 class="text-sm font-black text-white group-hover:text-purple-200 transition-colors">ChainSolve</h1>
+            <span class="px-2 py-0.5 text-[9px] font-black rounded-md bg-purple-950 text-purple-300 border border-purple-500/60 uppercase">PS08</span>
+          </div>
+        </a>
       </div>
 
       <!-- Center: Real-Time Stream Ticker -->

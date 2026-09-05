@@ -1,694 +1,9 @@
-/**
- * ChainSolve AI - Supplier Disruption Response Assistant (PS08)
- * Full Interactive Operator Workbench & Multi-Persona Stakeholder Portals
- */
 
 // ============================================================================
-// EMBEDDED FALLBACK DATA FOR ZERO-DEPENDENCY / GITHUB PAGES DEPLOYMENT
+// EMBEDDED FALLBACK BENCHMARK DATA (SAFE ESCAPED JSON)
 // ============================================================================
-const FALLBACK_SCENARIOS = [
-  {
-    "id": "scenario_1_critical_apex",
-    "title": "Scenario 1: Critical Factory Halt (Apex APX-902 Sensors)",
-    "category": "Supplier Production Halt",
-    "difficulty": "Standard / High Impact",
-    "description": "Supplier email reporting catastrophic hydraulic failure delaying sensor assembly dispatch by 14 days. Impacts mission-critical Platinum customer orders (Tesla, Siemens).",
-    "notice_text": "From: Marcus Vance <dispatch@apexprecision.com>
-Subject: URGENT: Production Line 3 Halt - PO-4482 / APX-902 Dispatch Delay
-Date: September 5, 2026 06:40 AM
-
-Logistics Team,
-
-We regret to inform you that earlier this morning Line 3 at our Apex Dynamics Fremont facility experienced a major hydraulic pump failure. All production of our APX-902 optical sensor assemblies scheduled for Inbound Shipment SH-8921 (PO-4482) is halted while technicians source replacement valves.
-
-Dispatch was originally scheduled for delivery to your Chicago warehouse by September 8th. The revised estimated arrival date is now pushed back by 14 days to September 22, 2026. We can arrange partial air express upon request once initial testing resumes next week.
-
-We apologize for the disruption.
-
-Best regards,
-Marcus Vance
-Apex Precision Technologies",
-    "structured_input": {
-      "disruption_type": "Supplier Production Halt",
-      "supplier_id": "SUP-001",
-      "po_number": "PO-4482",
-      "shipment_id": "SH-8921",
-      "sku_id": "SKU-1049",
-      "disruption_date": "2026-09-05",
-      "delay_days": 14,
-      "affected_location": "Fremont, CA",
-      "quantity_affected": null,
-      "reason": "Production Line 3 hydraulic pump failure halting APX-902 assembly dispatch.",
-      "severity": "Critical"
-    },
-    "expected_outcome": {
-      "has_impact": true,
-      "disrupted_shipment": "SH-8921",
-      "supplier_id": "SUP-001",
-      "affected_sku": "SKU-1049",
-      "delay_days": 14,
-      "primary_impacted_orders": [
-        "ORD-501",
-        "ORD-502"
-      ]
-    }
-  },
-  {
-    "id": "scenario_2_carrier_port_congestion",
-    "title": "Scenario 2: Carrier Delay / Port Congestion (Maersk Long Beach)",
-    "category": "Carrier/Shipment Delay",
-    "difficulty": "Moderate / Trade-offs",
-    "description": "Ocean carrier notice detailing port congestion at Long Beach delaying container of automotive microcontrollers by 10 days.",
-    "notice_text": "EXCEPTION ALERT: OCEAN FREIGHT DISRUPTION
-CARRIER: Maersk Line
-VESSEL: MSC VALERIA / Voyage 402W
-CONTAINER: MSKU-8839210 (Inbound SH-7714, PO-3910)
-DESTINATION: Chicago Logistics Hub
-
-Please be advised that due to severe berth congestion, labor shortages, and railhead bottlenecks at the Port of Long Beach, discharge of container MSKU-8839210 carrying 32-bit automotive microcontrollers (MC-320) cannot proceed as scheduled.
-
-The scheduled arrival date of September 12, 2026 is delayed by 10 calendar days. Expected Chicago rail terminal arrival is rescheduled for September 22, 2026. Emergency off-dock drayage & air freight forwarding can be quoted upon escalation.",
-    "structured_input": {
-      "disruption_type": "Carrier/Shipment Delay",
-      "supplier_id": "SUP-002",
-      "po_number": "PO-3910",
-      "shipment_id": "SH-7714",
-      "sku_id": "SKU-2088",
-      "disruption_date": "2026-09-05",
-      "delay_days": 10,
-      "affected_location": "Port of Long Beach",
-      "quantity_affected": null,
-      "reason": "Berth and railhead bottlenecks at Port of Long Beach delaying container MSKU-8839210.",
-      "severity": "High"
-    },
-    "expected_outcome": {
-      "has_impact": true,
-      "disrupted_shipment": "SH-7714",
-      "supplier_id": "SUP-002",
-      "affected_sku": "SKU-2088",
-      "delay_days": 10,
-      "primary_impacted_orders": [
-        "ORD-503"
-      ]
-    }
-  },
-  {
-    "id": "scenario_3_warehouse_incident",
-    "title": "Scenario 3: Internal Warehouse Incident (Bay C-12 Forklift Crush)",
-    "category": "Warehouse Incident",
-    "difficulty": "Immediate Stock Destruction",
-    "description": "Internal warehouse incident report detailing forklift collision destroying 150 units of high-density lithium battery packs.",
-    "notice_text": "INCIDENT REPORT #IR-2026-0905-01
-FACILITY: WH-MAIN Chicago Logistics Hub
-ZONE: Bay C-12 Cross-Dock Aisle
-TIME: 06:15 AM CST
-REPORTED BY: Warehouse Supervisor D. Miller
-
-During morning inbound cross-dock staging, forklift #4 suffered a mast cable snap while transporting two pallet loads of industrial lithium battery packs (SKU BAT-4400 / SKU-3150).
-
-Total of 150 battery pack units fell from height and sustained catastrophic casing fractures and cell puncture. Fire suppression protocols were activated and Bay C-12 quarantine was established. All 150 units have been formally condemned and written off to salvage scrap. Physical available inventory in WH-MAIN has dropped immediately from 180 to 30 units.",
-    "structured_input": {
-      "disruption_type": "Warehouse Incident",
-      "supplier_id": "SUP-004",
-      "po_number": null,
-      "shipment_id": null,
-      "sku_id": "SKU-3150",
-      "disruption_date": "2026-09-05",
-      "delay_days": 18,
-      "affected_location": "WH-MAIN",
-      "quantity_affected": 150,
-      "reason": "Forklift collision in Bay C-12 destroyed 150 units of BAT-4400 battery packs.",
-      "severity": "Critical"
-    },
-    "expected_outcome": {
-      "has_impact": true,
-      "disrupted_shipment": null,
-      "supplier_id": null,
-      "affected_sku": "SKU-3150",
-      "quantity_lost": 150,
-      "primary_impacted_orders": [
-        "ORD-505"
-      ]
-    }
-  },
-  {
-    "id": "scenario_4_false_alarm_no_impact",
-    "title": "Scenario 4: False Alarm / Zero Impact (Acme Regional Road Closure)",
-    "category": "Other",
-    "difficulty": "Edge Case: False Alarm",
-    "description": "Alarming emergency notice from Acme Logistics regarding Route 9 road closure, but distributor has no pending orders or shipments with Acme.",
-    "notice_text": "URGENT LOGISTICS ADVISORY: ACME FREIGHT & LOGISTICS
-BULLETIN: #ADV-9921-DENVER
-EFFECTIVE: IMMEDIATELY
-
-Severe mudslides and structural damage have forced the Colorado Department of Transportation to close US Route 9 near Silverthorne / Denver junction in both directions. All Acme regional line-haul trucking and freight operations are suspended for the next 72 hours. Shipments transiting Denver hub will face extensive rerouting delays of up to 5 business days.
-
-All dispatch operations advised to take immediate emergency measures.",
-    "structured_input": {
-      "disruption_type": "Other",
-      "supplier_id": "SUP-006",
-      "po_number": null,
-      "shipment_id": null,
-      "sku_id": null,
-      "disruption_date": "2026-09-05",
-      "delay_days": 5,
-      "affected_location": "Denver, CO",
-      "quantity_affected": null,
-      "reason": "Route 9 closure near Denver affecting Acme freight trucking operations.",
-      "severity": "Low"
-    },
-    "expected_outcome": {
-      "has_impact": false,
-      "reason": "Acme Logistics is listed as a potential partner, but no active inbound purchase orders or scheduled shipments are pending via Acme or routing through Denver. System reports verified NO IMPACT."
-    }
-  },
-  {
-    "id": "scenario_5_ambiguous_entity",
-    "title": "Scenario 5: Ambiguous / Underspecified Notice (Taiwan Weather Delay)",
-    "category": "Carrier/Shipment Delay",
-    "difficulty": "Edge Case: Entity Disambiguation",
-    "description": "Vague regional weather alert naming 'Taiwan supplier shipments' without identifying whether it affects TSMC Micro or Foxconn Components.",
-    "notice_text": "REGIONAL SUPPLY ADVISORY: Super Typhoon Gaemi has made landfall on the north-east coast of Taiwan. Port operations at Kaohsiung and Keelung, as well as freight terminals at Taoyuan International Airport, have ceased loading operations for safety. All shipments originating from our Taiwan suppliers will be stalled by at least 6 days pending civil aviation and maritime clearance.",
-    "structured_input": {
-      "disruption_type": "Carrier/Shipment Delay",
-      "supplier_id": "SUP-002",
-      "po_number": "PO-3910",
-      "shipment_id": "SH-7714",
-      "sku_id": "SKU-2088",
-      "disruption_date": "2026-09-05",
-      "delay_days": 6,
-      "affected_location": "Kaohsiung Port, Taiwan",
-      "quantity_affected": null,
-      "reason": "Super Typhoon Gaemi causing port closures and 6-day shipping delays.",
-      "severity": "Medium"
-    },
-    "expected_outcome": {
-      "has_impact": true,
-      "is_ambiguous": true,
-      "candidate_suppliers": [
-        "SUP-002",
-        "SUP-003"
-      ],
-      "action_required": "Prompt operator to select which supplier/shipment is confirmed, or simulate both branches."
-    }
-  },
-  {
-    "id": "scenario_6_customs_regulatory_hold",
-    "title": "Scenario 6: Customs & Regulatory Hold (Port of Rotterdam Lithium Audit)",
-    "category": "Carrier/Shipment Delay",
-    "difficulty": "International Maritime & Compliance",
-    "description": "European maritime customs authority has issued a mandatory compliance hold on container DHL-7710928 from Nordic Lithium awaiting UN38.3 battery certification, delaying inbound shipment SH-9011 by 8 days.",
-    "notice_text": "CUSTOMS COMPLIANCE NOTIFICATION #EU-HL-2026-8841
-PORT AUTHORITY: Port of Rotterdam Maritime Terminal
-CONSIGNEE: Central Logistics Hub Chicago (WH-MAIN)
-INBOUND CONSIGNMENT: SH-9011 / PO-6200
-CARRIER: DHL Global Forwarding (Tracking #DHL-7710928)
-ORIGIN: Oslo, Norway (Nordic Lithium & Power)
-
-Please be informed that container DHL-7710928 containing 150 units of BAT-4400 Industrial Lithium Battery Packs (SKU-3150) has been selected for mandatory secondary UN38.3 thermal runaway testing verification. Maritime clearance is temporarily halted for approximately 8 calendar days pending document apostille from the manufacturer.",
-    "structured_input": {
-      "disruption_type": "Carrier/Shipment Delay",
-      "supplier_id": "SUP-004",
-      "po_number": "PO-6200",
-      "shipment_id": "SH-9011",
-      "sku_id": "SKU-3150",
-      "disruption_date": "2026-09-05",
-      "delay_days": 8,
-      "affected_location": "Oslo, Norway",
-      "quantity_affected": null,
-      "reason": "Rotterdam customs mandatory UN38.3 compliance inspection delaying container DHL-7710928.",
-      "severity": "High"
-    },
-    "expected_outcome": {
-      "has_impact": true,
-      "disrupted_shipment": "SH-9011",
-      "supplier_id": "SUP-004",
-      "affected_sku": "SKU-3150",
-      "delay_days": 8,
-      "primary_impacted_orders": [
-        "ORD-505"
-      ]
-    }
-  },
-  {
-    "id": "scenario_7_quality_defect_quarantine",
-    "title": "Scenario 7: Component Quality Quarantine (Foxconn Micro-Solder Inspection)",
-    "category": "Supplier Production Halt",
-    "difficulty": "Quality Assurance & Batch Defect",
-    "description": "Quality bulletin from Foxconn Components Taipei halting dispatch of step-down power converters (SKU-4022) for 12 days to perform non-destructive X-ray inspection of solder joints.",
-    "notice_text": "QUALITY ENGINEERING ADVISORY #QA-FXC-2026-09
-SUPPLIER: Foxconn Components Corp (Taipei, Taiwan)
-COMMODITY: Industrial Step-Down Power Converter 12V/5A (SKU-4022 / PWR-12V)
-TARGET SHIPMENT: SH-6520 (PO-5102)
-
-During routine automated optical inspection (AOI) on Subassembly Line B, engineering identified intermittent solder bridging on primary induction coils. As a mandatory safety precaution, 400 units designated for Inbound Shipment SH-6520 are placed in technical quarantine for comprehensive X-ray verification and thermal stress recertification.
-
-Revised dispatch will be postponed by 12 calendar days. Initial units passing stress test will be released on rolling batches.",
-    "structured_input": {
-      "disruption_type": "Supplier Production Halt",
-      "supplier_id": "SUP-003",
-      "po_number": "PO-5102",
-      "shipment_id": "SH-6520",
-      "sku_id": "SKU-4022",
-      "disruption_date": "2026-09-05",
-      "delay_days": 12,
-      "affected_location": "Taipei, Taiwan",
-      "quantity_affected": null,
-      "reason": "Intermittent solder bridging detected on Subassembly Line B requiring 12-day quarantine inspection.",
-      "severity": "Medium"
-    },
-    "expected_outcome": {
-      "has_impact": true,
-      "disrupted_shipment": "SH-6520",
-      "supplier_id": "SUP-003",
-      "affected_sku": "SKU-4022",
-      "delay_days": 12,
-      "primary_impacted_orders": [
-        "ORD-506"
-      ]
-    }
-  },
-  {
-    "id": "scenario_8_demand_surge_rush",
-    "title": "Scenario 8: Priority Acceleration Surge (Tesla Emergency Production Pull)",
-    "category": "Other",
-    "difficulty": "High Priority Expedite Surge",
-    "description": "Tesla Energy Solutions requests emergency priority delivery acceleration of 120 units APX-902 sensors by 3 days, requiring urgent stock reallocation from non-critical orders to avoid vehicle line halt.",
-    "notice_text": "MEMORANDUM: GLOBAL VEHICLE MANUFACTURING OPERATIONS
-CUSTOMER: Tesla Energy Solutions (Austin Gigafactory)
-SUBJECT: CRITICAL ESCALATION - APX-902 Sensor Assembly Delivery Schedule Acceleration
-DATE: September 5, 2026
-
-Due to unprecedented ramp in Model Y / Megapack power conditioning unit output, Austin Gigafactory requires delivery of 120 units High-Precision Optical Sensors (SKU-1049 / APX-902) accelerated from September 10th to September 7th (3-day acceleration).
-
-Failure to meet this expedited gate schedule will incur statutory $500/day tier SLA delivery penalties and risk vehicle final assembly bottleneck. Proactive stock reallocation or emergency expedited air delivery requested immediately.",
-    "structured_input": {
-      "disruption_type": "Other",
-      "supplier_id": "SUP-001",
-      "po_number": "PO-4482",
-      "shipment_id": "SH-8921",
-      "sku_id": "SKU-1049",
-      "disruption_date": "2026-09-05",
-      "delay_days": 3,
-      "affected_location": "Fremont, CA",
-      "quantity_affected": null,
-      "reason": "Austin Gigafactory urgent production acceleration request for SKU-1049 optical sensors.",
-      "severity": "High"
-    },
-    "expected_outcome": {
-      "has_impact": true,
-      "disrupted_shipment": "SH-8921",
-      "supplier_id": "SUP-001",
-      "affected_sku": "SKU-1049",
-      "delay_days": 3,
-      "primary_impacted_orders": [
-        "ORD-501"
-      ]
-    }
-  }
-];
-
-const FALLBACK_SEED_DATA = {
-  "system_current_date": "2026-09-05",
-  "suppliers": [
-    {
-      "supplier_id": "SUP-001",
-      "name": "Apex Precision Technologies",
-      "aliases": ["Apex Dynamics", "Apex Precision", "Apex Tech", "Apex Sensors", "Apex"],
-      "contact_email": "dispatch@apexprecision.com",
-      "location": "Fremont, CA, USA",
-      "reliability_score": 0.94,
-      "expedite_available": true,
-      "expedite_cost_multiplier": 1.45
-    },
-    {
-      "supplier_id": "SUP-002",
-      "name": "TSMC Micro Systems",
-      "aliases": ["TSMC", "Taiwan Semiconductor", "TSMC Micro", "Taiwan Semi"],
-      "contact_email": "orders@tsmc-micro.tw",
-      "location": "Hsinchu Science Park, Taiwan",
-      "reliability_score": 0.98,
-      "expedite_available": true,
-      "expedite_cost_multiplier": 1.6
-    },
-    {
-      "supplier_id": "SUP-003",
-      "name": "Foxconn Components Corp",
-      "aliases": ["Foxconn", "Foxconn Taiwan", "Foxconn Comps", "Foxconn Electronics"],
-      "contact_email": "logistics@foxconn-comps.tw",
-      "location": "Taipei, Taiwan",
-      "reliability_score": 0.91,
-      "expedite_available": true,
-      "expedite_cost_multiplier": 1.35
-    },
-    {
-      "supplier_id": "SUP-004",
-      "name": "Nordic Lithium & Power",
-      "aliases": ["Nordic Lithium", "Nordic Power", "Nordic Batt", "Nordic"],
-      "contact_email": "support@nordiclithium.no",
-      "location": "Oslo, Norway",
-      "reliability_score": 0.88,
-      "expedite_available": false,
-      "expedite_cost_multiplier": 1.0
-    },
-    {
-      "supplier_id": "SUP-005",
-      "name": "Shenzhen Optical Electronics",
-      "aliases": ["Shenzhen Optics", "Shenzhen Opto", "Shenzhen Electronics"],
-      "contact_email": "sales@shenzhenoptics.cn",
-      "location": "Shenzhen, China",
-      "reliability_score": 0.89,
-      "expedite_available": true,
-      "expedite_cost_multiplier": 1.5
-    },
-    {
-      "supplier_id": "SUP-006",
-      "name": "Acme Logistics & Freight",
-      "aliases": ["Acme Logistics", "Acme Freight", "Acme Carriers", "Acme"],
-      "contact_email": "dispatch@acmelogistics.com",
-      "location": "Denver, CO, USA",
-      "reliability_score": 0.76,
-      "expedite_available": false,
-      "expedite_cost_multiplier": 1.0
-    }
-  ],
-  "skus": [
-    {
-      "sku_id": "SKU-1049",
-      "name": "High-Precision Optical Sensor Assembly",
-      "aliases": ["APX-902", "APX-902 sensor", "optical sensor assembly", "Apex optical sensor", "optical sensors", "sensor assemblies"],
-      "category": "Optoelectronics",
-      "unit_cost": 140.0,
-      "unit_price": 280.0,
-      "lead_time_days": 14,
-      "safety_stock_threshold": 30,
-      "preferred_supplier_id": "SUP-001"
-    },
-    {
-      "sku_id": "SKU-2088",
-      "name": "Automotive Edge Microcontroller 32-Bit",
-      "aliases": ["MC-320", "auto microcontroller", "edge MCU", "automotive microcontrollers", "automotive MCUs", "microcontrollers"],
-      "category": "Semiconductors",
-      "unit_cost": 85.0,
-      "unit_price": 190.0,
-      "lead_time_days": 21,
-      "safety_stock_threshold": 50,
-      "preferred_supplier_id": "SUP-002"
-    },
-    {
-      "sku_id": "SKU-3150",
-      "name": "Industrial High-Density Lithium Battery Pack",
-      "aliases": ["BAT-4400", "lithium battery pack", "4400mAh industrial cell", "heavy-duty battery pack", "battery packs", "lithium batteries"],
-      "category": "Power Systems",
-      "unit_cost": 210.0,
-      "unit_price": 460.0,
-      "lead_time_days": 18,
-      "safety_stock_threshold": 40,
-      "preferred_supplier_id": "SUP-004"
-    },
-    {
-      "sku_id": "SKU-4022",
-      "name": "Industrial Step-Down Power Converter 12V/5A",
-      "aliases": ["PWR-12V", "step-down converter", "DC-DC power module", "power converter", "power modules"],
-      "category": "Power Electronics",
-      "unit_cost": 45.0,
-      "unit_price": 95.0,
-      "lead_time_days": 10,
-      "safety_stock_threshold": 60,
-      "preferred_supplier_id": "SUP-003"
-    },
-    {
-      "sku_id": "SKU-5011",
-      "name": "Ultra-Low Latency 10G Optical Transceiver Module",
-      "aliases": ["TRX-10G", "fiber transceiver", "10G optical module", "transceiver module"],
-      "category": "Networking",
-      "unit_cost": 310.0,
-      "unit_price": 650.0,
-      "lead_time_days": 25,
-      "safety_stock_threshold": 25,
-      "preferred_supplier_id": "SUP-005"
-    }
-  ],
-  "inventory": [
-    {
-      "warehouse_id": "WH-MAIN",
-      "warehouse_name": "Central Logistics Hub - Chicago",
-      "sku_id": "SKU-1049",
-      "on_hand": 55,
-      "allocated": 50,
-      "reserved_safety": 5,
-      "available": 0,
-      "location_bin": "Aisle-3-Bay-04"
-    },
-    {
-      "warehouse_id": "WH-MAIN",
-      "warehouse_name": "Central Logistics Hub - Chicago",
-      "sku_id": "SKU-2088",
-      "on_hand": 120,
-      "allocated": 80,
-      "reserved_safety": 20,
-      "available": 20,
-      "location_bin": "Aisle-2-Bay-11"
-    },
-    {
-      "warehouse_id": "WH-MAIN",
-      "warehouse_name": "Central Logistics Hub - Chicago",
-      "sku_id": "SKU-3150",
-      "on_hand": 180,
-      "allocated": 150,
-      "reserved_safety": 20,
-      "available": 10,
-      "location_bin": "Aisle-5-Bay-12"
-    },
-    {
-      "warehouse_id": "WH-MAIN",
-      "warehouse_name": "Central Logistics Hub - Chicago",
-      "sku_id": "SKU-4022",
-      "on_hand": 250,
-      "allocated": 120,
-      "reserved_safety": 30,
-      "available": 100,
-      "location_bin": "Aisle-1-Bay-08"
-    },
-    {
-      "warehouse_id": "WH-MAIN",
-      "warehouse_name": "Central Logistics Hub - Chicago",
-      "sku_id": "SKU-5011",
-      "on_hand": 45,
-      "allocated": 40,
-      "reserved_safety": 5,
-      "available": 0,
-      "location_bin": "Aisle-4-Bay-02"
-    }
-  ],
-  "inbound_shipments": [
-    {
-      "shipment_id": "SH-8921",
-      "po_number": "PO-4482",
-      "supplier_id": "SUP-001",
-      "carrier_name": "FedEx Freight Express",
-      "tracking_number": "FX-88910411",
-      "origin": "Fremont, CA",
-      "destination_warehouse": "WH-MAIN",
-      "status": "in_transit",
-      "scheduled_arrival_date": "2026-09-08",
-      "revised_arrival_date": null,
-      "items": [
-        {
-          "sku_id": "SKU-1049",
-          "quantity_ordered": 200,
-          "quantity_shipped": 200
-        }
-      ],
-      "expedite_air_available": true,
-      "expedite_air_lead_time_days": 2,
-      "expedite_air_cost": 1250.0
-    },
-    {
-      "shipment_id": "SH-7714",
-      "po_number": "PO-3910",
-      "supplier_id": "SUP-002",
-      "carrier_name": "Maersk Line",
-      "tracking_number": "MSKU-8839210",
-      "origin": "Kaohsiung Port, Taiwan",
-      "destination_warehouse": "WH-MAIN",
-      "status": "in_transit",
-      "scheduled_arrival_date": "2026-09-12",
-      "revised_arrival_date": null,
-      "items": [
-        {
-          "sku_id": "SKU-2088",
-          "quantity_ordered": 500,
-          "quantity_shipped": 500
-        }
-      ],
-      "expedite_air_available": true,
-      "expedite_air_lead_time_days": 3,
-      "expedite_air_cost": 3400.0
-    },
-    {
-      "shipment_id": "SH-6520",
-      "po_number": "PO-5102",
-      "supplier_id": "SUP-003",
-      "carrier_name": "Evergreen Marine",
-      "tracking_number": "EGLV-991204",
-      "origin": "Taipei, Taiwan",
-      "destination_warehouse": "WH-MAIN",
-      "status": "in_transit",
-      "scheduled_arrival_date": "2026-09-20",
-      "revised_arrival_date": null,
-      "items": [
-        {
-          "sku_id": "SKU-4022",
-          "quantity_ordered": 400,
-          "quantity_shipped": 400
-        }
-      ],
-      "expedite_air_available": true,
-      "expedite_air_lead_time_days": 4,
-      "expedite_air_cost": 1800.0
-    },
-    {
-      "shipment_id": "SH-9011",
-      "po_number": "PO-6200",
-      "supplier_id": "SUP-004",
-      "carrier_name": "DHL Global Forwarding",
-      "tracking_number": "DHL-7710928",
-      "origin": "Oslo, Norway",
-      "destination_warehouse": "WH-MAIN",
-      "status": "in_transit",
-      "scheduled_arrival_date": "2026-09-15",
-      "revised_arrival_date": null,
-      "items": [
-        {
-          "sku_id": "SKU-3150",
-          "quantity_ordered": 150,
-          "quantity_shipped": 150
-        }
-      ],
-      "expedite_air_available": false,
-      "expedite_air_lead_time_days": null,
-      "expedite_air_cost": 0.0
-    }
-  ],
-  "customer_orders": [
-    {
-      "order_id": "ORD-501",
-      "customer_name": "Tesla Energy Solutions",
-      "customer_tier": "Platinum",
-      "priority": 1,
-      "order_date": "2026-08-28",
-      "promise_date": "2026-09-10",
-      "sla_penalty_per_day": 500.0,
-      "destination_city": "Austin, TX",
-      "status": "partially_allocated",
-      "items": [
-        {
-          "sku_id": "SKU-1049",
-          "quantity_demanded": 120,
-          "quantity_allocated": 50
-        }
-      ],
-      "notes": "Mission-critical production run. Strictly penalizes delivery delays beyond 24h."
-    },
-    {
-      "order_id": "ORD-502",
-      "customer_name": "Siemens Mobility Systems",
-      "customer_tier": "Platinum",
-      "priority": 1,
-      "order_date": "2026-08-30",
-      "promise_date": "2026-09-11",
-      "sla_penalty_per_day": 350.0,
-      "destination_city": "Sacramento, CA",
-      "status": "unfulfilled",
-      "items": [
-        {
-          "sku_id": "SKU-1049",
-          "quantity_demanded": 60,
-          "quantity_allocated": 0
-        }
-      ],
-      "notes": "Train signaling subsystem assembly. Key strategic European partner."
-    },
-    {
-      "order_id": "ORD-503",
-      "customer_name": "Rivian Automotive",
-      "customer_tier": "Gold",
-      "priority": 2,
-      "order_date": "2026-08-25",
-      "promise_date": "2026-09-16",
-      "sla_penalty_per_day": 200.0,
-      "destination_city": "Normal, IL",
-      "status": "partially_allocated",
-      "items": [
-        {
-          "sku_id": "SKU-2088",
-          "quantity_demanded": 300,
-          "quantity_allocated": 80
-        }
-      ],
-      "notes": "R1T powertrain electronics batch. High volume tier."
-    },
-    {
-      "order_id": "ORD-504",
-      "customer_name": "Quantum Robotics Lab",
-      "customer_tier": "Gold",
-      "priority": 2,
-      "order_date": "2026-09-01",
-      "promise_date": "2026-09-25",
-      "sla_penalty_per_day": 100.0,
-      "destination_city": "Boston, MA",
-      "status": "unfulfilled",
-      "items": [
-        {
-          "sku_id": "SKU-1049",
-          "quantity_demanded": 20,
-          "quantity_allocated": 0
-        }
-      ],
-      "notes": "Research prototype run. Late-September target allows delivery flexibility."
-    },
-    {
-      "order_id": "ORD-505",
-      "customer_name": "General Industrial Robotics",
-      "customer_tier": "Standard",
-      "priority": 3,
-      "order_date": "2026-08-20",
-      "promise_date": "2026-09-18",
-      "sla_penalty_per_day": 50.0,
-      "destination_city": "Detroit, MI",
-      "status": "partially_allocated",
-      "items": [
-        {
-          "sku_id": "SKU-3150",
-          "quantity_demanded": 120,
-          "quantity_allocated": 120
-        }
-      ],
-      "notes": "Standard OEM factory replenishment."
-    },
-    {
-      "order_id": "ORD-506",
-      "customer_name": "Midwest Automation Parts",
-      "customer_tier": "Standard",
-      "priority": 3,
-      "order_date": "2026-09-02",
-      "promise_date": "2026-09-28",
-      "sla_penalty_per_day": 0.0,
-      "destination_city": "Columbus, OH",
-      "status": "allocated",
-      "items": [
-        {
-          "sku_id": "SKU-4022",
-          "quantity_demanded": 100,
-          "quantity_allocated": 100
-        }
-      ],
-      "notes": "Standard wholesale distributor order."
-    }
-  ]
-}
-;
+const FALLBACK_SCENARIOS = JSON.parse("[{\"id\": \"scenario_1_critical_apex\", \"title\": \"Scenario 1: Critical Factory Halt (Apex APX-902 Sensors)\", \"category\": \"Supplier Production Halt\", \"difficulty\": \"Standard / High Impact\", \"description\": \"Supplier email reporting catastrophic hydraulic failure delaying sensor assembly dispatch by 14 days. Impacts mission-critical Platinum customer orders (Tesla, Siemens).\", \"notice_text\": \"From: Marcus Vance <dispatch@apexprecision.com>\\nSubject: URGENT: Production Line 3 Halt - PO-4482 / APX-902 Dispatch Delay\\nDate: September 5, 2026 06:40 AM\\n\\nLogistics Team,\\n\\nWe regret to inform you that earlier this morning Line 3 at our Apex Dynamics Fremont facility experienced a major hydraulic pump failure. All production of our APX-902 optical sensor assemblies scheduled for Inbound Shipment SH-8921 (PO-4482) is halted while technicians source replacement valves.\\n\\nDispatch was originally scheduled for delivery to your Chicago warehouse by September 8th. The revised estimated arrival date is now pushed back by 14 days to September 22, 2026. We can arrange partial air express upon request once initial testing resumes next week.\\n\\nWe apologize for the disruption.\\n\\nBest regards,\\nMarcus Vance\\nApex Precision Technologies\", \"structured_input\": {\"disruption_type\": \"Supplier Production Halt\", \"supplier_id\": \"SUP-001\", \"po_number\": \"PO-4482\", \"shipment_id\": \"SH-8921\", \"sku_id\": \"SKU-1049\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 14, \"affected_location\": \"Fremont, CA\", \"quantity_affected\": null, \"reason\": \"Production Line 3 hydraulic pump failure halting APX-902 assembly dispatch.\", \"severity\": \"Critical\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": \"SH-8921\", \"supplier_id\": \"SUP-001\", \"affected_sku\": \"SKU-1049\", \"delay_days\": 14, \"primary_impacted_orders\": [\"ORD-501\", \"ORD-502\"]}}, {\"id\": \"scenario_2_carrier_port_congestion\", \"title\": \"Scenario 2: Carrier Delay / Port Congestion (Maersk Long Beach)\", \"category\": \"Carrier/Shipment Delay\", \"difficulty\": \"Moderate / Trade-offs\", \"description\": \"Ocean carrier notice detailing port congestion at Long Beach delaying container of automotive microcontrollers by 10 days.\", \"notice_text\": \"EXCEPTION ALERT: OCEAN FREIGHT DISRUPTION\\nCARRIER: Maersk Line\\nVESSEL: MSC VALERIA / Voyage 402W\\nCONTAINER: MSKU-8839210 (Inbound SH-7714, PO-3910)\\nDESTINATION: Chicago Logistics Hub\\n\\nPlease be advised that due to severe berth congestion, labor shortages, and railhead bottlenecks at the Port of Long Beach, discharge of container MSKU-8839210 carrying 32-bit automotive microcontrollers (MC-320) cannot proceed as scheduled.\\n\\nThe scheduled arrival date of September 12, 2026 is delayed by 10 calendar days. Expected Chicago rail terminal arrival is rescheduled for September 22, 2026. Emergency off-dock drayage & air freight forwarding can be quoted upon escalation.\", \"structured_input\": {\"disruption_type\": \"Carrier/Shipment Delay\", \"supplier_id\": \"SUP-002\", \"po_number\": \"PO-3910\", \"shipment_id\": \"SH-7714\", \"sku_id\": \"SKU-2088\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 10, \"affected_location\": \"Port of Long Beach\", \"quantity_affected\": null, \"reason\": \"Berth and railhead bottlenecks at Port of Long Beach delaying container MSKU-8839210.\", \"severity\": \"High\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": \"SH-7714\", \"supplier_id\": \"SUP-002\", \"affected_sku\": \"SKU-2088\", \"delay_days\": 10, \"primary_impacted_orders\": [\"ORD-503\"]}}, {\"id\": \"scenario_3_warehouse_incident\", \"title\": \"Scenario 3: Internal Warehouse Incident (Bay C-12 Forklift Crush)\", \"category\": \"Warehouse Incident\", \"difficulty\": \"Immediate Stock Destruction\", \"description\": \"Internal warehouse incident report detailing forklift collision destroying 150 units of high-density lithium battery packs.\", \"notice_text\": \"INCIDENT REPORT #IR-2026-0905-01\\nFACILITY: WH-MAIN Chicago Logistics Hub\\nZONE: Bay C-12 Cross-Dock Aisle\\nTIME: 06:15 AM CST\\nREPORTED BY: Warehouse Supervisor D. Miller\\n\\nDuring morning inbound cross-dock staging, forklift #4 suffered a mast cable snap while transporting two pallet loads of industrial lithium battery packs (SKU BAT-4400 / SKU-3150).\\n\\nTotal of 150 battery pack units fell from height and sustained catastrophic casing fractures and cell puncture. Fire suppression protocols were activated and Bay C-12 quarantine was established. All 150 units have been formally condemned and written off to salvage scrap. Physical available inventory in WH-MAIN has dropped immediately from 180 to 30 units.\", \"structured_input\": {\"disruption_type\": \"Warehouse Incident\", \"supplier_id\": \"SUP-004\", \"po_number\": null, \"shipment_id\": null, \"sku_id\": \"SKU-3150\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 18, \"affected_location\": \"WH-MAIN\", \"quantity_affected\": 150, \"reason\": \"Forklift collision in Bay C-12 destroyed 150 units of BAT-4400 battery packs.\", \"severity\": \"Critical\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": null, \"supplier_id\": null, \"affected_sku\": \"SKU-3150\", \"quantity_lost\": 150, \"primary_impacted_orders\": [\"ORD-505\"]}}, {\"id\": \"scenario_4_false_alarm_no_impact\", \"title\": \"Scenario 4: False Alarm / Zero Impact (Acme Regional Road Closure)\", \"category\": \"Other\", \"difficulty\": \"Edge Case: False Alarm\", \"description\": \"Alarming emergency notice from Acme Logistics regarding Route 9 road closure, but distributor has no pending orders or shipments with Acme.\", \"notice_text\": \"URGENT LOGISTICS ADVISORY: ACME FREIGHT & LOGISTICS\\nBULLETIN: #ADV-9921-DENVER\\nEFFECTIVE: IMMEDIATELY\\n\\nSevere mudslides and structural damage have forced the Colorado Department of Transportation to close US Route 9 near Silverthorne / Denver junction in both directions. All Acme regional line-haul trucking and freight operations are suspended for the next 72 hours. Shipments transiting Denver hub will face extensive rerouting delays of up to 5 business days.\\n\\nAll dispatch operations advised to take immediate emergency measures.\", \"structured_input\": {\"disruption_type\": \"Other\", \"supplier_id\": \"SUP-006\", \"po_number\": null, \"shipment_id\": null, \"sku_id\": null, \"disruption_date\": \"2026-09-05\", \"delay_days\": 5, \"affected_location\": \"Denver, CO\", \"quantity_affected\": null, \"reason\": \"Route 9 closure near Denver affecting Acme freight trucking operations.\", \"severity\": \"Low\"}, \"expected_outcome\": {\"has_impact\": false, \"reason\": \"Acme Logistics is listed as a potential partner, but no active inbound purchase orders or scheduled shipments are pending via Acme or routing through Denver. System reports verified NO IMPACT.\"}}, {\"id\": \"scenario_5_ambiguous_entity\", \"title\": \"Scenario 5: Ambiguous / Underspecified Notice (Taiwan Weather Delay)\", \"category\": \"Carrier/Shipment Delay\", \"difficulty\": \"Edge Case: Entity Disambiguation\", \"description\": \"Vague regional weather alert naming 'Taiwan supplier shipments' without identifying whether it affects TSMC Micro or Foxconn Components.\", \"notice_text\": \"REGIONAL SUPPLY ADVISORY: Super Typhoon Gaemi has made landfall on the north-east coast of Taiwan. Port operations at Kaohsiung and Keelung, as well as freight terminals at Taoyuan International Airport, have ceased loading operations for safety. All shipments originating from our Taiwan suppliers will be stalled by at least 6 days pending civil aviation and maritime clearance.\", \"structured_input\": {\"disruption_type\": \"Carrier/Shipment Delay\", \"supplier_id\": \"SUP-002\", \"po_number\": \"PO-3910\", \"shipment_id\": \"SH-7714\", \"sku_id\": \"SKU-2088\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 6, \"affected_location\": \"Kaohsiung Port, Taiwan\", \"quantity_affected\": null, \"reason\": \"Super Typhoon Gaemi causing port closures and 6-day shipping delays.\", \"severity\": \"Medium\"}, \"expected_outcome\": {\"has_impact\": true, \"is_ambiguous\": true, \"candidate_suppliers\": [\"SUP-002\", \"SUP-003\"], \"action_required\": \"Prompt operator to select which supplier/shipment is confirmed, or simulate both branches.\"}}, {\"id\": \"scenario_6_customs_regulatory_hold\", \"title\": \"Scenario 6: Customs & Regulatory Hold (Port of Rotterdam Lithium Audit)\", \"category\": \"Carrier/Shipment Delay\", \"difficulty\": \"International Maritime & Compliance\", \"description\": \"European maritime customs authority has issued a mandatory compliance hold on container DHL-7710928 from Nordic Lithium awaiting UN38.3 battery certification, delaying inbound shipment SH-9011 by 8 days.\", \"notice_text\": \"CUSTOMS COMPLIANCE NOTIFICATION #EU-HL-2026-8841\\nPORT AUTHORITY: Port of Rotterdam Maritime Terminal\\nCONSIGNEE: Central Logistics Hub Chicago (WH-MAIN)\\nINBOUND CONSIGNMENT: SH-9011 / PO-6200\\nCARRIER: DHL Global Forwarding (Tracking #DHL-7710928)\\nORIGIN: Oslo, Norway (Nordic Lithium & Power)\\n\\nPlease be informed that container DHL-7710928 containing 150 units of BAT-4400 Industrial Lithium Battery Packs (SKU-3150) has been selected for mandatory secondary UN38.3 thermal runaway testing verification. Maritime clearance is temporarily halted for approximately 8 calendar days pending document apostille from the manufacturer.\", \"structured_input\": {\"disruption_type\": \"Carrier/Shipment Delay\", \"supplier_id\": \"SUP-004\", \"po_number\": \"PO-6200\", \"shipment_id\": \"SH-9011\", \"sku_id\": \"SKU-3150\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 8, \"affected_location\": \"Oslo, Norway\", \"quantity_affected\": null, \"reason\": \"Rotterdam customs mandatory UN38.3 compliance inspection delaying container DHL-7710928.\", \"severity\": \"High\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": \"SH-9011\", \"supplier_id\": \"SUP-004\", \"affected_sku\": \"SKU-3150\", \"delay_days\": 8, \"primary_impacted_orders\": [\"ORD-505\"]}}, {\"id\": \"scenario_7_quality_defect_quarantine\", \"title\": \"Scenario 7: Component Quality Quarantine (Foxconn Micro-Solder Inspection)\", \"category\": \"Supplier Production Halt\", \"difficulty\": \"Quality Assurance & Batch Defect\", \"description\": \"Quality bulletin from Foxconn Components Taipei halting dispatch of step-down power converters (SKU-4022) for 12 days to perform non-destructive X-ray inspection of solder joints.\", \"notice_text\": \"QUALITY ENGINEERING ADVISORY #QA-FXC-2026-09\\nSUPPLIER: Foxconn Components Corp (Taipei, Taiwan)\\nCOMMODITY: Industrial Step-Down Power Converter 12V/5A (SKU-4022 / PWR-12V)\\nTARGET SHIPMENT: SH-6520 (PO-5102)\\n\\nDuring routine automated optical inspection (AOI) on Subassembly Line B, engineering identified intermittent solder bridging on primary induction coils. As a mandatory safety precaution, 400 units designated for Inbound Shipment SH-6520 are placed in technical quarantine for comprehensive X-ray verification and thermal stress recertification.\\n\\nRevised dispatch will be postponed by 12 calendar days. Initial units passing stress test will be released on rolling batches.\", \"structured_input\": {\"disruption_type\": \"Supplier Production Halt\", \"supplier_id\": \"SUP-003\", \"po_number\": \"PO-5102\", \"shipment_id\": \"SH-6520\", \"sku_id\": \"SKU-4022\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 12, \"affected_location\": \"Taipei, Taiwan\", \"quantity_affected\": null, \"reason\": \"Intermittent solder bridging detected on Subassembly Line B requiring 12-day quarantine inspection.\", \"severity\": \"Medium\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": \"SH-6520\", \"supplier_id\": \"SUP-003\", \"affected_sku\": \"SKU-4022\", \"delay_days\": 12, \"primary_impacted_orders\": [\"ORD-506\"]}}, {\"id\": \"scenario_8_demand_surge_rush\", \"title\": \"Scenario 8: Priority Acceleration Surge (Tesla Emergency Production Pull)\", \"category\": \"Other\", \"difficulty\": \"High Priority Expedite Surge\", \"description\": \"Tesla Energy Solutions requests emergency priority delivery acceleration of 120 units APX-902 sensors by 3 days, requiring urgent stock reallocation from non-critical orders to avoid vehicle line halt.\", \"notice_text\": \"MEMORANDUM: GLOBAL VEHICLE MANUFACTURING OPERATIONS\\nCUSTOMER: Tesla Energy Solutions (Austin Gigafactory)\\nSUBJECT: CRITICAL ESCALATION - APX-902 Sensor Assembly Delivery Schedule Acceleration\\nDATE: September 5, 2026\\n\\nDue to unprecedented ramp in Model Y / Megapack power conditioning unit output, Austin Gigafactory requires delivery of 120 units High-Precision Optical Sensors (SKU-1049 / APX-902) accelerated from September 10th to September 7th (3-day acceleration).\\n\\nFailure to meet this expedited gate schedule will incur statutory $500/day tier SLA delivery penalties and risk vehicle final assembly bottleneck. Proactive stock reallocation or emergency expedited air delivery requested immediately.\", \"structured_input\": {\"disruption_type\": \"Other\", \"supplier_id\": \"SUP-001\", \"po_number\": \"PO-4482\", \"shipment_id\": \"SH-8921\", \"sku_id\": \"SKU-1049\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 3, \"affected_location\": \"Fremont, CA\", \"quantity_affected\": null, \"reason\": \"Austin Gigafactory urgent production acceleration request for SKU-1049 optical sensors.\", \"severity\": \"High\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": \"SH-8921\", \"supplier_id\": \"SUP-001\", \"affected_sku\": \"SKU-1049\", \"delay_days\": 3, \"primary_impacted_orders\": [\"ORD-501\"]}}]");
+const FALLBACK_SEED_DATA = JSON.parse("{\"system_current_date\": \"2026-09-05\", \"suppliers\": [{\"supplier_id\": \"SUP-001\", \"name\": \"Apex Precision Technologies\", \"aliases\": [\"Apex Dynamics\", \"Apex Precision\", \"Apex Tech\", \"Apex Sensors\", \"Apex\"], \"contact_email\": \"dispatch@apexprecision.com\", \"location\": \"Fremont, CA, USA\", \"reliability_score\": 0.94, \"expedite_available\": true, \"expedite_cost_multiplier\": 1.45}, {\"supplier_id\": \"SUP-002\", \"name\": \"TSMC Micro Systems\", \"aliases\": [\"TSMC\", \"Taiwan Semiconductor\", \"TSMC Micro\", \"Taiwan Semi\"], \"contact_email\": \"orders@tsmc-micro.tw\", \"location\": \"Hsinchu Science Park, Taiwan\", \"reliability_score\": 0.98, \"expedite_available\": true, \"expedite_cost_multiplier\": 1.6}, {\"supplier_id\": \"SUP-003\", \"name\": \"Foxconn Components Corp\", \"aliases\": [\"Foxconn\", \"Foxconn Taiwan\", \"Foxconn Comps\", \"Foxconn Electronics\"], \"contact_email\": \"logistics@foxconn-comps.tw\", \"location\": \"Taipei, Taiwan\", \"reliability_score\": 0.91, \"expedite_available\": true, \"expedite_cost_multiplier\": 1.35}, {\"supplier_id\": \"SUP-004\", \"name\": \"Nordic Lithium & Power\", \"aliases\": [\"Nordic Lithium\", \"Nordic Power\", \"Nordic Batt\", \"Nordic\"], \"contact_email\": \"support@nordiclithium.no\", \"location\": \"Oslo, Norway\", \"reliability_score\": 0.88, \"expedite_available\": false, \"expedite_cost_multiplier\": 1.0}, {\"supplier_id\": \"SUP-005\", \"name\": \"Shenzhen Optical Electronics\", \"aliases\": [\"Shenzhen Optics\", \"Shenzhen Opto\", \"Shenzhen Electronics\"], \"contact_email\": \"sales@shenzhenoptics.cn\", \"location\": \"Shenzhen, China\", \"reliability_score\": 0.89, \"expedite_available\": true, \"expedite_cost_multiplier\": 1.5}, {\"supplier_id\": \"SUP-006\", \"name\": \"Acme Logistics & Freight\", \"aliases\": [\"Acme Logistics\", \"Acme Freight\", \"Acme Carriers\", \"Acme\"], \"contact_email\": \"dispatch@acmelogistics.com\", \"location\": \"Denver, CO, USA\", \"reliability_score\": 0.76, \"expedite_available\": false, \"expedite_cost_multiplier\": 1.0}], \"skus\": [{\"sku_id\": \"SKU-1049\", \"name\": \"High-Precision Optical Sensor Assembly\", \"aliases\": [\"APX-902\", \"APX-902 sensor\", \"optical sensor assembly\", \"Apex optical sensor\", \"optical sensors\", \"sensor assemblies\"], \"category\": \"Optoelectronics\", \"unit_cost\": 140.0, \"unit_price\": 280.0, \"lead_time_days\": 14, \"safety_stock_threshold\": 30, \"preferred_supplier_id\": \"SUP-001\"}, {\"sku_id\": \"SKU-2088\", \"name\": \"Automotive Edge Microcontroller 32-Bit\", \"aliases\": [\"MC-320\", \"auto microcontroller\", \"edge MCU\", \"automotive microcontrollers\", \"automotive MCUs\", \"microcontrollers\"], \"category\": \"Semiconductors\", \"unit_cost\": 85.0, \"unit_price\": 190.0, \"lead_time_days\": 21, \"safety_stock_threshold\": 50, \"preferred_supplier_id\": \"SUP-002\"}, {\"sku_id\": \"SKU-3150\", \"name\": \"Industrial High-Density Lithium Battery Pack\", \"aliases\": [\"BAT-4400\", \"lithium battery pack\", \"4400mAh industrial cell\", \"heavy-duty battery pack\", \"battery packs\", \"lithium batteries\"], \"category\": \"Power Systems\", \"unit_cost\": 210.0, \"unit_price\": 460.0, \"lead_time_days\": 18, \"safety_stock_threshold\": 40, \"preferred_supplier_id\": \"SUP-004\"}, {\"sku_id\": \"SKU-4022\", \"name\": \"Industrial Step-Down Power Converter 12V/5A\", \"aliases\": [\"PWR-12V\", \"step-down converter\", \"DC-DC power module\", \"power converter\", \"power modules\"], \"category\": \"Power Electronics\", \"unit_cost\": 45.0, \"unit_price\": 95.0, \"lead_time_days\": 10, \"safety_stock_threshold\": 60, \"preferred_supplier_id\": \"SUP-003\"}, {\"sku_id\": \"SKU-5011\", \"name\": \"Ultra-Low Latency 10G Optical Transceiver Module\", \"aliases\": [\"TRX-10G\", \"fiber transceiver\", \"10G optical module\", \"transceiver module\"], \"category\": \"Networking\", \"unit_cost\": 310.0, \"unit_price\": 650.0, \"lead_time_days\": 25, \"safety_stock_threshold\": 25, \"preferred_supplier_id\": \"SUP-005\"}], \"inventory\": [{\"warehouse_id\": \"WH-MAIN\", \"warehouse_name\": \"Central Logistics Hub - Chicago\", \"sku_id\": \"SKU-1049\", \"on_hand\": 55, \"allocated\": 50, \"reserved_safety\": 5, \"available\": 0, \"location_bin\": \"Aisle-3-Bay-04\"}, {\"warehouse_id\": \"WH-MAIN\", \"warehouse_name\": \"Central Logistics Hub - Chicago\", \"sku_id\": \"SKU-2088\", \"on_hand\": 120, \"allocated\": 80, \"reserved_safety\": 20, \"available\": 20, \"location_bin\": \"Aisle-2-Bay-11\"}, {\"warehouse_id\": \"WH-MAIN\", \"warehouse_name\": \"Central Logistics Hub - Chicago\", \"sku_id\": \"SKU-3150\", \"on_hand\": 180, \"allocated\": 150, \"reserved_safety\": 20, \"available\": 10, \"location_bin\": \"Aisle-5-Bay-12\"}, {\"warehouse_id\": \"WH-MAIN\", \"warehouse_name\": \"Central Logistics Hub - Chicago\", \"sku_id\": \"SKU-4022\", \"on_hand\": 250, \"allocated\": 120, \"reserved_safety\": 30, \"available\": 100, \"location_bin\": \"Aisle-1-Bay-08\"}, {\"warehouse_id\": \"WH-MAIN\", \"warehouse_name\": \"Central Logistics Hub - Chicago\", \"sku_id\": \"SKU-5011\", \"on_hand\": 45, \"allocated\": 40, \"reserved_safety\": 5, \"available\": 0, \"location_bin\": \"Aisle-4-Bay-02\"}], \"inbound_shipments\": [{\"shipment_id\": \"SH-8921\", \"po_number\": \"PO-4482\", \"supplier_id\": \"SUP-001\", \"carrier_name\": \"FedEx Freight Express\", \"tracking_number\": \"FX-88910411\", \"origin\": \"Fremont, CA\", \"destination_warehouse\": \"WH-MAIN\", \"status\": \"in_transit\", \"scheduled_arrival_date\": \"2026-09-08\", \"revised_arrival_date\": null, \"items\": [{\"sku_id\": \"SKU-1049\", \"quantity_ordered\": 200, \"quantity_shipped\": 200}], \"expedite_air_available\": true, \"expedite_air_lead_time_days\": 2, \"expedite_air_cost\": 1250.0}, {\"shipment_id\": \"SH-7714\", \"po_number\": \"PO-3910\", \"supplier_id\": \"SUP-002\", \"carrier_name\": \"Maersk Line\", \"tracking_number\": \"MSKU-8839210\", \"origin\": \"Kaohsiung Port, Taiwan\", \"destination_warehouse\": \"WH-MAIN\", \"status\": \"in_transit\", \"scheduled_arrival_date\": \"2026-09-12\", \"revised_arrival_date\": null, \"items\": [{\"sku_id\": \"SKU-2088\", \"quantity_ordered\": 500, \"quantity_shipped\": 500}], \"expedite_air_available\": true, \"expedite_air_lead_time_days\": 3, \"expedite_air_cost\": 3400.0}, {\"shipment_id\": \"SH-6520\", \"po_number\": \"PO-5102\", \"supplier_id\": \"SUP-003\", \"carrier_name\": \"Evergreen Marine\", \"tracking_number\": \"EGLV-991204\", \"origin\": \"Taipei, Taiwan\", \"destination_warehouse\": \"WH-MAIN\", \"status\": \"in_transit\", \"scheduled_arrival_date\": \"2026-09-20\", \"revised_arrival_date\": null, \"items\": [{\"sku_id\": \"SKU-4022\", \"quantity_ordered\": 400, \"quantity_shipped\": 400}], \"expedite_air_available\": true, \"expedite_air_lead_time_days\": 4, \"expedite_air_cost\": 1800.0}, {\"shipment_id\": \"SH-9011\", \"po_number\": \"PO-6200\", \"supplier_id\": \"SUP-004\", \"carrier_name\": \"DHL Global Forwarding\", \"tracking_number\": \"DHL-7710928\", \"origin\": \"Oslo, Norway\", \"destination_warehouse\": \"WH-MAIN\", \"status\": \"in_transit\", \"scheduled_arrival_date\": \"2026-09-15\", \"revised_arrival_date\": null, \"items\": [{\"sku_id\": \"SKU-3150\", \"quantity_ordered\": 150, \"quantity_shipped\": 150}], \"expedite_air_available\": false, \"expedite_air_lead_time_days\": null, \"expedite_air_cost\": 0.0}], \"customer_orders\": [{\"order_id\": \"ORD-501\", \"customer_name\": \"Tesla Energy Solutions\", \"customer_tier\": \"Platinum\", \"priority\": 1, \"order_date\": \"2026-08-28\", \"promise_date\": \"2026-09-10\", \"sla_penalty_per_day\": 500.0, \"destination_city\": \"Austin, TX\", \"status\": \"partially_allocated\", \"items\": [{\"sku_id\": \"SKU-1049\", \"quantity_demanded\": 120, \"quantity_allocated\": 50}], \"notes\": \"Mission-critical production run. Strictly penalizes delivery delays beyond 24h.\"}, {\"order_id\": \"ORD-502\", \"customer_name\": \"Siemens Mobility Systems\", \"customer_tier\": \"Platinum\", \"priority\": 1, \"order_date\": \"2026-08-30\", \"promise_date\": \"2026-09-11\", \"sla_penalty_per_day\": 350.0, \"destination_city\": \"Sacramento, CA\", \"status\": \"unfulfilled\", \"items\": [{\"sku_id\": \"SKU-1049\", \"quantity_demanded\": 60, \"quantity_allocated\": 0}], \"notes\": \"Train signaling subsystem assembly. Key strategic European partner.\"}, {\"order_id\": \"ORD-503\", \"customer_name\": \"Rivian Automotive\", \"customer_tier\": \"Gold\", \"priority\": 2, \"order_date\": \"2026-08-25\", \"promise_date\": \"2026-09-16\", \"sla_penalty_per_day\": 200.0, \"destination_city\": \"Normal, IL\", \"status\": \"partially_allocated\", \"items\": [{\"sku_id\": \"SKU-2088\", \"quantity_demanded\": 300, \"quantity_allocated\": 80}], \"notes\": \"R1T powertrain electronics batch. High volume tier.\"}, {\"order_id\": \"ORD-504\", \"customer_name\": \"Quantum Robotics Lab\", \"customer_tier\": \"Gold\", \"priority\": 2, \"order_date\": \"2026-09-01\", \"promise_date\": \"2026-09-25\", \"sla_penalty_per_day\": 100.0, \"destination_city\": \"Boston, MA\", \"status\": \"unfulfilled\", \"items\": [{\"sku_id\": \"SKU-1049\", \"quantity_demanded\": 20, \"quantity_allocated\": 0}], \"notes\": \"Research prototype run. Late-September target allows delivery flexibility.\"}, {\"order_id\": \"ORD-505\", \"customer_name\": \"General Industrial Robotics\", \"customer_tier\": \"Standard\", \"priority\": 3, \"order_date\": \"2026-08-20\", \"promise_date\": \"2026-09-18\", \"sla_penalty_per_day\": 50.0, \"destination_city\": \"Detroit, MI\", \"status\": \"partially_allocated\", \"items\": [{\"sku_id\": \"SKU-3150\", \"quantity_demanded\": 120, \"quantity_allocated\": 120}], \"notes\": \"Standard OEM factory replenishment.\"}, {\"order_id\": \"ORD-506\", \"customer_name\": \"Midwest Automation Parts\", \"customer_tier\": \"Standard\", \"priority\": 3, \"order_date\": \"2026-09-02\", \"promise_date\": \"2026-09-28\", \"sla_penalty_per_day\": 0.0, \"destination_city\": \"Columbus, OH\", \"status\": \"allocated\", \"items\": [{\"sku_id\": \"SKU-4022\", \"quantity_demanded\": 100, \"quantity_allocated\": 100}], \"notes\": \"Standard wholesale distributor order.\"}]}");
 
 const FALLBACK_REFERENCE_DATA = {
   system_current_date: FALLBACK_SEED_DATA.system_current_date,
@@ -776,6 +91,10 @@ const FALLBACK_PROFILES = {
   })()
 };
 
+/**
+ * ChainSolve AI - Supplier Disruption Response Assistant (PS08)
+ * Full Interactive Operator Workbench & Multi-Persona Stakeholder Portals
+ */
 
 // Global State
 let currentAssessment = null;
@@ -1102,20 +421,22 @@ function initSplashScreen() {
   if (!splash) return;
 
   const dismissSplash = () => {
-    splash.classList.add("splash-hidden");
+    splash.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+    splash.style.opacity = "0";
+    splash.style.pointerEvents = "none";
     setTimeout(() => {
       splash.style.display = "none";
-    }, 700);
+    }, 650);
   };
 
   if (btnSkip) {
     btnSkip.addEventListener("click", dismissSplash);
   }
 
-  // Smooth dismiss after brief loading time (2.6 seconds)
+  // Guaranteed dismiss after 2.5 seconds
   setTimeout(() => {
     dismissSplash();
-  }, 2600);
+  }, 2500);
 }
 
 // ============================================================================
@@ -1716,7 +1037,7 @@ async function initScenarios() {
       preloadedScenarios = FALLBACK_SCENARIOS;
     }
   } catch (err) {
-    console.warn("API scenarios unavailable, loading embedded benchmark dataset:", err);
+    console.warn("API scenarios unavailable, using embedded benchmark dataset:", err);
     preloadedScenarios = FALLBACK_SCENARIOS;
   }
 
@@ -2628,10 +1949,8 @@ function handleURLParamsOnLoad() {
     showToast(`Logged in to Customer Portal (${custName})`, "success", "🏢");
   } else if (role === "operator") {
     loginAsAdmin();
-    showToast("Logged in as Operations Controller (Admin)", "info", "👑");
   }
 }
-
 
 // ============================================================================
 // Client-Side Deterministic Disruption Simulator (Zero-API / GitHub Pages)
@@ -2647,7 +1966,7 @@ function simulateOfflineAssessment(payload) {
       has_system_impact: false,
       total_orders_impacted: 0,
       total_sla_penalty_exposure: 0,
-      impact_summary: "Verified Zero Operational Impact. Acme Logistics regional notice checked against active supply chain repository: 0 active purchase orders and 0 scheduled shipments route through the affected Denver corridor.",
+      impact_summary: "Verified Zero Operational Impact. Acme Logistics notice verified against active supply chain repository: 0 active purchase orders and 0 shipments route through the affected Denver corridor.",
       grounding: {
         is_ambiguous: false,
         matches: [{ entity_type: "supplier", entity_id: "SUP-006", name: "Acme Logistics & Freight", has_active_dependencies: false }]
@@ -2696,7 +2015,6 @@ function simulateOfflineAssessment(payload) {
     };
   }
 
-  // Standard Impact Assessment (Apex APX-902, Rotterdam Hold, Quality Recall, or Warehouse)
   let impactedOrders = [];
   let summary = "";
   let totalExposure = 0;
@@ -2717,8 +2035,7 @@ function simulateOfflineAssessment(payload) {
       root_cause_summary: "Destroyed 150 units in WH-MAIN Bay C-12",
       citations: [{ source_record: "WH-MAIN Inventory", detail: "On-hand dropped from 180 to 30 units" }],
       options: [
-        { option_id: "OPT-1", title: "Emergency Supplier Replenishment", description: "Rush replenishment cycle from Nordic Lithium", type: "expedite_air", cost: 600, delay_days: 2, penalty_savings: 350, net_savings: -250, recommended: true },
-        { option_id: "OPT-2", title: "Reschedule Delivery with Courtesy Credit", description: "Notify customer of incident and confirm rescheduled arrival", type: "reschedule", cost: 100, delay_days: 9, penalty_savings: 0, net_savings: -100, recommended: false }
+        { option_id: "OPT-1", title: "Emergency Supplier Replenishment", description: "Rush replenishment cycle from Nordic Lithium", type: "expedite_air", cost: 600, delay_days: 2, penalty_savings: 350, net_savings: -250, recommended: true }
       ]
     });
   } else if (payload.supplier_id === "SUP-003" || payload.sku_id === "SKU-4022") {
@@ -2780,7 +2097,6 @@ function simulateOfflineAssessment(payload) {
       ]
     });
   } else {
-    // Default: Apex APX-902 Factory Halt (Scenario 1 & 8)
     summary = `Critical Supplier Halt: Line 3 failure at Apex Precision delaying Inbound SH-8921 by ${payload.delay_days || 14} days. Downstream shock impacts Tesla Energy Solutions and Siemens Mobility Systems.`;
     totalExposure = 9350;
     impactedOrders.push({

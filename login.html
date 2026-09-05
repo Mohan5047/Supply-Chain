@@ -71,7 +71,7 @@
 
   <!-- Header -->
   <header class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
-    <div class="flex items-center space-x-3">
+    <a href="./index.html" class="flex items-center space-x-3 cursor-pointer group" title="Return to Home Dashboard">
       <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-purple-600 via-fuchsia-500 to-indigo-600 p-0.5 shadow-lg shadow-purple-500/30">
         <div class="w-full h-full bg-[#18032d] rounded-[14px] flex items-center justify-center p-2">
           <svg class="w-7 h-7 text-purple-300" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -88,7 +88,7 @@
         </h1>
         <p class="text-xs text-purple-800 dark:text-purple-300/80 font-semibold">Stakeholder Multi-Portal Gateway</p>
       </div>
-    </div>
+    </a>
 
     <!-- Right Controls -->
     <div class="flex items-center space-x-3">
@@ -98,8 +98,9 @@
       </button>
 
       <!-- Direct Skip to Dashboard -->
-      <a href="./index.html" class="text-xs font-bold px-4 py-2.5 rounded-xl bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/60 dark:hover:bg-purple-800 text-purple-800 dark:text-purple-200 border border-purple-300 dark:border-purple-700 transition flex items-center space-x-1.5 shadow-sm">
-        <span>Enter Workbench</span>
+      <a href="./index.html" class="text-xs font-black px-4 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white transition flex items-center space-x-2 shadow-lg shadow-purple-900/30 border border-purple-400/40 cursor-pointer" title="Go to Home Page">
+        <span>🏠</span>
+        <span>Go to Home Page</span>
         <span>➔</span>
       </a>
     </div>
@@ -284,6 +285,15 @@
         </div>
       </div>
 
+    
+      <!-- Direct Go to Home Page Shortcut Button -->
+      <div class="pt-2">
+        <a href="./index.html" class="w-full flex items-center justify-center space-x-2 py-3 px-4 rounded-2xl bg-gradient-to-r from-purple-100 to-indigo-100 hover:from-purple-200 hover:to-indigo-200 dark:from-purple-950/70 dark:to-indigo-950/70 dark:hover:from-purple-900/80 dark:hover:to-indigo-900/80 text-purple-950 dark:text-purple-200 border-2 border-purple-300/80 dark:border-purple-700/80 font-black text-xs transition shadow-sm cursor-pointer">
+          <span>🏠</span>
+          <span>Go to Home Page (Direct Access)</span>
+          <span>➔</span>
+        </a>
+      </div>
     </div>
   </main>
 
