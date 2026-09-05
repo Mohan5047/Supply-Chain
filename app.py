@@ -42,6 +42,13 @@ if not STATIC_DIR.exists():
 def health_check():
     return {"status": "healthy", "service": "PS08 Disruption Assistant", "port": PORT}
 
+@app.get("/login")
+def serve_login():
+    login_file = STATIC_DIR / "login.html"
+    if login_file.exists():
+        return FileResponse(str(login_file))
+    return FileResponse(str(STATIC_DIR / "index.html"))
+
 # Mount static files at /static and at root / so both /static/... and ./... asset links resolve cleanly
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 app.mount("/", StaticFiles(directory=str(STATIC_DIR), html=True), name="root_static")

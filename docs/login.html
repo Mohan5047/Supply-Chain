@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChainSolve AI | Stakeholder Portal Login (PS08)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./styles.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#faf5ff',
+              100: '#f3e8ff',
+              200: '#e9d5ff',
+              300: '#d8b4fe',
+              400: '#c084fc',
+              500: '#a855f7',
+              600: '#9333ea',
+              700: '#7e22ce',
+              800: '#6b21a8',
+              900: '#581c87',
+              950: '#3b0764',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    // Theme Pre-Hydration
+    const savedTheme = localStorage.getItem('chainSolve_theme');
+    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+  <style>
+    .login-card {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+    }
+    html.dark .login-card {
+      background: rgba(24, 3, 45, 0.88);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(124, 58, 237, 0.2);
+    }
+    .portal-tab-active {
+      background: linear-gradient(135deg, #7c3aed, #9333ea) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans antialiased overflow-x-hidden text-slate-900 dark:text-purple-50 relative selection:bg-purple-500 selection:text-white">
+
+  <!-- Fullscreen Ambient Purple Background -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none purple-ambient-canvas">
+    <div class="absolute inset-0 z-0 overflow-hidden opacity-20 dark:opacity-30 mix-blend-screen transition-opacity">
+      <img src="./network_bg.gif" alt="Supply Chain Animation" class="w-full h-full object-cover object-center filter brightness-110 contrast-125">
+    </div>
+    <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-purple-600/30 blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/2 -right-32 w-96 h-96 rounded-full bg-indigo-600/25 blur-3xl"></div>
+    <div class="absolute -bottom-32 left-1/3 w-96 h-96 rounded-full bg-fuchsia-600/25 blur-3xl"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
+    <div class="flex items-center space-x-3">
+      <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-purple-600 via-fuchsia-500 to-indigo-600 p-0.5 shadow-lg shadow-purple-500/30">
+        <div class="w-full h-full bg-[#18032d] rounded-[14px] flex items-center justify-center p-2">
+          <svg class="w-7 h-7 text-purple-300" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="16" width="28" height="18" rx="9" stroke="#c084fc" stroke-width="4.5" />
+            <rect x="28" y="30" width="28" height="18" rx="9" stroke="#818cf8" stroke-width="4.5" />
+            <circle cx="32" cy="32" r="6" fill="#c084fc" />
+          </svg>
+        </div>
+      </div>
+      <div>
+        <h1 class="text-lg font-black tracking-tight text-slate-900 dark:text-white flex items-center space-x-2">
+          <span>ChainSolve AI</span>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-400/40 font-bold uppercase">PS08</span>
+        </h1>
+        <p class="text-xs text-purple-800 dark:text-purple-300/80 font-semibold">Stakeholder Multi-Portal Gateway</p>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center space-x-3">
+      <!-- Dark/Light Theme Toggle -->
+      <button id="btnLoginThemeToggle" class="p-2.5 rounded-xl border border-purple-300/60 dark:border-purple-700/60 bg-white/80 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900 transition shadow-sm cursor-pointer" title="Toggle Theme">
+        <span id="loginThemeIcon">🌙</span>
+      </button>
+
+      <!-- Direct Skip to Dashboard -->
+      <a href="./index.html" class="text-xs font-bold px-4 py-2.5 rounded-xl bg-purple-100 hover:bg-purple-200 dark:bg-purple-900/60 dark:hover:bg-purple-800 text-purple-800 dark:text-purple-200 border border-purple-300 dark:border-purple-700 transition flex items-center space-x-1.5 shadow-sm">
+        <span>Enter Workbench</span>
+        <span>➔</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Login Card Container -->
+  <main class="relative z-10 flex-1 flex items-center justify-center px-4 py-8">
+    <div class="w-full max-w-xl login-card rounded-3xl p-6 sm:p-9 shadow-2xl space-y-6">
+
+      <!-- Badge & Title -->
+      <div class="text-center space-y-2">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 border border-purple-300 dark:border-purple-700/80 text-xs font-extrabold shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-purple-500 animate-ping"></span>
+          <span>ENTERPRISE AUTHENTICATION</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+          Select Your Persona
+        </h2>
+        <p class="text-xs text-slate-600 dark:text-purple-200/80 max-w-md mx-auto">
+          Choose a role to access dedicated supply chain consoles, disruption reporting bridges, and real-time SLA monitors.
+        </p>
+      </div>
+
+      <!-- Persona Selector Tabs -->
+      <div class="grid grid-cols-3 gap-2 p-1.5 rounded-2xl bg-purple-100/80 dark:bg-purple-950/80 border border-purple-200 dark:border-purple-800">
+        <button id="tabOperator" class="portal-tab-active flex flex-col items-center py-2.5 px-2 rounded-xl text-xs font-black transition cursor-pointer">
+          <span class="text-lg mb-0.5">🛡️</span>
+          <span>Admin</span>
+        </button>
+        <button id="tabSupplier" class="text-slate-700 dark:text-purple-200 hover:text-purple-900 dark:hover:text-white flex flex-col items-center py-2.5 px-2 rounded-xl text-xs font-bold transition cursor-pointer">
+          <span class="text-lg mb-0.5">🏭</span>
+          <span>Supplier</span>
+        </button>
+        <button id="tabCustomer" class="text-slate-700 dark:text-purple-200 hover:text-purple-900 dark:hover:text-white flex flex-col items-center py-2.5 px-2 rounded-xl text-xs font-bold transition cursor-pointer">
+          <span class="text-lg mb-0.5">🏢</span>
+          <span>Customer</span>
+        </button>
+      </div>
+
+      <!-- FORM 1: Operator / Admin View -->
+      <div id="viewOperator" class="space-y-4">
+        <div class="bg-purple-50/70 dark:bg-purple-950/50 p-4 rounded-2xl border border-purple-200/80 dark:border-purple-800/60 space-y-2">
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl">👑</span>
+            <div>
+              <h4 class="text-sm font-black text-slate-900 dark:text-white">Operations Controller (Distributor Admin)</h4>
+              <p class="text-xs text-purple-700 dark:text-purple-300">Central Logistics Hub - Chicago (WH-MAIN)</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-purple-300/80 pt-1">
+            Full root control: evaluate disruption notices, run deterministic inventory simulations, review SLA penalty trade-offs, draft communications, and commit operational resolutions.
+          </p>
+        </div>
+
+        <form onsubmit="handleOperatorLogin(event);" class="space-y-3.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-purple-200 mb-1">Controller Username / Email</label>
+            <input type="text" id="opUsername" value="admin@chainsolve.ai" class="w-full text-xs font-semibold rounded-xl bg-white dark:bg-[#120124] border border-purple-300 dark:border-purple-700 p-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-purple-200 mb-1">Access Passcode</label>
+            <input type="password" value="••••••••••••" class="w-full text-xs font-semibold rounded-xl bg-white dark:bg-[#120124] border border-purple-300 dark:border-purple-700 p-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500" required>
+          </div>
+
+          <button type="submit" class="w-full elite-btn-primary text-white text-xs font-black py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 cursor-pointer">
+            <span>🚀</span>
+            <span>Launch Operator Command Center</span>
+            <span>➔</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- FORM 2: Supplier Dispatcher View -->
+      <div id="viewSupplier" class="hidden space-y-4">
+        <div class="bg-purple-50/70 dark:bg-purple-950/50 p-4 rounded-2xl border border-purple-200/80 dark:border-purple-800/60 space-y-2">
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl">🏭</span>
+            <div>
+              <h4 class="text-sm font-black text-slate-900 dark:text-white">Supplier Dispatcher Portal</h4>
+              <p class="text-xs text-purple-700 dark:text-purple-300">Direct Inbound Manifest & Incident Reporting Bridge</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-purple-300/80 pt-1">
+            Access inbound purchase order tracking, shipment manifest status, and broadcast live production halt alerts directly to the distributor.
+          </p>
+        </div>
+
+        <form onsubmit="handleSupplierLogin(event);" class="space-y-3.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-purple-200 mb-1">Select Registered Supplier</label>
+            <select id="suppSelectDropdown" onchange="updateSupplierPreview();" class="w-full text-xs font-semibold rounded-xl bg-white dark:bg-[#120124] border border-purple-300 dark:border-purple-700 p-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <option value="SUP-001" data-name="Apex Precision Technologies" data-loc="Fremont, CA" data-email="dispatch@apexprecision.com" data-score="0.94" selected>Apex Precision Technologies (SUP-001 - Fremont, CA)</option>
+              <option value="SUP-002" data-name="TSMC Micro Systems" data-loc="Hsinchu, Taiwan" data-email="orders@tsmc-micro.tw" data-score="0.98">TSMC Micro Systems (SUP-002 - Taiwan)</option>
+              <option value="SUP-003" data-name="Foxconn Components Corp" data-loc="Taipei, Taiwan" data-email="logistics@foxconn-comps.tw" data-score="0.91">Foxconn Components (SUP-003 - Taiwan)</option>
+              <option value="SUP-004" data-name="Nordic Lithium & Power" data-loc="Oslo, Norway" data-email="support@nordiclithium.no" data-score="0.88">Nordic Lithium & Power (SUP-004 - Oslo)</option>
+              <option value="SUP-005" data-name="Shenzhen Optical Electronics" data-loc="Shenzhen, China" data-email="sales@shenzhenoptics.cn" data-score="0.89">Shenzhen Optical Electronics (SUP-005 - China)</option>
+              <option value="SUP-006" data-name="Acme Logistics & Freight" data-loc="Denver, CO" data-email="dispatch@acmelogistics.com" data-score="0.76">Acme Logistics & Freight (SUP-006 - Denver)</option>
+            </select>
+          </div>
+
+          <!-- Supplier Preview Box -->
+          <div id="suppPreviewBox" class="p-3 bg-purple-100/60 dark:bg-purple-900/40 rounded-xl border border-purple-300/70 dark:border-purple-700/60 text-xs space-y-1">
+            <div class="flex items-center justify-between font-bold">
+              <span id="suppPrevName">Apex Precision Technologies</span>
+              <span class="text-purple-700 dark:text-purple-300 font-mono" id="suppPrevId">SUP-001</span>
+            </div>
+            <div class="text-[11px] text-slate-600 dark:text-purple-300">
+              Location: <span id="suppPrevLoc">Fremont, CA</span> • Reliability Score: <span class="font-bold text-emerald-600 dark:text-emerald-400" id="suppPrevScore">94%</span>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full elite-btn-primary text-white text-xs font-black py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 cursor-pointer">
+            <span>🏭</span>
+            <span>Enter Supplier Portal</span>
+            <span>➔</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- FORM 3: Customer Portal View -->
+      <div id="viewCustomer" class="hidden space-y-4">
+        <div class="bg-purple-50/70 dark:bg-purple-950/50 p-4 rounded-2xl border border-purple-200/80 dark:border-purple-800/60 space-y-2">
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl">🏢</span>
+            <div>
+              <h4 class="text-sm font-black text-slate-900 dark:text-white">Enterprise Customer Portal</h4>
+              <p class="text-xs text-purple-700 dark:text-purple-300">Active Delivery Tracking & SLA Assurance Monitor</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-600 dark:text-purple-300/80 pt-1">
+            Track contractual promise dates, inspect order allocation status, and review proactive mitigation notices from the distributor.
+          </p>
+        </div>
+
+        <form onsubmit="handleCustomerLogin(event);" class="space-y-3.5">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-purple-200 mb-1">Select Enterprise Client</label>
+            <select id="custSelectDropdown" onchange="updateCustomerPreview();" class="w-full text-xs font-semibold rounded-xl bg-white dark:bg-[#120124] border border-purple-300 dark:border-purple-700 p-3 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+              <option value="Tesla Energy Solutions" data-tier="Platinum" data-city="Austin, TX" data-penalty="$500/day" data-orders="ORD-501" selected>Tesla Energy Solutions (Platinum Tier - Austin, TX)</option>
+              <option value="Siemens Mobility Systems" data-tier="Platinum" data-city="Sacramento, CA" data-penalty="$350/day" data-orders="ORD-502">Siemens Mobility Systems (Platinum Tier - Sacramento, CA)</option>
+              <option value="Rivian Automotive" data-tier="Gold" data-city="Normal, IL" data-penalty="$200/day" data-orders="ORD-503">Rivian Automotive (Gold Tier - Normal, IL)</option>
+              <option value="Quantum Robotics Lab" data-tier="Gold" data-city="Boston, MA" data-penalty="$100/day" data-orders="ORD-504">Quantum Robotics Lab (Gold Tier - Boston, MA)</option>
+              <option value="General Industrial Robotics" data-tier="Standard" data-city="Detroit, MI" data-penalty="$50/day" data-orders="ORD-505">General Industrial Robotics (Standard Tier - Detroit, MI)</option>
+              <option value="Midwest Automation Parts" data-tier="Standard" data-city="Columbus, OH" data-penalty="$0/day" data-orders="ORD-506">Midwest Automation Parts (Standard Tier - Columbus, OH)</option>
+            </select>
+          </div>
+
+          <!-- Customer Preview Box -->
+          <div id="custPreviewBox" class="p-3 bg-purple-100/60 dark:bg-purple-900/40 rounded-xl border border-purple-300/70 dark:border-purple-700/60 text-xs space-y-1">
+            <div class="flex items-center justify-between font-bold">
+              <span id="custPrevName">Tesla Energy Solutions</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-rose-500 text-white" id="custPrevTier">Platinum Tier</span>
+            </div>
+            <div class="text-[11px] text-slate-600 dark:text-purple-300">
+              Facility: <span id="custPrevCity">Austin, TX</span> • SLA Penalty Rate: <span class="font-bold text-rose-600 dark:text-rose-400" id="custPrevPenalty">$500/day</span>
+            </div>
+          </div>
+
+          <button type="submit" class="w-full elite-btn-primary text-white text-xs font-black py-3.5 px-4 rounded-xl shadow-lg transition flex items-center justify-center space-x-2 cursor-pointer">
+            <span>🏢</span>
+            <span>Enter Customer SLA Portal</span>
+            <span>➔</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- Quick 1-Click Demo Logins for Reviewers -->
+      <div class="pt-4 border-t border-purple-200/80 dark:border-purple-800/60 space-y-2.5 text-center">
+        <span class="text-[11px] font-black text-purple-900 dark:text-purple-300 uppercase tracking-wider">
+          ⚡ 1-Click Fast Track Demo Logins
+        </span>
+        <div class="grid grid-cols-3 gap-2 pt-1 text-[11px]">
+          <button onclick="quickLogin('operator');" class="py-2 px-2.5 rounded-xl bg-purple-200/60 hover:bg-purple-300/80 dark:bg-purple-900/50 dark:hover:bg-purple-800 text-purple-950 dark:text-purple-100 border border-purple-300 dark:border-purple-700 font-bold transition shadow-sm cursor-pointer truncate">
+            🛡️ Admin
+          </button>
+          <button onclick="quickLogin('supplier', 'SUP-001');" class="py-2 px-2.5 rounded-xl bg-purple-200/60 hover:bg-purple-300/80 dark:bg-purple-900/50 dark:hover:bg-purple-800 text-purple-950 dark:text-purple-100 border border-purple-300 dark:border-purple-700 font-bold transition shadow-sm cursor-pointer truncate">
+            🏭 Apex Precision
+          </button>
+          <button onclick="quickLogin('customer', 'Tesla Energy Solutions');" class="py-2 px-2.5 rounded-xl bg-purple-200/60 hover:bg-purple-300/80 dark:bg-purple-900/50 dark:hover:bg-purple-800 text-purple-950 dark:text-purple-100 border border-purple-300 dark:border-purple-700 font-bold transition shadow-sm cursor-pointer truncate">
+            🏢 Tesla Energy
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 py-4 text-center text-xs text-purple-700/80 dark:text-purple-300/60">
+    ChainSolve AI • Autonomous Disruption Response Platform (PS08) • Built for Mission-Critical Supply Chains
+  </footer>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    // Tab Switching
+    const tabOp = document.getElementById('tabOperator');
+    const tabSupp = document.getElementById('tabSupplier');
+    const tabCust = document.getElementById('tabCustomer');
+
+    const viewOp = document.getElementById('viewOperator');
+    const viewSupp = document.getElementById('viewSupplier');
+    const viewCust = document.getElementById('viewCustomer');
+
+    function switchTab(activeTab, activeView) {
+      [tabOp, tabSupp, tabCust].forEach(t => {
+        t.className = "text-slate-700 dark:text-purple-200 hover:text-purple-900 dark:hover:text-white flex flex-col items-center py-2.5 px-2 rounded-xl text-xs font-bold transition cursor-pointer";
+      });
+      activeTab.className = "portal-tab-active flex flex-col items-center py-2.5 px-2 rounded-xl text-xs font-black transition cursor-pointer";
+
+      [viewOp, viewSupp, viewCust].forEach(v => v.classList.add('hidden'));
+      activeView.classList.remove('hidden');
+    }
+
+    tabOp.addEventListener('click', () => switchTab(tabOp, viewOp));
+    tabSupp.addEventListener('click', () => switchTab(tabSupp, viewSupp));
+    tabCust.addEventListener('click', () => switchTab(tabCust, viewCust));
+
+    // Dynamic Preview Updates
+    function updateSupplierPreview() {
+      const select = document.getElementById('suppSelectDropdown');
+      const opt = select.options[select.selectedIndex];
+      document.getElementById('suppPrevName').textContent = opt.getAttribute('data-name');
+      document.getElementById('suppPrevId').textContent = opt.value;
+      document.getElementById('suppPrevLoc').textContent = opt.getAttribute('data-loc');
+      document.getElementById('suppPrevScore').textContent = Math.round(parseFloat(opt.getAttribute('data-score')) * 100) + '%';
+    }
+
+    function updateCustomerPreview() {
+      const select = document.getElementById('custSelectDropdown');
+      const opt = select.options[select.selectedIndex];
+      document.getElementById('custPrevName').textContent = opt.value;
+      const tier = opt.getAttribute('data-tier');
+      const tierBadge = document.getElementById('custPrevTier');
+      tierBadge.textContent = tier + ' Tier';
+      if (tier === 'Platinum') tierBadge.className = 'px-2 py-0.5 rounded text-[10px] font-black uppercase bg-rose-500 text-white';
+      else if (tier === 'Gold') tierBadge.className = 'px-2 py-0.5 rounded text-[10px] font-black uppercase bg-amber-500 text-white';
+      else tierBadge.className = 'px-2 py-0.5 rounded text-[10px] font-black uppercase bg-purple-700 text-purple-200';
+
+      document.getElementById('custPrevCity').textContent = opt.getAttribute('data-city');
+      document.getElementById('custPrevPenalty').textContent = opt.getAttribute('data-penalty');
+    }
+
+    // Login Form Handlers
+    function handleOperatorLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById('opUsername').value || "Username";
+      localStorage.setItem('chainSolve_username', username);
+      localStorage.setItem('chainSolve_role', 'operator');
+      window.location.href = './index.html?role=operator';
+    }
+
+    function handleSupplierLogin(e) {
+      e.preventDefault();
+      const select = document.getElementById('suppSelectDropdown');
+      const suppId = select.value;
+      const opt = select.options[select.selectedIndex];
+      localStorage.setItem('chainSolve_role', 'supplier');
+      localStorage.setItem('chainSolve_supplier_id', suppId);
+      localStorage.setItem('chainSolve_username', opt.getAttribute('data-name'));
+      window.location.href = `./index.html?role=supplier&id=${encodeURIComponent(suppId)}`;
+    }
+
+    function handleCustomerLogin(e) {
+      e.preventDefault();
+      const select = document.getElementById('custSelectDropdown');
+      const custName = select.value;
+      localStorage.setItem('chainSolve_role', 'customer');
+      localStorage.setItem('chainSolve_customer_name', custName);
+      localStorage.setItem('chainSolve_username', custName);
+      window.location.href = `./index.html?role=customer&id=${encodeURIComponent(custName)}`;
+    }
+
+    // 1-Click Fast Track
+    function quickLogin(role, id = null) {
+      if (role === 'operator') {
+        localStorage.setItem('chainSolve_role', 'operator');
+        window.location.href = './index.html?role=operator';
+      } else if (role === 'supplier') {
+        localStorage.setItem('chainSolve_role', 'supplier');
+        localStorage.setItem('chainSolve_supplier_id', id || 'SUP-001');
+        window.location.href = `./index.html?role=supplier&id=${encodeURIComponent(id || 'SUP-001')}`;
+      } else if (role === 'customer') {
+        localStorage.setItem('chainSolve_role', 'customer');
+        localStorage.setItem('chainSolve_customer_name', id || 'Tesla Energy Solutions');
+        window.location.href = `./index.html?role=customer&id=${encodeURIComponent(id || 'Tesla Energy Solutions')}`;
+      }
+    }
+
+    // Theme Toggle on Login
+    const btnLoginTheme = document.getElementById('btnLoginThemeToggle');
+    const loginThemeIcon = document.getElementById('loginThemeIcon');
+    function updateThemeIcon() {
+      const isDark = document.documentElement.classList.contains('dark');
+      loginThemeIcon.textContent = isDark ? '☀️' : '🌙';
+    }
+    updateThemeIcon();
+    btnLoginTheme.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
+      localStorage.setItem('chainSolve_theme', isDark ? 'dark' : 'light');
+      updateThemeIcon();
+    });
+  </script>
+</body>
+</html>

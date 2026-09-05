@@ -53,27 +53,27 @@
     }
   </script>
 </head>
-<body class="h-full flex flex-col font-sans antialiased overflow-x-hidden text-emerald-950 dark:text-emerald-50 relative">
+<body class="h-full flex flex-col font-sans antialiased overflow-x-hidden text-slate-900 dark:text-purple-50 relative">
 
   <!-- ============================================================= -->
   <!-- FULLSCREEN ANIMATED MINT & EMERALD CANVAS                     -->
   <!-- ============================================================= -->
-  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none green-ambient-canvas">
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none purple-ambient-canvas">
     <!-- Animated Supply Chain Network GIF Background Layer -->
     <div class="absolute inset-0 z-0 overflow-hidden opacity-25 dark:opacity-35 mix-blend-multiply dark:mix-blend-screen transition-opacity">
       <img src="./network_bg.gif" alt="Supply Chain Network Animation" class="w-full h-full object-cover object-center filter brightness-105 contrast-110">
     </div>
-    <div class="green-orb green-orb-1"></div>
-    <div class="green-orb green-orb-2"></div>
-    <div class="green-orb green-orb-3"></div>
-    <div class="green-orb green-orb-4"></div>
+    <div class="purple-orb purple-orb-1"></div>
+    <div class="purple-orb purple-orb-2"></div>
+    <div class="purple-orb purple-orb-3"></div>
+    <div class="purple-orb purple-orb-4"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-emerald-950/20 dark:from-emerald-950/30 dark:via-transparent dark:to-[#02150e]/70"></div>
   </div>
 
   <!-- ============================================================= -->
   <!-- Clean Animated Splash Loading Screen                         -->
   <!-- ============================================================= -->
-  <div id="splashScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-[#02150e] via-[#062e1d] to-[#010e09] text-white transition-all duration-700 overflow-hidden">
+  <div id="splashScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-[#0d0118] via-[#1a0430] to-[#080010] text-white transition-all duration-700 overflow-hidden">
     
     <!-- Skip Button -->
     <button id="btnSkipSplash" class="absolute top-5 right-5 z-20 text-xs text-emerald-200 hover:text-white bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/70 px-4 py-2 rounded-full transition shadow-md backdrop-blur-sm flex items-center space-x-1.5 font-bold cursor-pointer">
@@ -220,6 +220,14 @@
         </div>
 
         <div class="space-y-1.5">
+          <!-- Multi-Portal Login Page Link -->
+          <a href="./login.html" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-purple-700 dark:text-purple-200 bg-purple-50 dark:bg-purple-950/60 hover:bg-purple-100 dark:hover:bg-purple-900/80 border border-purple-200 dark:border-purple-800/80 transition shadow-sm cursor-pointer group">
+            <span class="flex items-center space-x-2.5">
+              <span class="text-base">🔐</span>
+              <span>Portal Login Page</span>
+            </span>
+            <span class="text-[10px] text-purple-400 dark:text-purple-300 group-hover:translate-x-0.5 transition-transform">➔</span>
+          </a>
           <!-- System Settings Modal Button -->
           <button id="btnSettings" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-100 bg-slate-50 dark:bg-[#06281b] hover:bg-emerald-100 dark:hover:bg-[#093d2a] border border-slate-200 dark:border-emerald-800/60 transition shadow-sm cursor-pointer group">
             <span class="flex items-center space-x-2.5">
@@ -306,7 +314,7 @@
   <div class="flex-1 flex flex-col min-w-0 min-h-screen relative z-10">
     
     <!-- Top Navigation Header Bar -->
-    <header class="border-b border-emerald-500/40 text-xs py-3 px-4 sm:px-6 lg:px-8 text-white shadow-xl flex items-center justify-between sticky top-0 z-30 transition-colors">
+    <header class="border-b border-purple-500/40 text-xs py-3 px-4 sm:px-6 lg:px-8 text-white shadow-xl flex items-center justify-between sticky top-0 z-30 transition-colors">
       
       <!-- Left: Sidebar / Dashboard Trigger Button -->
       <div class="flex items-center space-x-3.5">
@@ -338,7 +346,12 @@
       </div>
 
       <!-- Right: Quick Action Shortcuts -->
-      <div class="flex items-center space-x-2 shrink-0">
+      <div class="flex items-center space-x-2.5 shrink-0">
+        <!-- Direct Multi-Portal Login Gateway -->
+        <a href="./login.html" class="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold transition shadow-md shadow-purple-900/40 text-xs border border-purple-400/40 cursor-pointer" title="Switch Stakeholder Login Portal">
+          <span>🔐</span>
+          <span class="hidden sm:inline">Portals Login</span>
+        </a>
         <button id="btnTopThemeToggle" class="p-2 rounded-xl bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/50 text-emerald-200 hover:text-white transition cursor-pointer shadow-sm text-xs" title="Toggle Light / Dark Theme">
           <span id="topThemeIcon">🌙</span>
         </button>
@@ -389,7 +402,7 @@
       </section>
 
       <!-- Customer Portal Active Banner -->
-      <div id="customerPortalBanner" class="hidden bg-gradient-to-r from-emerald-800 via-teal-800 to-emerald-900 text-white rounded-2xl p-5 sm:p-6 shadow-xl border border-emerald-500/40 space-y-4">
+      <div id="customerPortalBanner" class="hidden bg-gradient-to-r from-emerald-800 via-teal-800 to-emerald-900 text-white rounded-2xl p-5 sm:p-6 shadow-xl border border-purple-500/40 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-700/50 pb-3.5">
           <div class="flex items-center space-x-3.5">
             <span class="text-3xl">🏢</span>
@@ -411,7 +424,7 @@
       </div>
 
       <!-- Supplier Portal Active Banner -->
-      <div id="supplierPortalBanner" class="hidden bg-gradient-to-r from-[#021810] via-[#053220] to-[#01140c] text-white rounded-2xl p-5 sm:p-6 shadow-xl border border-emerald-500/40 space-y-4">
+      <div id="supplierPortalBanner" class="hidden bg-gradient-to-r from-[#021810] via-[#053220] to-[#01140c] text-white rounded-2xl p-5 sm:p-6 shadow-xl border border-purple-500/40 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-700/50 pb-3.5">
           <div class="flex items-center space-x-3.5">
             <span class="text-3xl">🏭</span>
@@ -471,7 +484,7 @@
             <span>5 Scenarios</span>
           </div>
         </div>
-        <div id="scenarioButtonContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div id="scenarioButtonContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Injected dynamically by app.js -->
         </div>
       </div>
@@ -687,7 +700,7 @@
             </div>
           </div>
 
-          <div class="bg-emerald-950/70 p-3 rounded-xl border border-emerald-500/40 text-xs text-emerald-200 flex items-center justify-between backdrop-blur-sm shadow-sm">
+          <div class="bg-emerald-950/70 p-3 rounded-xl border border-purple-500/40 text-xs text-emerald-200 flex items-center justify-between backdrop-blur-sm shadow-sm">
             <span class="font-semibold text-emerald-200">Primary Hub:</span>
             <span class="font-bold text-white bg-emerald-900/90 px-2.5 py-0.5 rounded-lg border border-emerald-500/60 shadow-sm">WH-MAIN (Chicago)</span>
           </div>

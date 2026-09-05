@@ -25,7 +25,10 @@
       "supplier_id": "SUP-001",
       "affected_sku": "SKU-1049",
       "delay_days": 14,
-      "primary_impacted_orders": ["ORD-501", "ORD-502"]
+      "primary_impacted_orders": [
+        "ORD-501",
+        "ORD-502"
+      ]
     }
   },
   {
@@ -34,7 +37,7 @@
     "category": "Carrier/Shipment Delay",
     "difficulty": "Moderate / Trade-offs",
     "description": "Ocean carrier notice detailing port congestion at Long Beach delaying container of automotive microcontrollers by 10 days.",
-    "notice_text": "EXCEPTION ALERT: OCEAN FREIGHT DISRUPTION\nCARRIER: Maersk Line\nVESSEL: MSC VALERIA / Voyage 402W\nCONTAINER: MSKU-8839210 (Inbound SH-7714, PO-3910)\nDESTINATION: Chicago Logistics Hub\n\nPlease be advised that due to severe berth congestion, labor shortages, and railhead bottlenecks at the Port of Long Beach, discharge of container MSKU-8839210 carrying 32-bit automotive microcontrollers (MC-320) cannot proceed as scheduled. \n\nThe scheduled arrival date of September 12, 2026 is delayed by 10 calendar days. Expected Chicago rail terminal arrival is rescheduled for September 22, 2026. Emergency off-dock drayage & air freight forwarding can be quoted upon escalation.",
+    "notice_text": "EXCEPTION ALERT: OCEAN FREIGHT DISRUPTION\nCARRIER: Maersk Line\nVESSEL: MSC VALERIA / Voyage 402W\nCONTAINER: MSKU-8839210 (Inbound SH-7714, PO-3910)\nDESTINATION: Chicago Logistics Hub\n\nPlease be advised that due to severe berth congestion, labor shortages, and railhead bottlenecks at the Port of Long Beach, discharge of container MSKU-8839210 carrying 32-bit automotive microcontrollers (MC-320) cannot proceed as scheduled.\n\nThe scheduled arrival date of September 12, 2026 is delayed by 10 calendar days. Expected Chicago rail terminal arrival is rescheduled for September 22, 2026. Emergency off-dock drayage & air freight forwarding can be quoted upon escalation.",
     "structured_input": {
       "disruption_type": "Carrier/Shipment Delay",
       "supplier_id": "SUP-002",
@@ -54,7 +57,9 @@
       "supplier_id": "SUP-002",
       "affected_sku": "SKU-2088",
       "delay_days": 10,
-      "primary_impacted_orders": ["ORD-503"]
+      "primary_impacted_orders": [
+        "ORD-503"
+      ]
     }
   },
   {
@@ -63,7 +68,7 @@
     "category": "Warehouse Incident",
     "difficulty": "Immediate Stock Destruction",
     "description": "Internal warehouse incident report detailing forklift collision destroying 150 units of high-density lithium battery packs.",
-    "notice_text": "INCIDENT REPORT #IR-2026-0905-01\nFACILITY: WH-MAIN Chicago Logistics Hub\nZONE: Bay C-12 Cross-Dock Aisle\nTIME: 06:15 AM CST\nREPORTED BY: Warehouse Supervisor D. Miller\n\nDuring morning inbound cross-dock staging, forklift #4 suffered a mast cable snap while transporting two pallet loads of industrial lithium battery packs (SKU BAT-4400 / SKU-3150). \n\nTotal of 150 battery pack units fell from height and sustained catastrophic casing fractures and cell puncture. Fire suppression protocols were activated and Bay C-12 quarantine was established. All 150 units have been formally condemned and written off to salvage scrap. Physical available inventory in WH-MAIN has dropped immediately from 180 to 30 units.",
+    "notice_text": "INCIDENT REPORT #IR-2026-0905-01\nFACILITY: WH-MAIN Chicago Logistics Hub\nZONE: Bay C-12 Cross-Dock Aisle\nTIME: 06:15 AM CST\nREPORTED BY: Warehouse Supervisor D. Miller\n\nDuring morning inbound cross-dock staging, forklift #4 suffered a mast cable snap while transporting two pallet loads of industrial lithium battery packs (SKU BAT-4400 / SKU-3150).\n\nTotal of 150 battery pack units fell from height and sustained catastrophic casing fractures and cell puncture. Fire suppression protocols were activated and Bay C-12 quarantine was established. All 150 units have been formally condemned and written off to salvage scrap. Physical available inventory in WH-MAIN has dropped immediately from 180 to 30 units.",
     "structured_input": {
       "disruption_type": "Warehouse Incident",
       "supplier_id": "SUP-004",
@@ -83,7 +88,9 @@
       "supplier_id": null,
       "affected_sku": "SKU-3150",
       "quantity_lost": 150,
-      "primary_impacted_orders": ["ORD-505"]
+      "primary_impacted_orders": [
+        "ORD-505"
+      ]
     }
   },
   {
@@ -134,8 +141,104 @@
     "expected_outcome": {
       "has_impact": true,
       "is_ambiguous": true,
-      "candidate_suppliers": ["SUP-002", "SUP-003"],
+      "candidate_suppliers": [
+        "SUP-002",
+        "SUP-003"
+      ],
       "action_required": "Prompt operator to select which supplier/shipment is confirmed, or simulate both branches."
+    }
+  },
+  {
+    "id": "scenario_6_customs_regulatory_hold",
+    "title": "Scenario 6: Customs & Regulatory Hold (Port of Rotterdam Lithium Audit)",
+    "category": "Carrier/Shipment Delay",
+    "difficulty": "International Maritime & Compliance",
+    "description": "European maritime customs authority has issued a mandatory compliance hold on container DHL-7710928 from Nordic Lithium awaiting UN38.3 battery certification, delaying inbound shipment SH-9011 by 8 days.",
+    "notice_text": "CUSTOMS COMPLIANCE NOTIFICATION #EU-HL-2026-8841\nPORT AUTHORITY: Port of Rotterdam Maritime Terminal\nCONSIGNEE: Central Logistics Hub Chicago (WH-MAIN)\nINBOUND CONSIGNMENT: SH-9011 / PO-6200\nCARRIER: DHL Global Forwarding (Tracking #DHL-7710928)\nORIGIN: Oslo, Norway (Nordic Lithium & Power)\n\nPlease be informed that container DHL-7710928 containing 150 units of BAT-4400 Industrial Lithium Battery Packs (SKU-3150) has been selected for mandatory secondary UN38.3 thermal runaway testing verification. Maritime clearance is temporarily halted for approximately 8 calendar days pending document apostille from the manufacturer.",
+    "structured_input": {
+      "disruption_type": "Carrier/Shipment Delay",
+      "supplier_id": "SUP-004",
+      "po_number": "PO-6200",
+      "shipment_id": "SH-9011",
+      "sku_id": "SKU-3150",
+      "disruption_date": "2026-09-05",
+      "delay_days": 8,
+      "affected_location": "Oslo, Norway",
+      "quantity_affected": null,
+      "reason": "Rotterdam customs mandatory UN38.3 compliance inspection delaying container DHL-7710928.",
+      "severity": "High"
+    },
+    "expected_outcome": {
+      "has_impact": true,
+      "disrupted_shipment": "SH-9011",
+      "supplier_id": "SUP-004",
+      "affected_sku": "SKU-3150",
+      "delay_days": 8,
+      "primary_impacted_orders": [
+        "ORD-505"
+      ]
+    }
+  },
+  {
+    "id": "scenario_7_quality_defect_quarantine",
+    "title": "Scenario 7: Component Quality Quarantine (Foxconn Micro-Solder Inspection)",
+    "category": "Supplier Production Halt",
+    "difficulty": "Quality Assurance & Batch Defect",
+    "description": "Quality bulletin from Foxconn Components Taipei halting dispatch of step-down power converters (SKU-4022) for 12 days to perform non-destructive X-ray inspection of solder joints.",
+    "notice_text": "QUALITY ENGINEERING ADVISORY #QA-FXC-2026-09\nSUPPLIER: Foxconn Components Corp (Taipei, Taiwan)\nCOMMODITY: Industrial Step-Down Power Converter 12V/5A (SKU-4022 / PWR-12V)\nTARGET SHIPMENT: SH-6520 (PO-5102)\n\nDuring routine automated optical inspection (AOI) on Subassembly Line B, engineering identified intermittent solder bridging on primary induction coils. As a mandatory safety precaution, 400 units designated for Inbound Shipment SH-6520 are placed in technical quarantine for comprehensive X-ray verification and thermal stress recertification.\n\nRevised dispatch will be postponed by 12 calendar days. Initial units passing stress test will be released on rolling batches.",
+    "structured_input": {
+      "disruption_type": "Supplier Production Halt",
+      "supplier_id": "SUP-003",
+      "po_number": "PO-5102",
+      "shipment_id": "SH-6520",
+      "sku_id": "SKU-4022",
+      "disruption_date": "2026-09-05",
+      "delay_days": 12,
+      "affected_location": "Taipei, Taiwan",
+      "quantity_affected": null,
+      "reason": "Intermittent solder bridging detected on Subassembly Line B requiring 12-day quarantine inspection.",
+      "severity": "Medium"
+    },
+    "expected_outcome": {
+      "has_impact": true,
+      "disrupted_shipment": "SH-6520",
+      "supplier_id": "SUP-003",
+      "affected_sku": "SKU-4022",
+      "delay_days": 12,
+      "primary_impacted_orders": [
+        "ORD-506"
+      ]
+    }
+  },
+  {
+    "id": "scenario_8_demand_surge_rush",
+    "title": "Scenario 8: Priority Acceleration Surge (Tesla Emergency Production Pull)",
+    "category": "Other",
+    "difficulty": "High Priority Expedite Surge",
+    "description": "Tesla Energy Solutions requests emergency priority delivery acceleration of 120 units APX-902 sensors by 3 days, requiring urgent stock reallocation from non-critical orders to avoid vehicle line halt.",
+    "notice_text": "MEMORANDUM: GLOBAL VEHICLE MANUFACTURING OPERATIONS\nCUSTOMER: Tesla Energy Solutions (Austin Gigafactory)\nSUBJECT: CRITICAL ESCALATION - APX-902 Sensor Assembly Delivery Schedule Acceleration\nDATE: September 5, 2026\n\nDue to unprecedented ramp in Model Y / Megapack power conditioning unit output, Austin Gigafactory requires delivery of 120 units High-Precision Optical Sensors (SKU-1049 / APX-902) accelerated from September 10th to September 7th (3-day acceleration).\n\nFailure to meet this expedited gate schedule will incur statutory $500/day tier SLA delivery penalties and risk vehicle final assembly bottleneck. Proactive stock reallocation or emergency expedited air delivery requested immediately.",
+    "structured_input": {
+      "disruption_type": "Other",
+      "supplier_id": "SUP-001",
+      "po_number": "PO-4482",
+      "shipment_id": "SH-8921",
+      "sku_id": "SKU-1049",
+      "disruption_date": "2026-09-05",
+      "delay_days": 3,
+      "affected_location": "Fremont, CA",
+      "quantity_affected": null,
+      "reason": "Austin Gigafactory urgent production acceleration request for SKU-1049 optical sensors.",
+      "severity": "High"
+    },
+    "expected_outcome": {
+      "has_impact": true,
+      "disrupted_shipment": "SH-8921",
+      "supplier_id": "SUP-001",
+      "affected_sku": "SKU-1049",
+      "delay_days": 3,
+      "primary_impacted_orders": [
+        "ORD-501"
+      ]
     }
   }
 ]
