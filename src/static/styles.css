@@ -1,0 +1,522 @@
+/* ==========================================================================
+   ChainSolve AI - Emerald & Mint Lite-Green Command Center Theme
+   Dynamic Ambient GIF & Orbs Background • Frosted Glass Low-Opacity Cards
+   Distinct Light & Dark Modes
+   ========================================================================== */
+
+/* ==========================================================================
+   1. GLOBAL CANVAS & ANIMATED BACKGROUND SYSTEM
+   ========================================================================== */
+:root {
+  --green-primary: #10b981;
+  --green-neon: #34d399;
+  --green-light: #6ee7b7;
+  --green-mint: #a7f3d0;
+  --green-deep: #059669;
+  --green-forest: #064e3b;
+}
+
+/* Unified Cyber-Emerald Background (Consistent across both views) */
+body {
+  background-color: #02150e !important;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.32) 0%, transparent 45%),
+    radial-gradient(circle at 85% 20%, rgba(52, 211, 153, 0.25) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(5, 150, 105, 0.32) 0%, transparent 55%),
+    radial-gradient(circle at 75% 55%, rgba(110, 231, 183, 0.18) 0%, transparent 40%) !important;
+  background-attachment: fixed;
+  color: #f0fdf4 !important;
+  position: relative;
+  min-height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html.dark body {
+  background-color: #02150e !important;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.32) 0%, transparent 45%),
+    radial-gradient(circle at 85% 20%, rgba(52, 211, 153, 0.25) 0%, transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(5, 150, 105, 0.32) 0%, transparent 55%),
+    radial-gradient(circle at 75% 55%, rgba(110, 231, 183, 0.18) 0%, transparent 40%) !important;
+  background-attachment: fixed;
+  color: #f0fdf4 !important;
+}
+
+/* Fluid Animated Green Ambient Canvas */
+.green-ambient-canvas,
+.purple-ambient-canvas {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 40%, #062b1d 0%, #02130c 100%) !important;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+
+html.dark .green-ambient-canvas,
+html.dark .purple-ambient-canvas {
+  background: radial-gradient(circle at 50% 40%, #062b1d 0%, #02130c 100%) !important;
+}
+
+.green-orb,
+.purple-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(85px);
+  opacity: 0.30;
+  pointer-events: none;
+  will-change: transform;
+}
+
+html.dark .green-orb,
+html.dark .purple-orb {
+  opacity: 0.55;
+}
+
+.green-orb-1,
+.purple-orb-1 {
+  width: 620px;
+  height: 620px;
+  background: radial-gradient(circle, #10b981 0%, rgba(16, 185, 129, 0) 70%);
+  top: -120px;
+  left: -120px;
+  animation: green-orb-drift-1 16s ease-in-out infinite alternate;
+}
+
+.green-orb-2,
+.purple-orb-2 {
+  width: 720px;
+  height: 720px;
+  background: radial-gradient(circle, #059669 0%, rgba(5, 150, 105, 0) 70%);
+  bottom: -160px;
+  right: -120px;
+  animation: green-orb-drift-2 20s ease-in-out infinite alternate;
+}
+
+.green-orb-3,
+.purple-orb-3 {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, #34d399 0%, rgba(52, 211, 153, 0) 70%);
+  top: 32%;
+  left: 28%;
+  opacity: 0.25;
+  animation: green-orb-drift-3 14s ease-in-out infinite alternate;
+}
+
+.green-orb-4,
+.purple-orb-4 {
+  width: 460px;
+  height: 460px;
+  background: radial-gradient(circle, #6ee7b7 0%, rgba(110, 231, 183, 0) 70%);
+  top: 16%;
+  right: 14%;
+  opacity: 0.22;
+  animation: green-orb-drift-4 18s ease-in-out infinite alternate;
+}
+
+@keyframes green-orb-drift-1 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(140px, 120px) scale(1.16); }
+}
+@keyframes green-orb-drift-2 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-130px, -140px) scale(1.12); }
+}
+@keyframes green-orb-drift-3 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-90px, 100px) scale(1.22); }
+}
+@keyframes green-orb-drift-4 {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-110px, 80px) scale(0.92); }
+}
+
+/* Smooth scroll & modern green scrollbar */
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(226, 232, 240, 0.8);
+}
+::-webkit-scrollbar-thumb {
+  background: #10b981;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #059669;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #02150e;
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: #10b981;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #34d399;
+}
+
+/* ==========================================================================
+   2. DARK GREEN LOW-OPACITY FRONT CARDS (.elite-card)
+   ========================================================================== */
+.elite-card {
+  background: linear-gradient(145deg, rgba(2, 28, 18, 0.52) 0%, rgba(4, 38, 25, 0.38) 100%) !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.40) !important;
+  border-top: 3px solid #10b981 !important;
+  box-shadow: 0 16px 45px -8px rgba(0, 18, 10, 0.45), 0 0 25px rgba(16, 185, 129, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.20) !important;
+  backdrop-filter: blur(18px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+  color: #ffffff !important;
+}
+
+html.dark .elite-card {
+  background: linear-gradient(145deg, rgba(2, 24, 16, 0.58) 0%, rgba(4, 34, 23, 0.42) 100%) !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.35) !important;
+  border-top: 3px solid #10b981 !important;
+}
+
+/* Primary Action Buttons */
+.elite-btn-primary {
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+  color: #ffffff !important;
+  font-weight: 800;
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.45);
+  border: 1px solid rgba(167, 243, 208, 0.5);
+}
+.elite-btn-primary:hover {
+  background: linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
+  box-shadow: 0 8px 28px rgba(16, 185, 129, 0.65), 0 0 20px rgba(52, 211, 153, 0.45);
+  transform: translateY(-1px);
+}
+.elite-btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   3. DARK GREEN LOW-OPACITY SCENARIO BOXES
+   ========================================================================== */
+.scenario-box {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 154px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  border-radius: 1rem;
+  padding: 1.15rem 1.25rem;
+  background: linear-gradient(145deg, rgba(3, 32, 21, 0.50) 0%, rgba(5, 42, 28, 0.35) 100%) !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.38) !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 20, 12, 0.30), inset 0 1px 1px rgba(255, 255, 255, 0.18) !important;
+  backdrop-filter: blur(16px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(170%) !important;
+  color: #ffffff !important;
+}
+
+.scenario-box:hover {
+  border-color: #34d399 !important;
+  background: linear-gradient(145deg, rgba(4, 44, 29, 0.70) 0%, rgba(8, 60, 40, 0.55) 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(5, 150, 105, 0.45), 0 0 20px rgba(52, 211, 153, 0.30), inset 0 1px 1px rgba(255, 255, 255, 0.30) !important;
+}
+
+.scenario-box.selected-scenario {
+  border-color: #34d399 !important;
+  background: linear-gradient(180deg, rgba(5, 52, 34, 0.78) 0%, rgba(10, 72, 48, 0.65) 100%) !important;
+  box-shadow: 0 0 0 2.5px #34d399, 0 14px 32px rgba(16, 185, 129, 0.50) !important;
+  transform: translateY(-1px);
+}
+
+.scenario-box h4 {
+  font-weight: 800;
+  color: #ffffff !important;
+}
+
+.scenario-box p,
+.scenario-box span {
+  color: #a7f3d0 !important;
+}
+
+html.dark .scenario-box {
+  background: linear-gradient(145deg, rgba(2, 26, 17, 0.52) 0%, rgba(4, 36, 24, 0.38) 100%) !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.35) !important;
+}
+
+html.dark .scenario-box:hover {
+  background: linear-gradient(145deg, rgba(3, 40, 26, 0.72) 0%, rgba(6, 56, 38, 0.58) 100%) !important;
+}
+
+html.dark .scenario-box.selected-scenario {
+  background: linear-gradient(180deg, rgba(4, 50, 32, 0.80) 0%, rgba(8, 68, 44, 0.68) 100%) !important;
+}
+
+/* ==========================================================================
+   4. DARK GREEN LOW-OPACITY OPTION CARDS & TRACE EVIDENCE
+   ========================================================================== */
+.trace-card,
+.option-card {
+  transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1.5px solid rgba(52, 211, 153, 0.38) !important;
+  background: linear-gradient(145deg, rgba(3, 32, 21, 0.48) 0%, rgba(6, 44, 29, 0.34) 100%) !important;
+  box-shadow: 0 6px 20px rgba(0, 20, 12, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(16px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(170%) !important;
+  color: #ffffff !important;
+}
+
+.trace-card:hover,
+.option-card:hover {
+  transform: translateY(-2px);
+  border-color: #34d399 !important;
+  background: linear-gradient(145deg, rgba(4, 44, 29, 0.68) 0%, rgba(8, 60, 40, 0.52) 100%) !important;
+  box-shadow: 0 10px 28px rgba(5, 150, 105, 0.40), 0 0 18px rgba(52, 211, 153, 0.25) !important;
+}
+
+.option-card.selected {
+  border-color: #34d399 !important;
+  background: linear-gradient(180deg, rgba(5, 52, 34, 0.78) 0%, rgba(10, 72, 48, 0.65) 100%) !important;
+  box-shadow: 0 0 0 2.5px #34d399, 0 12px 30px rgba(16, 185, 129, 0.45) !important;
+}
+
+html.dark .trace-card,
+html.dark .option-card {
+  background: linear-gradient(145deg, rgba(2, 24, 16, 0.50) 0%, rgba(4, 34, 23, 0.35) 100%) !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.32) !important;
+}
+
+html.dark .trace-card:hover,
+html.dark .option-card:hover {
+  background: linear-gradient(145deg, rgba(3, 38, 25, 0.70) 0%, rgba(6, 52, 35, 0.55) 100%) !important;
+}
+
+html.dark .option-card.selected {
+  background: linear-gradient(180deg, rgba(4, 48, 30, 0.78) 0%, rgba(8, 66, 44, 0.65) 100%) !important;
+}
+
+/* ==========================================================================
+   5. NAVIGATION, SIDEBAR & MODALS
+   ========================================================================== */
+header {
+  background: linear-gradient(180deg, rgba(2, 24, 16, 0.92) 0%, rgba(1, 16, 11, 0.96) 100%) !important;
+  border-bottom: 1.5px solid rgba(52, 211, 153, 0.35) !important;
+  box-shadow: 0 4px 25px rgba(0, 18, 10, 0.50) !important;
+  backdrop-filter: blur(18px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+  color: #ffffff !important;
+}
+
+#leftSidebar {
+  background: linear-gradient(180deg, rgba(2, 26, 17, 0.94) 0%, rgba(1, 18, 12, 0.98) 100%) !important;
+  border-right: 1.5px solid rgba(52, 211, 153, 0.35) !important;
+  box-shadow: 12px 0 40px rgba(0, 20, 10, 0.6) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(20px);
+  will-change: transform;
+}
+#leftSidebar.sidebar-open {
+  transform: translateX(0) !important;
+}
+
+#sidebarBackdrop {
+  transition: opacity 0.3s ease-in-out;
+}
+#sidebarBackdrop.active {
+  display: block !important;
+}
+
+/* ==========================================================================
+   5.5. DARK BLENDED FORM INPUTS (High-Tech Contrast)
+   ========================================================================== */
+form select,
+form input[type="text"],
+form input[type="number"],
+form input[type="date"],
+textarea.form-control,
+#suppIncidentType,
+#suppDelayDays {
+  background: linear-gradient(145deg, rgba(2, 24, 16, 0.85) 0%, rgba(4, 38, 25, 0.75) 100%) !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.45) !important;
+  color: #ffffff !important;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.50), 0 2px 6px rgba(5, 150, 105, 0.15) !important;
+  border-radius: 0.75rem !important;
+}
+
+form select option {
+  background-color: #031c13 !important;
+  color: #ffffff !important;
+  padding: 8px 12px;
+}
+
+form select:focus,
+form input[type="text"]:focus,
+form input[type="number"]:focus,
+form input[type="date"]:focus {
+  background: linear-gradient(145deg, rgba(3, 34, 23, 0.92) 0%, rgba(6, 48, 32, 0.85) 100%) !important;
+  border-color: #34d399 !important;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.40), inset 0 2px 4px rgba(0, 0, 0, 0.40) !important;
+  color: #ffffff !important;
+  outline: none !important;
+}
+
+form input::placeholder {
+  color: #6ee7b7 !important;
+  opacity: 0.65;
+}
+
+form input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.85) sepia(100%) hue-rotate(100deg) brightness(1.3);
+  cursor: pointer;
+}
+
+/* Modals */
+#profileModal .elite-card,
+#settingsModal .elite-card,
+#auditModal .elite-card,
+#commModal .elite-card,
+#commModal .bg-white {
+  background: linear-gradient(145deg, rgba(2, 28, 18, 0.88) 0%, rgba(4, 38, 25, 0.80) 100%) !important;
+  border: 1.5px solid rgba(52, 211, 153, 0.40) !important;
+  color: #ffffff !important;
+  box-shadow: 0 25px 60px -10px rgba(0, 18, 10, 0.85), 0 0 35px rgba(16, 185, 129, 0.20) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+}
+
+/* Splash screen animations */
+.splash-loader-indeterminate {
+  animation: splash-indeterminate-pulse 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  width: 100%;
+  box-shadow: 0 0 14px rgba(52, 211, 153, 0.7);
+}
+
+@keyframes splash-indeterminate-pulse {
+  0% { transform: translateX(-100%) scaleX(0.25); }
+  50% { transform: translateX(25%) scaleX(0.75); }
+  100% { transform: translateX(120%) scaleX(0.25); }
+}
+
+.splash-gif-bg {
+  animation: gif-fade-in 1.2s ease-out forwards;
+}
+
+@keyframes gif-fade-in {
+  from { opacity: 0; transform: scale(1.08); }
+  to { opacity: 0.32; transform: scale(1); }
+}
+
+#splashScreen.splash-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.03);
+}
+
+.profile-tab {
+  transition: all 0.2s ease-in-out;
+}
+.profile-tab.active {
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+}
+
+/* ==========================================================================
+   6. HIGH-CONTRAST TYPOGRAPHY (All Letters & Sub-Elements 100% Visible)
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff !important;
+}
+
+label {
+  color: #f0fdf4 !important;
+}
+
+.text-slate-900,
+.text-slate-800,
+.text-slate-700,
+.text-emerald-950,
+.text-emerald-900 {
+  color: #ffffff !important;
+}
+
+.text-slate-600,
+.text-slate-500,
+.text-emerald-800,
+.text-emerald-700 {
+  color: #d1fae5 !important;
+}
+
+.text-slate-400,
+.text-emerald-600 {
+  color: #a7f3d0 !important;
+}
+
+.text-slate-300,
+.text-emerald-300 {
+  color: #6ee7b7 !important;
+}
+
+/* Interior card borders */
+.border-slate-100,
+.border-slate-200,
+.border-slate-300,
+.border-emerald-50,
+.border-emerald-100,
+.border-emerald-200 {
+  border-color: rgba(52, 211, 153, 0.25) !important;
+}
+
+/* Financial & Metric Badges */
+.bg-amber-50,
+html.dark .bg-amber-50 {
+  background: linear-gradient(135deg, rgba(62, 28, 6, 0.65) 0%, rgba(38, 16, 2, 0.75) 100%) !important;
+  border-color: #f59e0b !important;
+  color: #fef08a !important;
+}
+
+.bg-rose-50,
+html.dark .bg-rose-50 {
+  background: linear-gradient(135deg, rgba(72, 10, 26, 0.65) 0%, rgba(44, 6, 16, 0.75) 100%) !important;
+  border-color: #f43f5e !important;
+  color: #fecdd3 !important;
+}
+
+.bg-emerald-50,
+.bg-emerald-100 {
+  background: rgba(16, 185, 129, 0.20) !important;
+  border-color: rgba(52, 211, 153, 0.40) !important;
+  color: #d1fae5 !important;
+}
+
+/* Tables & Lists inside Front Boxes */
+table {
+  color: #ffffff !important;
+}
+th {
+  color: #6ee7b7 !important;
+  font-weight: 800 !important;
+  border-color: rgba(52, 211, 153, 0.25) !important;
+}
+td {
+  color: #ffffff !important;
+  border-color: rgba(52, 211, 153, 0.20) !important;
+}
+
+/* Sub-panels inside baseline and results */
+.bg-slate-50,
+.bg-slate-100 {
+  background: rgba(3, 30, 20, 0.60) !important;
+  border-color: rgba(52, 211, 153, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.border-slate-100,
+.border-slate-200,
+.border-slate-300 {
+  border-color: rgba(52, 211, 153, 0.25) !important;
+}

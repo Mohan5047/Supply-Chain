@@ -1,0 +1,380 @@
+{
+  "system_current_date": "2026-09-05",
+  "suppliers": [
+    {
+      "supplier_id": "SUP-001",
+      "name": "Apex Precision Technologies",
+      "aliases": ["Apex Dynamics", "Apex Precision", "Apex Tech", "Apex Sensors", "Apex"],
+      "contact_email": "dispatch@apexprecision.com",
+      "location": "Fremont, CA, USA",
+      "reliability_score": 0.94,
+      "expedite_available": true,
+      "expedite_cost_multiplier": 1.45
+    },
+    {
+      "supplier_id": "SUP-002",
+      "name": "TSMC Micro Systems",
+      "aliases": ["TSMC", "Taiwan Semiconductor", "TSMC Micro", "Taiwan Semi"],
+      "contact_email": "orders@tsmc-micro.tw",
+      "location": "Hsinchu Science Park, Taiwan",
+      "reliability_score": 0.98,
+      "expedite_available": true,
+      "expedite_cost_multiplier": 1.6
+    },
+    {
+      "supplier_id": "SUP-003",
+      "name": "Foxconn Components Corp",
+      "aliases": ["Foxconn", "Foxconn Taiwan", "Foxconn Comps", "Foxconn Electronics"],
+      "contact_email": "logistics@foxconn-comps.tw",
+      "location": "Taipei, Taiwan",
+      "reliability_score": 0.91,
+      "expedite_available": true,
+      "expedite_cost_multiplier": 1.35
+    },
+    {
+      "supplier_id": "SUP-004",
+      "name": "Nordic Lithium & Power",
+      "aliases": ["Nordic Lithium", "Nordic Power", "Nordic Batt", "Nordic"],
+      "contact_email": "support@nordiclithium.no",
+      "location": "Oslo, Norway",
+      "reliability_score": 0.88,
+      "expedite_available": false,
+      "expedite_cost_multiplier": 1.0
+    },
+    {
+      "supplier_id": "SUP-005",
+      "name": "Shenzhen Optical Electronics",
+      "aliases": ["Shenzhen Optics", "Shenzhen Opto", "Shenzhen Electronics"],
+      "contact_email": "sales@shenzhenoptics.cn",
+      "location": "Shenzhen, China",
+      "reliability_score": 0.89,
+      "expedite_available": true,
+      "expedite_cost_multiplier": 1.5
+    },
+    {
+      "supplier_id": "SUP-006",
+      "name": "Acme Logistics & Freight",
+      "aliases": ["Acme Logistics", "Acme Freight", "Acme Carriers", "Acme"],
+      "contact_email": "dispatch@acmelogistics.com",
+      "location": "Denver, CO, USA",
+      "reliability_score": 0.76,
+      "expedite_available": false,
+      "expedite_cost_multiplier": 1.0
+    }
+  ],
+  "skus": [
+    {
+      "sku_id": "SKU-1049",
+      "name": "High-Precision Optical Sensor Assembly",
+      "aliases": ["APX-902", "APX-902 sensor", "optical sensor assembly", "Apex optical sensor", "optical sensors", "sensor assemblies"],
+      "category": "Optoelectronics",
+      "unit_cost": 140.0,
+      "unit_price": 280.0,
+      "lead_time_days": 14,
+      "safety_stock_threshold": 30,
+      "preferred_supplier_id": "SUP-001"
+    },
+    {
+      "sku_id": "SKU-2088",
+      "name": "Automotive Edge Microcontroller 32-Bit",
+      "aliases": ["MC-320", "auto microcontroller", "edge MCU", "automotive microcontrollers", "automotive MCUs", "microcontrollers"],
+      "category": "Semiconductors",
+      "unit_cost": 85.0,
+      "unit_price": 190.0,
+      "lead_time_days": 21,
+      "safety_stock_threshold": 50,
+      "preferred_supplier_id": "SUP-002"
+    },
+    {
+      "sku_id": "SKU-3150",
+      "name": "Industrial High-Density Lithium Battery Pack",
+      "aliases": ["BAT-4400", "lithium battery pack", "4400mAh industrial cell", "heavy-duty battery pack", "battery packs", "lithium batteries"],
+      "category": "Power Systems",
+      "unit_cost": 210.0,
+      "unit_price": 460.0,
+      "lead_time_days": 18,
+      "safety_stock_threshold": 40,
+      "preferred_supplier_id": "SUP-004"
+    },
+    {
+      "sku_id": "SKU-4022",
+      "name": "Industrial Step-Down Power Converter 12V/5A",
+      "aliases": ["PWR-12V", "step-down converter", "DC-DC power module", "power converter", "power modules"],
+      "category": "Power Electronics",
+      "unit_cost": 45.0,
+      "unit_price": 95.0,
+      "lead_time_days": 10,
+      "safety_stock_threshold": 60,
+      "preferred_supplier_id": "SUP-003"
+    },
+    {
+      "sku_id": "SKU-5011",
+      "name": "Ultra-Low Latency 10G Optical Transceiver Module",
+      "aliases": ["TRX-10G", "fiber transceiver", "10G optical module", "transceiver module"],
+      "category": "Networking",
+      "unit_cost": 310.0,
+      "unit_price": 650.0,
+      "lead_time_days": 25,
+      "safety_stock_threshold": 25,
+      "preferred_supplier_id": "SUP-005"
+    }
+  ],
+  "inventory": [
+    {
+      "warehouse_id": "WH-MAIN",
+      "warehouse_name": "Central Logistics Hub - Chicago",
+      "sku_id": "SKU-1049",
+      "on_hand": 55,
+      "allocated": 50,
+      "reserved_safety": 5,
+      "available": 0,
+      "location_bin": "Aisle-3-Bay-04"
+    },
+    {
+      "warehouse_id": "WH-MAIN",
+      "warehouse_name": "Central Logistics Hub - Chicago",
+      "sku_id": "SKU-2088",
+      "on_hand": 120,
+      "allocated": 80,
+      "reserved_safety": 20,
+      "available": 20,
+      "location_bin": "Aisle-2-Bay-11"
+    },
+    {
+      "warehouse_id": "WH-MAIN",
+      "warehouse_name": "Central Logistics Hub - Chicago",
+      "sku_id": "SKU-3150",
+      "on_hand": 180,
+      "allocated": 150,
+      "reserved_safety": 20,
+      "available": 10,
+      "location_bin": "Aisle-5-Bay-12"
+    },
+    {
+      "warehouse_id": "WH-MAIN",
+      "warehouse_name": "Central Logistics Hub - Chicago",
+      "sku_id": "SKU-4022",
+      "on_hand": 250,
+      "allocated": 120,
+      "reserved_safety": 30,
+      "available": 100,
+      "location_bin": "Aisle-1-Bay-08"
+    },
+    {
+      "warehouse_id": "WH-MAIN",
+      "warehouse_name": "Central Logistics Hub - Chicago",
+      "sku_id": "SKU-5011",
+      "on_hand": 45,
+      "allocated": 40,
+      "reserved_safety": 5,
+      "available": 0,
+      "location_bin": "Aisle-4-Bay-02"
+    }
+  ],
+  "inbound_shipments": [
+    {
+      "shipment_id": "SH-8921",
+      "po_number": "PO-4482",
+      "supplier_id": "SUP-001",
+      "carrier_name": "FedEx Freight Express",
+      "tracking_number": "FX-88910411",
+      "origin": "Fremont, CA",
+      "destination_warehouse": "WH-MAIN",
+      "status": "in_transit",
+      "scheduled_arrival_date": "2026-09-08",
+      "revised_arrival_date": null,
+      "items": [
+        {
+          "sku_id": "SKU-1049",
+          "quantity_ordered": 200,
+          "quantity_shipped": 200
+        }
+      ],
+      "expedite_air_available": true,
+      "expedite_air_lead_time_days": 2,
+      "expedite_air_cost": 1250.0
+    },
+    {
+      "shipment_id": "SH-7714",
+      "po_number": "PO-3910",
+      "supplier_id": "SUP-002",
+      "carrier_name": "Maersk Line",
+      "tracking_number": "MSKU-8839210",
+      "origin": "Kaohsiung Port, Taiwan",
+      "destination_warehouse": "WH-MAIN",
+      "status": "in_transit",
+      "scheduled_arrival_date": "2026-09-12",
+      "revised_arrival_date": null,
+      "items": [
+        {
+          "sku_id": "SKU-2088",
+          "quantity_ordered": 500,
+          "quantity_shipped": 500
+        }
+      ],
+      "expedite_air_available": true,
+      "expedite_air_lead_time_days": 3,
+      "expedite_air_cost": 3400.0
+    },
+    {
+      "shipment_id": "SH-6520",
+      "po_number": "PO-5102",
+      "supplier_id": "SUP-003",
+      "carrier_name": "Evergreen Marine",
+      "tracking_number": "EGLV-991204",
+      "origin": "Taipei, Taiwan",
+      "destination_warehouse": "WH-MAIN",
+      "status": "in_transit",
+      "scheduled_arrival_date": "2026-09-20",
+      "revised_arrival_date": null,
+      "items": [
+        {
+          "sku_id": "SKU-4022",
+          "quantity_ordered": 400,
+          "quantity_shipped": 400
+        }
+      ],
+      "expedite_air_available": true,
+      "expedite_air_lead_time_days": 4,
+      "expedite_air_cost": 1800.0
+    },
+    {
+      "shipment_id": "SH-9011",
+      "po_number": "PO-6200",
+      "supplier_id": "SUP-004",
+      "carrier_name": "DHL Global Forwarding",
+      "tracking_number": "DHL-7710928",
+      "origin": "Oslo, Norway",
+      "destination_warehouse": "WH-MAIN",
+      "status": "in_transit",
+      "scheduled_arrival_date": "2026-09-15",
+      "revised_arrival_date": null,
+      "items": [
+        {
+          "sku_id": "SKU-3150",
+          "quantity_ordered": 150,
+          "quantity_shipped": 150
+        }
+      ],
+      "expedite_air_available": false,
+      "expedite_air_lead_time_days": null,
+      "expedite_air_cost": 0.0
+    }
+  ],
+  "customer_orders": [
+    {
+      "order_id": "ORD-501",
+      "customer_name": "Tesla Energy Solutions",
+      "customer_tier": "Platinum",
+      "priority": 1,
+      "order_date": "2026-08-28",
+      "promise_date": "2026-09-10",
+      "sla_penalty_per_day": 500.0,
+      "destination_city": "Austin, TX",
+      "status": "partially_allocated",
+      "items": [
+        {
+          "sku_id": "SKU-1049",
+          "quantity_demanded": 120,
+          "quantity_allocated": 50
+        }
+      ],
+      "notes": "Mission-critical production run. Strictly penalizes delivery delays beyond 24h."
+    },
+    {
+      "order_id": "ORD-502",
+      "customer_name": "Siemens Mobility Systems",
+      "customer_tier": "Platinum",
+      "priority": 1,
+      "order_date": "2026-08-30",
+      "promise_date": "2026-09-11",
+      "sla_penalty_per_day": 350.0,
+      "destination_city": "Sacramento, CA",
+      "status": "unfulfilled",
+      "items": [
+        {
+          "sku_id": "SKU-1049",
+          "quantity_demanded": 60,
+          "quantity_allocated": 0
+        }
+      ],
+      "notes": "Train signaling subsystem assembly. Key strategic European partner."
+    },
+    {
+      "order_id": "ORD-503",
+      "customer_name": "Rivian Automotive",
+      "customer_tier": "Gold",
+      "priority": 2,
+      "order_date": "2026-08-25",
+      "promise_date": "2026-09-16",
+      "sla_penalty_per_day": 200.0,
+      "destination_city": "Normal, IL",
+      "status": "partially_allocated",
+      "items": [
+        {
+          "sku_id": "SKU-2088",
+          "quantity_demanded": 300,
+          "quantity_allocated": 80
+        }
+      ],
+      "notes": "R1T powertrain electronics batch. High volume tier."
+    },
+    {
+      "order_id": "ORD-504",
+      "customer_name": "Quantum Robotics Lab",
+      "customer_tier": "Gold",
+      "priority": 2,
+      "order_date": "2026-09-01",
+      "promise_date": "2026-09-25",
+      "sla_penalty_per_day": 100.0,
+      "destination_city": "Boston, MA",
+      "status": "unfulfilled",
+      "items": [
+        {
+          "sku_id": "SKU-1049",
+          "quantity_demanded": 20,
+          "quantity_allocated": 0
+        }
+      ],
+      "notes": "Research prototype run. Late-September target allows delivery flexibility."
+    },
+    {
+      "order_id": "ORD-505",
+      "customer_name": "General Industrial Robotics",
+      "customer_tier": "Standard",
+      "priority": 3,
+      "order_date": "2026-08-20",
+      "promise_date": "2026-09-18",
+      "sla_penalty_per_day": 50.0,
+      "destination_city": "Detroit, MI",
+      "status": "partially_allocated",
+      "items": [
+        {
+          "sku_id": "SKU-3150",
+          "quantity_demanded": 120,
+          "quantity_allocated": 120
+        }
+      ],
+      "notes": "Standard OEM factory replenishment."
+    },
+    {
+      "order_id": "ORD-506",
+      "customer_name": "Midwest Automation Parts",
+      "customer_tier": "Standard",
+      "priority": 3,
+      "order_date": "2026-09-02",
+      "promise_date": "2026-09-28",
+      "sla_penalty_per_day": 0.0,
+      "destination_city": "Columbus, OH",
+      "status": "allocated",
+      "items": [
+        {
+          "sku_id": "SKU-4022",
+          "quantity_demanded": 100,
+          "quantity_allocated": 100
+        }
+      ],
+      "notes": "Standard wholesale distributor order."
+    }
+  ]
+}

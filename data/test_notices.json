@@ -1,0 +1,141 @@
+[
+  {
+    "id": "scenario_1_critical_apex",
+    "title": "Scenario 1: Critical Factory Halt (Apex APX-902 Sensors)",
+    "category": "Supplier Production Halt",
+    "difficulty": "Standard / High Impact",
+    "description": "Supplier email reporting catastrophic hydraulic failure delaying sensor assembly dispatch by 14 days. Impacts mission-critical Platinum customer orders (Tesla, Siemens).",
+    "notice_text": "From: Marcus Vance <dispatch@apexprecision.com>\nSubject: URGENT: Production Line 3 Halt - PO-4482 / APX-902 Dispatch Delay\nDate: September 5, 2026 06:40 AM\n\nLogistics Team,\n\nWe regret to inform you that earlier this morning Line 3 at our Apex Dynamics Fremont facility experienced a major hydraulic pump failure. All production of our APX-902 optical sensor assemblies scheduled for Inbound Shipment SH-8921 (PO-4482) is halted while technicians source replacement valves.\n\nDispatch was originally scheduled for delivery to your Chicago warehouse by September 8th. The revised estimated arrival date is now pushed back by 14 days to September 22, 2026. We can arrange partial air express upon request once initial testing resumes next week.\n\nWe apologize for the disruption.\n\nBest regards,\nMarcus Vance\nApex Precision Technologies",
+    "structured_input": {
+      "disruption_type": "Supplier Production Halt",
+      "supplier_id": "SUP-001",
+      "po_number": "PO-4482",
+      "shipment_id": "SH-8921",
+      "sku_id": "SKU-1049",
+      "disruption_date": "2026-09-05",
+      "delay_days": 14,
+      "affected_location": "Fremont, CA",
+      "quantity_affected": null,
+      "reason": "Production Line 3 hydraulic pump failure halting APX-902 assembly dispatch.",
+      "severity": "Critical"
+    },
+    "expected_outcome": {
+      "has_impact": true,
+      "disrupted_shipment": "SH-8921",
+      "supplier_id": "SUP-001",
+      "affected_sku": "SKU-1049",
+      "delay_days": 14,
+      "primary_impacted_orders": ["ORD-501", "ORD-502"]
+    }
+  },
+  {
+    "id": "scenario_2_carrier_port_congestion",
+    "title": "Scenario 2: Carrier Delay / Port Congestion (Maersk Long Beach)",
+    "category": "Carrier/Shipment Delay",
+    "difficulty": "Moderate / Trade-offs",
+    "description": "Ocean carrier notice detailing port congestion at Long Beach delaying container of automotive microcontrollers by 10 days.",
+    "notice_text": "EXCEPTION ALERT: OCEAN FREIGHT DISRUPTION\nCARRIER: Maersk Line\nVESSEL: MSC VALERIA / Voyage 402W\nCONTAINER: MSKU-8839210 (Inbound SH-7714, PO-3910)\nDESTINATION: Chicago Logistics Hub\n\nPlease be advised that due to severe berth congestion, labor shortages, and railhead bottlenecks at the Port of Long Beach, discharge of container MSKU-8839210 carrying 32-bit automotive microcontrollers (MC-320) cannot proceed as scheduled. \n\nThe scheduled arrival date of September 12, 2026 is delayed by 10 calendar days. Expected Chicago rail terminal arrival is rescheduled for September 22, 2026. Emergency off-dock drayage & air freight forwarding can be quoted upon escalation.",
+    "structured_input": {
+      "disruption_type": "Carrier/Shipment Delay",
+      "supplier_id": "SUP-002",
+      "po_number": "PO-3910",
+      "shipment_id": "SH-7714",
+      "sku_id": "SKU-2088",
+      "disruption_date": "2026-09-05",
+      "delay_days": 10,
+      "affected_location": "Port of Long Beach",
+      "quantity_affected": null,
+      "reason": "Berth and railhead bottlenecks at Port of Long Beach delaying container MSKU-8839210.",
+      "severity": "High"
+    },
+    "expected_outcome": {
+      "has_impact": true,
+      "disrupted_shipment": "SH-7714",
+      "supplier_id": "SUP-002",
+      "affected_sku": "SKU-2088",
+      "delay_days": 10,
+      "primary_impacted_orders": ["ORD-503"]
+    }
+  },
+  {
+    "id": "scenario_3_warehouse_incident",
+    "title": "Scenario 3: Internal Warehouse Incident (Bay C-12 Forklift Crush)",
+    "category": "Warehouse Incident",
+    "difficulty": "Immediate Stock Destruction",
+    "description": "Internal warehouse incident report detailing forklift collision destroying 150 units of high-density lithium battery packs.",
+    "notice_text": "INCIDENT REPORT #IR-2026-0905-01\nFACILITY: WH-MAIN Chicago Logistics Hub\nZONE: Bay C-12 Cross-Dock Aisle\nTIME: 06:15 AM CST\nREPORTED BY: Warehouse Supervisor D. Miller\n\nDuring morning inbound cross-dock staging, forklift #4 suffered a mast cable snap while transporting two pallet loads of industrial lithium battery packs (SKU BAT-4400 / SKU-3150). \n\nTotal of 150 battery pack units fell from height and sustained catastrophic casing fractures and cell puncture. Fire suppression protocols were activated and Bay C-12 quarantine was established. All 150 units have been formally condemned and written off to salvage scrap. Physical available inventory in WH-MAIN has dropped immediately from 180 to 30 units.",
+    "structured_input": {
+      "disruption_type": "Warehouse Incident",
+      "supplier_id": "SUP-004",
+      "po_number": null,
+      "shipment_id": null,
+      "sku_id": "SKU-3150",
+      "disruption_date": "2026-09-05",
+      "delay_days": 18,
+      "affected_location": "WH-MAIN",
+      "quantity_affected": 150,
+      "reason": "Forklift collision in Bay C-12 destroyed 150 units of BAT-4400 battery packs.",
+      "severity": "Critical"
+    },
+    "expected_outcome": {
+      "has_impact": true,
+      "disrupted_shipment": null,
+      "supplier_id": null,
+      "affected_sku": "SKU-3150",
+      "quantity_lost": 150,
+      "primary_impacted_orders": ["ORD-505"]
+    }
+  },
+  {
+    "id": "scenario_4_false_alarm_no_impact",
+    "title": "Scenario 4: False Alarm / Zero Impact (Acme Regional Road Closure)",
+    "category": "Other",
+    "difficulty": "Edge Case: False Alarm",
+    "description": "Alarming emergency notice from Acme Logistics regarding Route 9 road closure, but distributor has no pending orders or shipments with Acme.",
+    "notice_text": "URGENT LOGISTICS ADVISORY: ACME FREIGHT & LOGISTICS\nBULLETIN: #ADV-9921-DENVER\nEFFECTIVE: IMMEDIATELY\n\nSevere mudslides and structural damage have forced the Colorado Department of Transportation to close US Route 9 near Silverthorne / Denver junction in both directions. All Acme regional line-haul trucking and freight operations are suspended for the next 72 hours. Shipments transiting Denver hub will face extensive rerouting delays of up to 5 business days.\n\nAll dispatch operations advised to take immediate emergency measures.",
+    "structured_input": {
+      "disruption_type": "Other",
+      "supplier_id": "SUP-006",
+      "po_number": null,
+      "shipment_id": null,
+      "sku_id": null,
+      "disruption_date": "2026-09-05",
+      "delay_days": 5,
+      "affected_location": "Denver, CO",
+      "quantity_affected": null,
+      "reason": "Route 9 closure near Denver affecting Acme freight trucking operations.",
+      "severity": "Low"
+    },
+    "expected_outcome": {
+      "has_impact": false,
+      "reason": "Acme Logistics is listed as a potential partner, but no active inbound purchase orders or scheduled shipments are pending via Acme or routing through Denver. System reports verified NO IMPACT."
+    }
+  },
+  {
+    "id": "scenario_5_ambiguous_entity",
+    "title": "Scenario 5: Ambiguous / Underspecified Notice (Taiwan Weather Delay)",
+    "category": "Carrier/Shipment Delay",
+    "difficulty": "Edge Case: Entity Disambiguation",
+    "description": "Vague regional weather alert naming 'Taiwan supplier shipments' without identifying whether it affects TSMC Micro or Foxconn Components.",
+    "notice_text": "REGIONAL SUPPLY ADVISORY: Super Typhoon Gaemi has made landfall on the north-east coast of Taiwan. Port operations at Kaohsiung and Keelung, as well as freight terminals at Taoyuan International Airport, have ceased loading operations for safety. All shipments originating from our Taiwan suppliers will be stalled by at least 6 days pending civil aviation and maritime clearance.",
+    "structured_input": {
+      "disruption_type": "Carrier/Shipment Delay",
+      "supplier_id": "SUP-002",
+      "po_number": "PO-3910",
+      "shipment_id": "SH-7714",
+      "sku_id": "SKU-2088",
+      "disruption_date": "2026-09-05",
+      "delay_days": 6,
+      "affected_location": "Kaohsiung Port, Taiwan",
+      "quantity_affected": null,
+      "reason": "Super Typhoon Gaemi causing port closures and 6-day shipping delays.",
+      "severity": "Medium"
+    },
+    "expected_outcome": {
+      "has_impact": true,
+      "is_ambiguous": true,
+      "candidate_suppliers": ["SUP-002", "SUP-003"],
+      "action_required": "Prompt operator to select which supplier/shipment is confirmed, or simulate both branches."
+    }
+  }
+]
