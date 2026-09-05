@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChainSolve AI | Supplier Disruption Response Assistant (PS08)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="./styles.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50 : '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            },
+            purple: {
+              50 : '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script>
+    // Immediate pre-hydration: check theme from localStorage
+    if (localStorage.getItem('chainSolve_theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+</head>
+<body class="h-full flex flex-col font-sans antialiased overflow-x-hidden text-emerald-950 dark:text-emerald-50 relative">
+
+  <!-- ============================================================= -->
+  <!-- FULLSCREEN ANIMATED MINT & EMERALD CANVAS                     -->
+  <!-- ============================================================= -->
+  <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none green-ambient-canvas">
+    <!-- Animated Supply Chain Network GIF Background Layer -->
+    <div class="absolute inset-0 z-0 overflow-hidden opacity-25 dark:opacity-35 mix-blend-multiply dark:mix-blend-screen transition-opacity">
+      <img src="./network_bg.gif" alt="Supply Chain Network Animation" class="w-full h-full object-cover object-center filter brightness-105 contrast-110">
+    </div>
+    <div class="green-orb green-orb-1"></div>
+    <div class="green-orb green-orb-2"></div>
+    <div class="green-orb green-orb-3"></div>
+    <div class="green-orb green-orb-4"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-emerald-500/10 via-transparent to-emerald-950/20 dark:from-emerald-950/30 dark:via-transparent dark:to-[#02150e]/70"></div>
+  </div>
+
+  <!-- ============================================================= -->
+  <!-- Clean Animated Splash Loading Screen                         -->
+  <!-- ============================================================= -->
+  <div id="splashScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-br from-[#02150e] via-[#062e1d] to-[#010e09] text-white transition-all duration-700 overflow-hidden">
+    
+    <!-- Skip Button -->
+    <button id="btnSkipSplash" class="absolute top-5 right-5 z-20 text-xs text-emerald-200 hover:text-white bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/70 px-4 py-2 rounded-full transition shadow-md backdrop-blur-sm flex items-center space-x-1.5 font-bold cursor-pointer">
+      <span>Skip</span>
+      <span>➔</span>
+    </button>
+
+    <!-- Animated supply chain GIF background -->
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <img src="./network_bg.gif" alt="Supply Chain Network" class="w-full h-full object-cover object-center splash-gif-bg opacity-25">
+      <div class="absolute inset-0 bg-gradient-to-t from-[#02150e] via-transparent to-[#02150e] opacity-85"></div>
+    </div>
+
+    <div class="relative z-10 flex flex-col items-center text-center px-4 space-y-6 max-w-lg">
+      
+      <!-- Glowing Chain Logo -->
+      <div class="relative flex items-center justify-center">
+        <div class="absolute w-36 h-36 rounded-full border-2 border-emerald-400/40 animate-pulse"></div>
+        <div class="absolute w-32 h-32 rounded-full bg-emerald-500/30 blur-2xl"></div>
+        
+        <div class="w-24 h-24 rounded-2xl bg-gradient-to-tr from-emerald-400 via-teal-300 to-green-500 p-0.5 shadow-2xl shadow-emerald-500/40">
+          <div class="w-full h-full bg-[#031d13] rounded-[14px] flex items-center justify-center p-3">
+            <svg class="w-16 h-16 text-emerald-400" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="16" width="28" height="18" rx="9" stroke="url(#splashGrad1)" stroke-width="4.5" />
+              <rect x="28" y="30" width="28" height="18" rx="9" stroke="url(#splashGrad2)" stroke-width="4.5" />
+              <circle cx="32" cy="32" r="7.5" fill="#34d399" />
+              <path d="M29 32L31 34L35 29.5" stroke="#031d13" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs>
+                <linearGradient id="splashGrad1" x1="8" y1="16" x2="36" y2="34" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#34d399"/>
+                  <stop offset="1" stop-color="#059669"/>
+                </linearGradient>
+                <linearGradient id="splashGrad2" x1="28" y1="30" x2="56" y2="48" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#10b981"/>
+                  <stop offset="1" stop-color="#047857"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Brand Info -->
+      <div class="space-y-2">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-200 text-xs font-semibold tracking-wider uppercase">
+          <span>ChainSolve AI</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>Supplier Disruption Solutions</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+          ChainSolve
+        </h1>
+      </div>
+
+      <!-- Smooth Continuous Glowing Loader -->
+      <div class="w-full max-w-xs space-y-3 pt-2">
+        <div class="w-full h-1.5 bg-emerald-950/90 rounded-full overflow-hidden border border-emerald-800/60 relative">
+          <div class="h-full bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-400 rounded-full splash-loader-indeterminate"></div>
+        </div>
+        <div class="text-xs text-emerald-300/90 font-medium tracking-wide flex items-center justify-center space-x-1.5">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          <span>Loading System & Grounding Engine...</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Floating Toast Notifications Container -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- ============================================================= -->
+  <!-- SLIDE-IN LEFT COMMAND DOCK & STAKEHOLDER PROFILE              -->
+  <!-- ============================================================= -->
+  <!-- Backdrop Overlay -->
+  <div id="sidebarBackdrop" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-opacity"></div>
+
+  <!-- Slide-In Left Sidebar Drawer -->
+  <aside id="leftSidebar" class="fixed top-0 left-0 h-full w-84 max-w-[85vw] bg-white/98 dark:bg-[#031d13]/98 border-r border-emerald-200/80 dark:border-emerald-700/60 shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between p-5 overflow-y-auto space-y-5">
+    
+    <div class="space-y-5">
+      <!-- 1. Header & Close Button -->
+      <div class="flex items-center justify-between pb-3.5 border-b border-emerald-100 dark:border-emerald-800/40">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-600 p-0.5 shadow-md shrink-0">
+            <div class="w-full h-full bg-[#02150e] rounded-[14px] flex items-center justify-center p-1">
+              <svg class="w-6 h-6 text-emerald-300" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="8" y="16" width="28" height="18" rx="9" stroke="#34d399" stroke-width="4.5" />
+                <rect x="28" y="30" width="28" height="18" rx="9" stroke="#10b981" stroke-width="4.5" />
+                <circle cx="32" cy="32" r="6" fill="#34d399" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <h2 class="text-sm font-black text-slate-900 dark:text-white">ChainSolve</h2>
+            <span class="text-[10px] text-emerald-700 dark:text-emerald-300 font-bold">Console</span>
+          </div>
+        </div>
+        <button id="btnCloseSidebar" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-emerald-900/60 transition cursor-pointer text-lg font-bold">
+          ✕
+        </button>
+      </div>
+
+      <!-- 2. Stakeholder Profile Card -->
+      <div class="bg-gradient-to-br from-emerald-50 via-white to-teal-50/70 dark:from-[#062d1f] dark:via-[#042016] dark:to-[#02150e] p-4 rounded-2xl border-2 border-emerald-300/90 dark:border-emerald-600/70 shadow-md space-y-3 relative overflow-hidden">
+        <div class="flex items-center justify-between">
+          <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-sm" id="sidebarRolePill">
+            PORTAL
+          </span>
+          <button id="btnQuickEditName" class="text-[11px] text-emerald-700 hover:text-emerald-950 dark:text-emerald-300 dark:hover:text-white px-2 py-0.5 rounded-lg bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-900/60 dark:hover:bg-emerald-800 border border-emerald-300 dark:border-emerald-600 font-bold transition flex items-center space-x-1 cursor-pointer" title="Edit Profile Display Name">
+            <span>✏️ Edit</span>
+          </button>
+        </div>
+
+        <div class="flex items-center space-x-3 pt-0.5">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-700 flex items-center justify-center text-2xl text-white shadow-md shrink-0" id="sidebarAvatar">
+            👑
+          </div>
+          <div class="overflow-hidden flex-1">
+            <h3 class="text-sm font-black text-slate-900 dark:text-white truncate" id="profileName">
+              Username
+            </h3>
+            <p class="text-[11px] text-emerald-700 dark:text-emerald-300 font-semibold truncate" id="sidebarRoleSubtext">
+              Operations Controller (Admin)
+            </p>
+            <p class="text-[10px] text-slate-500 dark:text-slate-300 truncate" id="sidebarFacilitySubtext">
+              WH-MAIN (Chicago Central Hub)
+            </p>
+          </div>
+        </div>
+
+        <!-- Switch Stakeholder / Login Button -->
+        <button id="btnProfile" class="w-full elite-btn-primary text-white text-xs font-bold py-2.5 px-3 rounded-xl shadow-md transition flex items-center justify-center space-x-2 cursor-pointer">
+          <span>👥</span>
+          <span>Portals</span>
+          <span>▾</span>
+        </button>
+      </div>
+
+      <!-- 3. Dashboard Settings & Controls Navigation List -->
+      <div class="space-y-2">
+        <div class="text-[10px] font-black uppercase tracking-wider text-emerald-900 dark:text-emerald-300 px-1">
+          ⚙️ CONTROLS
+        </div>
+
+        <div class="space-y-1.5">
+          <!-- System Settings Modal Button -->
+          <button id="btnSettings" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-100 bg-slate-50 dark:bg-[#06281b] hover:bg-emerald-100 dark:hover:bg-[#093d2a] border border-slate-200 dark:border-emerald-800/60 transition shadow-sm cursor-pointer group">
+            <span class="flex items-center space-x-2.5">
+              <span class="text-base">⚙️</span>
+              <span>Settings</span>
+            </span>
+            <span class="text-[10px] text-slate-400 dark:text-emerald-300">➔</span>
+          </button>
+
+          <!-- Light / Dark Mode Toggle Button -->
+          <button id="btnThemeToggle" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-100 bg-slate-50 dark:bg-[#06281b] hover:bg-emerald-100 dark:hover:bg-[#093d2a] border border-slate-200 dark:border-emerald-800/60 transition shadow-sm cursor-pointer">
+            <span class="flex items-center space-x-2.5">
+              <span id="themeIcon" class="text-base">🌙</span>
+              <span>Theme</span>
+            </span>
+            <span id="themeLabel" class="px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-200/70 text-emerald-950 dark:bg-emerald-900/80 dark:text-emerald-200">Light</span>
+          </button>
+
+          <!-- Audit Trail Modal Button -->
+          <button id="btnAuditLog" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-100 bg-slate-50 dark:bg-[#06281b] hover:bg-emerald-100 dark:hover:bg-[#093d2a] border border-slate-200 dark:border-emerald-800/60 transition shadow-sm cursor-pointer">
+            <span class="flex items-center space-x-2.5">
+              <span class="text-base">📋</span>
+              <span>Audit</span>
+            </span>
+            <span id="auditCountBadge" class="bg-emerald-600 text-white px-2 py-0.5 rounded-full text-[10px] font-mono font-black shadow-sm">0</span>
+          </button>
+
+          <!-- Reset Database State Button -->
+          <button id="btnResetDB" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-rose-700 dark:text-rose-300 bg-rose-50/80 dark:bg-rose-950/40 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-200 dark:border-rose-800/60 transition shadow-sm cursor-pointer" title="Reset system state to pristine initial seed data">
+            <span class="flex items-center space-x-2.5">
+              <span class="text-base">🔄</span>
+              <span>Reset</span>
+            </span>
+            <span class="text-[10px] font-bold uppercase text-rose-500">Pristine</span>
+          </button>
+
+          <!-- Audio Alert Chime Toggle -->
+          <button id="btnToggleSound" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-100 bg-slate-50 dark:bg-[#06281b] hover:bg-emerald-100 dark:hover:bg-[#093d2a] border border-slate-200 dark:border-emerald-800/60 transition shadow-sm cursor-pointer">
+            <span class="flex items-center space-x-2.5">
+              <span id="soundIconSymbol" class="text-base">🔔</span>
+              <span>Audio</span>
+            </span>
+            <span id="soundIcon" class="text-[10px] font-black text-emerald-600 dark:text-emerald-400">ON</span>
+          </button>
+
+          <!-- Push Instant Telemetry Ping -->
+          <button id="btnSimulatePing" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-emerald-900 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/80 border border-emerald-200 dark:border-emerald-700/60 transition shadow-sm cursor-pointer">
+            <span class="flex items-center space-x-2.5">
+              <span class="text-base">⚡</span>
+              <span>Telemetry</span>
+            </span>
+            <span class="text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400">Trigger</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Environment Footer -->
+    <div class="pt-4 border-t border-emerald-100 dark:border-emerald-800/40 space-y-2 text-xs">
+      <div class="bg-slate-50 dark:bg-[#052016] p-3 rounded-xl border border-slate-200 dark:border-emerald-800/50 space-y-1">
+        <div class="flex items-center justify-between text-[11px]">
+          <span class="text-slate-500 dark:text-slate-400">Date:</span>
+          <strong class="text-slate-900 dark:text-white font-mono" id="sidebarSystemDate">2026-09-05</strong>
+        </div>
+        <div class="flex items-center justify-between text-[11px]">
+          <span class="text-slate-500 dark:text-slate-400">Hub:</span>
+          <strong class="text-emerald-700 dark:text-emerald-300 font-bold">WH-MAIN (Chicago)</strong>
+        </div>
+        <div class="flex items-center justify-between text-[11px]">
+          <span class="text-slate-500 dark:text-slate-400">Status:</span>
+          <span class="flex items-center space-x-1 text-emerald-600 dark:text-emerald-400 font-bold">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Online</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ============================================================= -->
+  <!-- MAIN FULL-WIDTH WORKSPACE WITH TOP NAV BAR                    -->
+  <!-- ============================================================= -->
+  <div class="flex-1 flex flex-col min-w-0 min-h-screen relative z-10">
+    
+    <!-- Top Navigation Header Bar -->
+    <header class="border-b border-emerald-500/40 text-xs py-3 px-4 sm:px-6 lg:px-8 text-white shadow-xl flex items-center justify-between sticky top-0 z-30 transition-colors">
+      
+      <!-- Left: Sidebar / Dashboard Trigger Button -->
+      <div class="flex items-center space-x-3.5">
+        <button id="btnToggleSidebar" class="flex items-center space-x-2.5 bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 hover:from-emerald-600 hover:to-teal-600 text-white text-xs font-bold px-3.5 py-2 rounded-xl border border-emerald-400/60 shadow-md transition cursor-pointer" title="Open Stakeholder Profile & Dashboard Settings">
+          <span class="text-sm">☰</span>
+          <span class="flex items-center space-x-1.5">
+            <span id="topBarAvatar">👑</span>
+            <span id="topBarName" class="max-w-[130px] truncate">Username</span>
+            <span class="text-[10px] text-emerald-200">▾</span>
+          </span>
+        </button>
+
+        <div class="hidden sm:flex items-center space-x-2">
+          <h1 class="text-sm font-black text-white">ChainSolve</h1>
+          <span class="px-2 py-0.5 text-[9px] font-black rounded-md bg-emerald-950 text-emerald-300 border border-emerald-500/60 uppercase">PS08</span>
+        </div>
+      </div>
+
+      <!-- Center: Real-Time Stream Ticker -->
+      <div class="flex items-center space-x-3 overflow-hidden flex-1 mx-4 max-w-2xl">
+        <div class="flex items-center space-x-1.5 shrink-0 bg-emerald-950/90 px-2.5 py-0.5 rounded-full border border-emerald-500/60 shadow-sm">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+          <span class="text-[9px] font-black uppercase tracking-wider text-emerald-300">STREAM</span>
+        </div>
+        <div id="liveTickerContainer" class="flex items-center space-x-2 truncate font-mono text-[11px] text-emerald-100">
+          <span id="liveTickerIcon" class="text-xs">🚢</span>
+          <span id="liveTickerText" class="truncate font-medium">Live telemetry stream active: Ingesting carrier AIS pings...</span>
+        </div>
+      </div>
+
+      <!-- Right: Quick Action Shortcuts -->
+      <div class="flex items-center space-x-2 shrink-0">
+        <button id="btnTopThemeToggle" class="p-2 rounded-xl bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/50 text-emerald-200 hover:text-white transition cursor-pointer shadow-sm text-xs" title="Toggle Light / Dark Theme">
+          <span id="topThemeIcon">🌙</span>
+        </button>
+        <button id="btnTopSettings" class="p-2 rounded-xl bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/50 text-emerald-200 hover:text-white transition cursor-pointer shadow-sm text-xs" title="Open Settings">
+          ⚙️
+        </button>
+      </div>
+
+    </header>
+
+    <!-- Main Content Canvas -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+      <!-- Simple Intuitive Workflow Banner -->
+      <section class="elite-card rounded-2xl p-5 sm:p-6 space-y-3">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div class="space-y-1">
+            <div class="inline-flex items-center space-x-2 px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200 text-[11px] font-bold">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Live Assistant</span>
+            </div>
+            <h2 class="text-lg font-black text-slate-900 dark:text-white tracking-tight">
+              Disruption Response Workbench
+            </h2>
+            <p class="text-xs text-slate-600 dark:text-slate-300">
+              Simple 3-step operations: Select benchmark ➔ Compute impact ➔ Commit optimal resolution.
+            </p>
+          </div>
+
+          <!-- Step Indicators -->
+          <div class="flex items-center space-x-2 text-xs font-bold shrink-0">
+            <div class="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-200">
+              <span class="w-5 h-5 rounded-full bg-emerald-500 text-[#02150e] text-[10px] flex items-center justify-center font-black">1</span>
+              <span>Scenario</span>
+            </div>
+            <span class="text-emerald-400 font-bold">➔</span>
+            <div class="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-200">
+              <span class="w-5 h-5 rounded-full bg-emerald-500 text-[#02150e] text-[10px] flex items-center justify-center font-black">2</span>
+              <span>Ingest</span>
+            </div>
+            <span class="text-emerald-400 font-bold">➔</span>
+            <div class="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-emerald-950/80 border border-emerald-500/50 text-emerald-200">
+              <span class="w-5 h-5 rounded-full bg-emerald-500 text-[#02150e] text-[10px] flex items-center justify-center font-black">3</span>
+              <span>Resolve</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Customer Portal Active Banner -->
+      <div id="customerPortalBanner" class="hidden bg-gradient-to-r from-emerald-800 via-teal-800 to-emerald-900 text-white rounded-2xl p-5 sm:p-6 shadow-xl border border-emerald-500/40 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-700/50 pb-3.5">
+          <div class="flex items-center space-x-3.5">
+            <span class="text-3xl">🏢</span>
+            <div>
+              <div class="flex items-center space-x-2.5">
+                <h3 class="text-base sm:text-lg font-bold text-white" id="custBannerName">Tesla Energy Solutions</h3>
+                <span class="px-2.5 py-0.5 text-[10px] font-extrabold rounded-full bg-rose-500 text-white uppercase tracking-wider" id="custBannerTier">Platinum Tier</span>
+              </div>
+              <p class="text-xs text-emerald-200/90 mt-0.5">Customer Delivery Tracking Portal • Real-Time SLA Monitor</p>
+            </div>
+          </div>
+          <button id="btnCustomerSwitchAdmin" class="text-xs bg-emerald-900/90 hover:bg-emerald-800 text-emerald-100 hover:text-white px-4 py-2 rounded-xl border border-emerald-400/60 font-bold transition cursor-pointer self-start sm:self-auto shadow-sm">
+            ↩ Switch to Admin Workbench
+          </button>
+        </div>
+        <div id="customerOrdersSummary" class="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+
+      <!-- Supplier Portal Active Banner -->
+      <div id="supplierPortalBanner" class="hidden bg-gradient-to-r from-[#021810] via-[#053220] to-[#01140c] text-white rounded-2xl p-5 sm:p-6 shadow-xl border border-emerald-500/40 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-700/50 pb-3.5">
+          <div class="flex items-center space-x-3.5">
+            <span class="text-3xl">🏭</span>
+            <div>
+              <div class="flex items-center space-x-2.5">
+                <h3 class="text-base sm:text-lg font-bold text-white" id="suppBannerName">Apex Precision Technologies</h3>
+                <span class="px-2.5 py-0.5 text-[10px] font-bold rounded bg-emerald-800 text-emerald-200 uppercase tracking-wider" id="suppBannerId">SUP-001</span>
+              </div>
+              <p class="text-xs text-emerald-200/90 mt-0.5">Supplier Dispatcher Portal • Direct Disruption Reporting Bridge</p>
+            </div>
+          </div>
+          <button id="btnSupplierSwitchAdmin" class="text-xs bg-emerald-800/90 hover:bg-emerald-700 text-emerald-100 hover:text-white px-4 py-2 rounded-xl border border-emerald-400/60 font-bold transition cursor-pointer self-start sm:self-auto shadow-sm">
+            ↩ Switch to Admin Workbench
+          </button>
+        </div>
+
+        <!-- Supplier Rapid Incident Reporting Form -->
+        <div class="bg-emerald-950/80 border border-emerald-700/70 rounded-xl p-4 sm:p-5 space-y-3.5">
+          <h4 class="text-xs font-bold text-emerald-200 uppercase tracking-wider flex items-center space-x-1.5">
+            <span>⚡ Direct Disruption Incident Reporting</span>
+            <span class="text-[10px] text-emerald-300 font-normal">(Immediately transmits to distributor impact engine)</span>
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-xs">
+            <div>
+              <label class="block text-[11px] text-emerald-300 mb-1 font-semibold">Incident Type</label>
+              <select id="suppIncidentType" class="w-full bg-[#02160e] border border-emerald-600/70 text-white rounded-lg p-2.5 text-xs">
+                <option value="production_halt">Production Line Halt</option>
+                <option value="carrier_delay">Freight / Vessel Delay</option>
+                <option value="quality_quarantine">Component Quality Quarantine</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] text-emerald-300 mb-1 font-semibold">Projected Delay (Days)</label>
+              <input type="number" id="suppDelayDays" value="14" min="1" max="60" class="w-full bg-[#02160e] border border-emerald-600/70 text-white rounded-lg p-2.5 text-xs">
+            </div>
+            <div class="flex items-end">
+              <button id="btnSupplierSubmitIncident" class="w-full elite-btn-primary text-white text-xs font-bold py-2.5 px-3 rounded-lg shadow-md transition cursor-pointer">
+                Transmit Alert to Distributor ➔
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Benchmark Disruption Scenarios Grid -->
+      <div class="elite-card rounded-2xl p-6 sm:p-7 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-100/70 dark:border-emerald-800/40 pb-3.5">
+          <div>
+            <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+              <span class="text-emerald-600 dark:text-emerald-400 text-lg">🎯</span>
+              <span>Scenarios</span>
+            </h2>
+            <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">Preloaded benchmark edge cases for rapid simulation:</p>
+          </div>
+          <div class="text-xs text-emerald-800 dark:text-emerald-200 font-bold bg-emerald-50 dark:bg-emerald-950/70 px-3.5 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-700 shadow-sm flex items-center space-x-2 self-start sm:self-auto">
+            <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+            <span>5 Scenarios</span>
+          </div>
+        </div>
+        <div id="scenarioButtonContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <!-- Injected dynamically by app.js -->
+        </div>
+      </div>
+
+      <!-- Structured Disruption Response Input Form & Analysis Controls -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-8 elite-card rounded-2xl p-6 sm:p-7 space-y-5">
+          <!-- Form Header -->
+          <div class="flex items-center justify-between border-b border-slate-100 dark:border-emerald-800/40 pb-3">
+            <div class="flex items-center space-x-2.5">
+              <span class="text-xl">📋</span>
+              <div>
+                <h3 class="text-base font-black text-slate-900 dark:text-white">Structured Disruption Input</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-300">Deterministic record selection & relationship validation</p>
+              </div>
+            </div>
+            <span id="scenarioTag" class="text-xs px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700 font-bold hidden shadow-sm"></span>
+          </div>
+
+          <!-- Validation Error Alert Banner -->
+          <div id="formValidationError" class="hidden bg-rose-50 dark:bg-rose-950/80 border-2 border-rose-300 dark:border-rose-600 rounded-xl p-3.5 text-xs text-rose-900 dark:text-rose-200 flex items-start space-x-2.5 shadow-sm">
+            <span class="text-base shrink-0">⚠️</span>
+            <div class="flex-1">
+              <strong class="font-bold block">Validation Error:</strong>
+              <span id="validationErrorText" class="leading-relaxed">Please check your selected records.</span>
+            </div>
+            <button id="btnCloseValidationAlert" class="text-rose-500 hover:text-rose-800 dark:hover:text-white text-sm font-bold cursor-pointer">✕</button>
+          </div>
+
+          <!-- Form Fields Grid -->
+          <form id="structuredDisruptionForm" onsubmit="return false;" class="space-y-4">
+            
+            <!-- Row 1: Disruption Type & Severity -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="inputDisruptionType" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5">
+                  Disruption Type <span class="text-rose-500">*</span>
+                </label>
+                <select id="inputDisruptionType" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+                  <option value="Supplier Production Halt">Supplier Production Halt</option>
+                  <option value="Carrier/Shipment Delay">Carrier/Shipment Delay</option>
+                  <option value="Warehouse Incident">Warehouse Incident</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="inputSeverity" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5">
+                  Severity <span class="text-rose-500">*</span>
+                </label>
+                <select id="inputSeverity" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+                  <option value="Critical">Critical (Immediate Operational Risk)</option>
+                  <option value="High" selected>High (Contractual SLA Threat)</option>
+                  <option value="Medium">Medium (Moderate Schedule Slip)</option>
+                  <option value="Low">Low (Informational / Zero Exposure)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 2: Cascading Dropdowns: Supplier & Purchase Order -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="inputSupplier" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5 flex items-center justify-between">
+                  <span>Supplier <span class="text-rose-500" id="supplierRequiredStar">*</span></span>
+                  <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-normal">Filters POs</span>
+                </label>
+                <select id="inputSupplier" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+                  <option value="">-- Select Supplier --</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="inputPO" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5 flex items-center justify-between">
+                  <span>Purchase Order</span>
+                  <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-normal">Filters Shipments</span>
+                </label>
+                <select id="inputPO" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+                  <option value="">-- Select Purchase Order --</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 3: Cascading Dropdowns: Inbound Shipment & SKU / Product -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="inputShipment" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5 flex items-center justify-between">
+                  <span>Shipment</span>
+                  <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-normal">Filters Product SKU</span>
+                </label>
+                <select id="inputShipment" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+                  <option value="">-- Select Shipment --</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="inputSKU" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5 flex items-center justify-between">
+                  <span>SKU / Product <span class="text-rose-500" id="skuRequiredStar" style="display:none">*</span></span>
+                  <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-normal">Auto-linked or Selectable</span>
+                </label>
+                <select id="inputSKU" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+                  <option value="">-- Select SKU / Product --</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Row 4: Disruption Date, Delay Days & Quantity Affected -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label for="inputDisruptionDate" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5">
+                  Disruption Date <span class="text-rose-500">*</span>
+                </label>
+                <input type="date" id="inputDisruptionDate" value="2026-09-05" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+              </div>
+
+              <div>
+                <label for="inputDelayDays" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5">
+                  Expected Delay (Days) <span class="text-rose-500">*</span>
+                </label>
+                <input type="number" id="inputDelayDays" value="14" min="1" max="180" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+              </div>
+
+              <div>
+                <label for="inputQuantityAffected" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5 flex items-center justify-between">
+                  <span>Units Scrapped / Lost</span>
+                  <span class="text-[10px] text-slate-400 font-normal">Optional</span>
+                </label>
+                <input type="number" id="inputQuantityAffected" placeholder="e.g. 150" min="0" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+              </div>
+            </div>
+
+            <!-- Row 5: Affected Location & Reason / Notes -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="inputLocation" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5">
+                  Affected Location / Facility
+                </label>
+                <select id="inputLocation" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+                  <option value="WH-MAIN">Central Logistics Hub - Chicago (WH-MAIN)</option>
+                  <option value="Fremont, CA">Apex Fremont Facility (Fremont, CA)</option>
+                  <option value="Port of Long Beach">Port of Long Beach Marine Terminal (CA)</option>
+                  <option value="Kaohsiung Port, Taiwan">Kaohsiung Port (Taiwan)</option>
+                  <option value="Taipei, Taiwan">Foxconn Logistics Hub (Taipei, Taiwan)</option>
+                  <option value="Oslo, Norway">Nordic Power Distribution (Oslo, Norway)</option>
+                  <option value="Denver, CO">Acme Regional Freight Hub (Denver, CO)</option>
+                </select>
+              </div>
+
+              <div>
+                <label for="inputReason" class="block text-xs font-extrabold text-slate-800 dark:text-emerald-200 mb-1.5 flex items-center justify-between">
+                  <span>Reason / Description</span>
+                  <span class="text-[10px] text-slate-400 font-normal">Contextual note</span>
+                </label>
+                <input type="text" id="inputReason" placeholder="e.g. Hydraulic failure on Line 3 / Berth congestion" class="w-full bg-slate-50 dark:bg-[#02150e] text-slate-900 dark:text-white text-xs font-semibold rounded-xl border border-slate-300 dark:border-emerald-700 p-3 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/30 outline-none transition">
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-emerald-800/40">
+              <div class="flex items-center space-x-2 text-xs text-slate-600 dark:text-slate-300">
+                <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span>Engine: <strong class="text-emerald-950 dark:text-emerald-200">Deterministic Impact Simulator</strong></span>
+              </div>
+
+              <div class="flex items-center space-x-3">
+                <button id="btnClear" type="button" class="text-xs font-bold text-slate-600 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white px-4 py-2.5 rounded-xl border border-slate-200 dark:border-emerald-800 hover:bg-slate-100 dark:hover:bg-emerald-900/60 transition cursor-pointer">
+                  Reset Form
+                </button>
+                <button id="btnAnalyze" type="button" class="elite-btn-primary text-white text-sm font-bold px-6 py-3 rounded-xl shadow-lg flex items-center space-x-2 transition disabled:opacity-50 cursor-pointer">
+                  <span id="analyzeSpinner" class="hidden animate-spin">⏳</span>
+                  <span>⚡ Analyze Disruption</span>
+                </button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Quick Supply Chain Baseline Stats -->
+        <div class="lg:col-span-4 elite-card rounded-2xl p-6 sm:p-7 flex flex-col justify-between space-y-4">
+          <div class="flex items-center justify-between border-b border-emerald-100/70 dark:border-emerald-800/40 pb-3">
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center space-x-2">
+              <span>📦 Baseline</span>
+            </h3>
+            <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950 px-2.5 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-700" id="dbStateLabel">Central Hub Active</span>
+          </div>
+
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            Live operational baseline tracking 5 suppliers, 5 catalog SKUs, 4 active inbound carrier shipments, and 6 customer sales orders.
+          </p>
+
+          <div class="grid grid-cols-2 gap-3 text-xs">
+            <div class="bg-gradient-to-br from-emerald-950/80 to-[#042016]/90 p-4 rounded-xl border border-emerald-500/50 shadow-sm space-y-1">
+              <div class="text-[10px] text-emerald-300 font-bold uppercase tracking-wider">Shipments</div>
+              <div class="text-2xl font-black text-white" id="statInbound">4 Active</div>
+              <div class="text-[10px] text-emerald-400/80 font-medium">FedEx, Maersk, DHL</div>
+            </div>
+            <div class="bg-gradient-to-br from-[#2e1503]/80 to-[#220f02]/90 p-4 rounded-xl border border-amber-500/50 shadow-sm space-y-1">
+              <div class="text-[10px] text-amber-300 font-bold uppercase tracking-wider">Orders</div>
+              <div class="text-2xl font-black text-white" id="statOrders">6 Orders</div>
+              <div class="text-[10px] text-amber-400/80 font-medium">Tesla, Siemens, Rivian</div>
+            </div>
+          </div>
+
+          <!-- Live Telemetry Radar Animation Widget -->
+          <div class="relative overflow-hidden rounded-xl border border-emerald-500/50 shadow-inner max-h-20 bg-emerald-950/50">
+            <img src="./radar_scan.gif" alt="Live Logistics Radar Scan" class="w-full h-20 object-cover object-center opacity-80 mix-blend-screen">
+            <div class="absolute inset-0 bg-gradient-to-r from-emerald-950/70 via-transparent to-emerald-950/70 pointer-events-none flex items-center justify-between px-3">
+              <span class="text-[10px] font-mono font-bold text-emerald-300 flex items-center space-x-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>RADAR TELEMETRY</span>
+              </span>
+              <span class="text-[10px] font-mono text-emerald-200/90 font-bold">AIS ACTIVE</span>
+            </div>
+          </div>
+
+          <div class="bg-emerald-950/70 p-3 rounded-xl border border-emerald-500/40 text-xs text-emerald-200 flex items-center justify-between backdrop-blur-sm shadow-sm">
+            <span class="font-semibold text-emerald-200">Primary Hub:</span>
+            <span class="font-bold text-white bg-emerald-900/90 px-2.5 py-0.5 rounded-lg border border-emerald-500/60 shadow-sm">WH-MAIN (Chicago)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ambiguity Escalation Banner -->
+      <div id="ambiguityBanner" class="hidden bg-[#2e1503]/90 border-2 border-amber-500/80 rounded-2xl p-5 text-amber-100 space-y-3.5 shadow-md">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center space-x-3">
+            <span class="text-2xl">⚠️</span>
+            <div>
+              <h4 class="text-sm font-bold text-white">Ambiguity</h4>
+              <p class="text-xs text-amber-200 mt-0.5" id="ambiguityText"></p>
+            </div>
+          </div>
+        </div>
+        <div class="bg-[#180a01]/90 rounded-xl p-4 border border-amber-500/50">
+          <div class="text-xs text-amber-200 font-bold mb-2.5">Candidates:</div>
+          <div id="ambiguityCandidateContainer" class="flex flex-wrap gap-3"></div>
+        </div>
+      </div>
+
+      <!-- Impact Results Dashboard Section -->
+      <div id="resultsSection" class="hidden space-y-6">
+
+        <!-- Executive Overview Card -->
+        <section class="elite-card rounded-2xl p-6 sm:p-7 space-y-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-emerald-800/40 pb-4">
+            <div>
+              <div class="flex items-center space-x-3 mb-2">
+                <span id="impactStatusBadge" class="px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider shadow-sm"></span>
+                <span id="disruptionCategoryBadge" class="text-xs font-semibold text-emerald-800 dark:text-emerald-200 bg-emerald-50 dark:bg-emerald-950 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-700 shadow-sm"></span>
+              </div>
+              <h3 id="summaryHeadline" class="text-xl font-black text-slate-900 dark:text-white tracking-tight"></h3>
+            </div>
+
+            <!-- Key Financial Metric Badges -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full md:w-auto">
+              <div class="bg-slate-50 dark:bg-[#083523] border border-slate-200 dark:border-emerald-800/60 p-3.5 sm:p-4 rounded-xl text-left shadow-sm min-w-[130px]">
+                <div class="text-[11px] text-slate-500 dark:text-slate-300 uppercase font-bold tracking-wider mb-1">Impacted</div>
+                <div id="metricOrdersCount" class="text-2xl font-black text-slate-900 dark:text-white">0</div>
+              </div>
+              <div class="bg-amber-50/80 dark:bg-[#381602] border border-amber-200 dark:border-amber-600/70 p-3.5 sm:p-4 rounded-xl text-left shadow-sm min-w-[140px]">
+                <div class="text-[11px] text-amber-800 dark:text-amber-300 uppercase font-bold tracking-wider mb-1">Exposure</div>
+                <div id="metricRevenueRisk" class="text-2xl font-black text-amber-700 dark:text-amber-300">$0.00</div>
+              </div>
+              <div class="bg-rose-50/80 dark:bg-[#450315] border border-rose-200 dark:border-rose-600/70 p-3.5 sm:p-4 rounded-xl text-left shadow-sm min-w-[160px]">
+                <div class="text-[11px] text-rose-800 dark:text-rose-300 uppercase font-bold tracking-wider mb-1">Penalty</div>
+                <div id="metricSlaPenalty" class="text-2xl font-black text-rose-600 dark:text-rose-400">$0.00</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Executive Briefing Text -->
+          <div class="bg-gradient-to-r from-emerald-50/80 to-teal-50/50 dark:from-[#062d1f] dark:to-[#042016] border border-emerald-100 dark:border-emerald-800/50 rounded-xl p-4 text-sm text-slate-700 dark:text-slate-100 leading-relaxed font-medium" id="executiveBriefingText"></div>
+
+          <!-- Grounding & Traceability Link Map -->
+          <div>
+            <div class="text-xs font-bold text-emerald-950 dark:text-emerald-200 uppercase tracking-wider mb-2.5 flex items-center space-x-1.5">
+              <span>🔗 Grounding</span>
+            </div>
+            <div id="groundingEvidenceList" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+          </div>
+        </section>
+
+        <!-- Action Plan & Urgency Ranked Impacted Orders Section -->
+        <section class="space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-base font-black text-slate-900 dark:text-white flex items-center space-x-2">
+                <span>📋 Workbench</span>
+              </h3>
+              <p class="text-xs text-slate-600 dark:text-slate-300">Urgency-ranked customer orders and multi-option resolutions.</p>
+            </div>
+            <div class="text-xs text-slate-600 dark:text-slate-300 flex items-center space-x-2 font-semibold">
+              <span class="inline-block w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+              <span>Platinum</span>
+              <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-500 ml-2"></span>
+              <span>Gold</span>
+              <span class="inline-block w-2.5 h-2.5 rounded-full bg-slate-400 ml-2"></span>
+              <span>Standard</span>
+            </div>
+          </div>
+
+          <!-- Container for Ranked Order Cards -->
+          <div id="ordersContainer" class="space-y-4">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Communication Draft Modal -->
+  <div id="commModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="elite-card rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-slate-100 dark:border-emerald-800/40 pb-3">
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl" id="commModalIcon">✉️</span>
+          <div>
+            <h4 class="text-base font-bold text-slate-900 dark:text-white" id="commModalTitle">Dispatch</h4>
+            <p class="text-xs text-slate-500 dark:text-emerald-300/80" id="commModalSubtitle"></p>
+          </div>
+        </div>
+        <button id="btnCloseCommModal" class="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1 rounded-lg text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto">
+        <pre id="commModalBody" class="bg-slate-50 dark:bg-[#02130c] border border-slate-200 dark:border-emerald-800/50 rounded-xl p-4 text-xs font-mono text-slate-800 dark:text-slate-100 whitespace-pre-wrap leading-relaxed select-all"></pre>
+      </div>
+
+      <div class="flex items-center justify-between border-t border-slate-100 dark:border-emerald-800/40 pt-3">
+        <span class="text-xs text-slate-500 dark:text-slate-400">Grounded strictly in system data & decision rationale.</span>
+        <div class="flex items-center space-x-2">
+          <button id="btnCopyComm" class="text-xs bg-slate-100 hover:bg-slate-200 dark:bg-emerald-900/60 dark:hover:bg-emerald-800 text-slate-700 dark:text-white px-3 py-1.5 rounded-lg border border-slate-300 dark:border-emerald-700 font-semibold transition cursor-pointer">
+            📋 Copy
+          </button>
+          <button id="btnCloseCommModalBtn" class="text-xs elite-btn-primary text-white px-4 py-1.5 rounded-lg font-semibold transition cursor-pointer">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audit Trail Modal -->
+  <div id="auditModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="elite-card bg-white dark:bg-[#031d13] border border-emerald-200 dark:border-emerald-800/60 rounded-3xl max-w-3xl w-full p-6 sm:p-7 shadow-2xl space-y-4 max-h-[85vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-emerald-100 dark:border-emerald-800/40 pb-3">
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl">📋</span>
+          <div>
+            <h4 class="text-base font-bold text-slate-900 dark:text-white">Audit</h4>
+            <p class="text-xs text-slate-500 dark:text-emerald-300/80">Immutable system ledger and decision log</p>
+          </div>
+        </div>
+        <button id="btnCloseAuditModal" class="text-slate-400 hover:text-slate-700 dark:hover:text-white p-1 rounded-lg text-lg cursor-pointer">✕</button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto space-y-2.5" id="auditLogList">
+        <!-- Audit logs populated here -->
+      </div>
+
+      <div class="flex items-center justify-end border-t border-emerald-100 dark:border-emerald-800/40 pt-3">
+        <button id="btnCloseAuditModalBtn" class="text-xs bg-slate-100 hover:bg-slate-200 dark:bg-emerald-900/60 dark:hover:bg-emerald-800 text-slate-700 dark:text-white px-4 py-1.5 rounded-lg border border-slate-300 dark:border-emerald-700 font-semibold transition cursor-pointer">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile / Stakeholder Login Selection Modal -->
+  <div id="profileModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="elite-card bg-white dark:bg-[#031d13] border border-emerald-200 dark:border-emerald-800/60 rounded-3xl max-w-4xl w-full p-6 sm:p-7 shadow-2xl space-y-5 max-h-[90vh] flex flex-col">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-emerald-100 dark:border-emerald-800/40 pb-4">
+        <div class="flex items-center space-x-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-600 flex items-center justify-center text-xl text-white shadow-md">
+            👥
+          </div>
+          <div>
+            <h3 class="text-lg font-black text-slate-900 dark:text-white flex items-center space-x-2">
+              <span>Portals</span>
+              <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200">Personas</span>
+            </h3>
+            <p class="text-xs text-slate-500 dark:text-emerald-300/80 mt-0.5">Switch view between Distributor Operations Admin, Customer Portals, and Supplier Portals</p>
+          </div>
+        </div>
+        <button id="btnCloseProfileModal" class="text-slate-400 hover:text-slate-700 dark:hover:text-white p-2 rounded-xl text-lg transition cursor-pointer">✕</button>
+      </div>
+
+      <!-- Persona Navigation Tabs -->
+      <div class="flex items-center space-x-2 border-b border-slate-200 dark:border-emerald-800/40 pb-2 text-xs font-bold">
+        <button id="tabRoleAll" class="profile-tab active px-3.5 py-1.5 rounded-xl bg-emerald-100 text-emerald-950 dark:bg-emerald-900/80 dark:text-white transition cursor-pointer">
+          🌟 All
+        </button>
+        <button id="tabRoleAdmin" class="profile-tab px-3.5 py-1.5 rounded-xl text-slate-600 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition cursor-pointer">
+          👑 Admin
+        </button>
+        <button id="tabRoleCustomers" class="profile-tab px-3.5 py-1.5 rounded-xl text-slate-600 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition cursor-pointer">
+          🏢 Customers (<span id="profileCustCount">6</span>)
+        </button>
+        <button id="tabRoleSuppliers" class="profile-tab px-3.5 py-1.5 rounded-xl text-slate-600 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition cursor-pointer">
+          🏭 Suppliers (<span id="profileSuppCount">6</span>)
+        </button>
+      </div>
+
+      <!-- Profiles Grid Content -->
+      <div class="flex-1 overflow-y-auto space-y-6 pr-1" id="profilesContainer">
+        
+        <!-- Admin Section -->
+        <div id="sectionAdminProfiles" class="space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-950 dark:text-emerald-200 flex items-center justify-between">
+            <span>👑 Operator</span>
+            <span class="text-[10px] text-emerald-600 dark:text-emerald-300 font-normal">Active Profile</span>
+          </h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            <div class="bg-gradient-to-br from-emerald-50/80 via-white to-teal-50/60 dark:from-[#072a1e] dark:via-[#042016] dark:to-[#02150e] p-4 sm:p-5 rounded-2xl border-2 border-emerald-300 dark:border-emerald-600/70 flex flex-col justify-between space-y-4 shadow-sm hover:shadow-md transition">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-600 text-white">Full Admin Access</span>
+                  <span class="text-xs font-mono font-bold text-emerald-900 dark:text-emerald-300">ID: OPERATOR-01</span>
+                </div>
+                
+                <!-- Direct Edit Profile Login Name -->
+                <div class="space-y-1.5 bg-white/70 dark:bg-[#031810]/70 p-3 rounded-xl border border-emerald-200 dark:border-emerald-700/60 shadow-inner">
+                  <label class="block text-[10px] font-extrabold text-emerald-900 dark:text-emerald-300 uppercase tracking-wider">
+                    ✏️ Display Name:
+                  </label>
+                  <div class="flex items-center space-x-2">
+                    <input type="text" id="profileModalNameInput" placeholder="Enter your name..." value="Username" class="flex-1 bg-white dark:bg-[#06261a] border-2 border-emerald-300 dark:border-emerald-600 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 shadow-sm">
+                    <button id="btnSaveProfileNameModal" class="px-3 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-xl text-xs font-extrabold transition shadow-sm cursor-pointer shrink-0" title="Save this name">
+                      💾 Save
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <h5 class="text-sm font-black text-slate-900 dark:text-white" id="adminProfileCardName">Username</h5>
+                  <p class="text-xs text-slate-600 dark:text-emerald-300 mt-0.5">Operations Controller • Central Logistics Hub (WH-MAIN Chicago)</p>
+                </div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-300 leading-relaxed">
+                  Authorizes inventory reallocations, expediting air freight commitments, customer communication broadcasts, and SLA penalty management.
+                </p>
+              </div>
+              <button id="btnSelectAdminProfile" class="w-full elite-btn-primary text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md transition flex items-center justify-center space-x-1.5 cursor-pointer">
+                <span>👑 Login as Admin</span>
+                <span>➔</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer Portals Section -->
+        <div id="sectionCustomerProfiles" class="space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-950 dark:text-emerald-200 flex items-center justify-between">
+            <span>🏢 Customers</span>
+            <span class="text-[10px] text-slate-500 dark:text-slate-300 font-normal">Real-time SLA status</span>
+          </h4>
+          <div id="customerProfilesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+        <!-- Supplier Portals Section -->
+        <div id="sectionSupplierProfiles" class="space-y-3">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-emerald-950 dark:text-emerald-200 flex items-center justify-between">
+            <span>🏭 Suppliers</span>
+            <span class="text-[10px] text-slate-500 dark:text-slate-300 font-normal">Direct reporting bridge</span>
+          </h4>
+          <div id="supplierProfilesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            <!-- Injected dynamically -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-between border-t border-emerald-100 dark:border-emerald-800/40 pt-3">
+        <span class="text-xs text-slate-500 dark:text-emerald-300/80">Logged in as: <strong class="text-emerald-950 dark:text-white" id="modalActivePersonaText">Username (Admin)</strong></span>
+        <button id="btnCloseProfileModalBtn" class="text-xs bg-slate-100 hover:bg-slate-200 dark:bg-emerald-900/60 dark:hover:bg-emerald-800 text-slate-700 dark:text-white px-4 py-2 rounded-xl font-semibold transition cursor-pointer">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings & Preferences Modal -->
+  <div id="settingsModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="elite-card bg-white dark:bg-[#031d13] border border-emerald-200 dark:border-emerald-800/60 rounded-3xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl space-y-5 max-h-[90vh] flex flex-col">
+      <!-- Header -->
+      <div class="flex items-center justify-between border-b border-emerald-100 dark:border-emerald-800/40 pb-4">
+        <div class="flex items-center space-x-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-600 flex items-center justify-center text-xl text-white shadow-md">
+            ⚙️
+          </div>
+          <div>
+            <h3 class="text-lg font-black text-slate-900 dark:text-white">Settings</h3>
+            <p class="text-xs text-slate-500 dark:text-emerald-300/80 mt-0.5">Customize AI parsing mode, telemetry polling, audio alerts, and sensitivity</p>
+          </div>
+        </div>
+        <button id="btnCloseSettingsModal" class="text-slate-400 hover:text-slate-700 dark:hover:text-white p-2 rounded-xl text-lg transition cursor-pointer">✕</button>
+      </div>
+
+      <!-- Settings Form -->
+      <div class="flex-1 overflow-y-auto space-y-4 pr-1 text-xs">
+
+        <!-- Setting 0: Profile Username -->
+        <div class="bg-slate-50 dark:bg-[#06281b] p-4 rounded-2xl border border-slate-200 dark:border-emerald-800/60 space-y-2">
+          <label class="block font-bold text-slate-900 dark:text-white flex items-center justify-between">
+            <span>👤 Operator Profile Username</span>
+            <span class="text-[10px] text-emerald-600 dark:text-emerald-300 font-normal">Customizable Profile Name</span>
+          </label>
+          <p class="text-[11px] text-slate-500 dark:text-emerald-300">Set your preferred display username for the Operations Controller profile and top bar</p>
+          <input type="text" id="settingUsernameInput" value="Username" placeholder="Enter username..." class="w-full bg-white dark:bg-[#031810] border border-slate-300 dark:border-emerald-600 text-slate-900 dark:text-white rounded-xl p-2.5 text-xs font-semibold focus:outline-none focus:border-emerald-500">
+        </div>
+        
+        <!-- Setting 1: AI Parser Engine -->
+        <div class="bg-slate-50 dark:bg-[#06281b] p-4 rounded-2xl border border-slate-200 dark:border-emerald-800/60 space-y-2">
+          <label class="block font-bold text-slate-900 dark:text-white">
+            🤖 Disruption Extraction & Parser Engine
+          </label>
+          <p class="text-[11px] text-slate-500 dark:text-emerald-300">Configure how inbound notice text is converted into structured entities</p>
+          <select id="settingParserMode" class="w-full bg-white dark:bg-[#031810] border border-slate-300 dark:border-emerald-600 text-slate-900 dark:text-white rounded-xl p-2.5 text-xs">
+            <option value="hybrid">Hybrid Engine: Deterministic Heuristics + Gemini GenAI (Recommended)</option>
+            <option value="deterministic">Pure Deterministic NLP (Zero External LLM Calls)</option>
+            <option value="ai_priority">AI Priority: Gemini 2.5 Flash High-Reasoning</option>
+          </select>
+        </div>
+
+        <!-- Setting 2: Entity Grounding Confidence -->
+        <div class="bg-slate-50 dark:bg-[#06281b] p-4 rounded-2xl border border-slate-200 dark:border-emerald-800/60 space-y-2">
+          <label class="block font-bold text-slate-900 dark:text-white">
+            🎯 Entity Resolution Sensitivity
+          </label>
+          <p class="text-[11px] text-slate-500 dark:text-emerald-300">Threshold required before matching loose supplier names, carriers, and POs to active records</p>
+          <div class="grid grid-cols-3 gap-2.5">
+            <label class="flex items-center space-x-2 bg-white dark:bg-[#031810] p-2.5 rounded-xl border border-slate-200 dark:border-emerald-700 cursor-pointer">
+              <input type="radio" name="settingConfidence" value="1.0" class="text-emerald-600">
+              <span class="dark:text-slate-100">Exact (1.0)</span>
+            </label>
+            <label class="flex items-center space-x-2 bg-white dark:bg-[#031810] p-2.5 rounded-xl border border-slate-200 dark:border-emerald-700 cursor-pointer">
+              <input type="radio" name="settingConfidence" value="0.85" checked class="text-emerald-600">
+              <span class="dark:text-slate-100">High (0.85)</span>
+            </label>
+            <label class="flex items-center space-x-2 bg-white dark:bg-[#031810] p-2.5 rounded-xl border border-slate-200 dark:border-emerald-700 cursor-pointer">
+              <input type="radio" name="settingConfidence" value="0.65" class="text-emerald-600">
+              <span class="dark:text-slate-100">Balanced (0.65)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Setting 3: Live Telemetry Stream Frequency -->
+        <div class="bg-slate-50 dark:bg-[#06281b] p-4 rounded-2xl border border-slate-200 dark:border-emerald-800/60 space-y-2">
+          <label class="block font-bold text-slate-900 dark:text-white">
+            📡 Live Telemetry Stream Frequency
+          </label>
+          <p class="text-[11px] text-slate-500 dark:text-emerald-300">Interval for ingesting simulated AIS vessel tracks, RFID scans, and EDI feeds</p>
+          <select id="settingStreamInterval" class="w-full bg-white dark:bg-[#031810] border border-slate-300 dark:border-emerald-600 text-slate-900 dark:text-white rounded-xl p-2.5 text-xs">
+            <option value="5000">Every 5 Seconds (High Telemetry)</option>
+            <option value="10000" selected>Every 10 Seconds (Standard)</option>
+            <option value="30000">Every 30 Seconds (Low Bandwidth)</option>
+            <option value="0">Manual Polling Only</option>
+          </select>
+        </div>
+
+        <!-- Setting 4: Audio Alerts & Chimes -->
+        <div class="bg-slate-50 dark:bg-[#06281b] p-4 rounded-2xl border border-slate-200 dark:border-emerald-800/60 flex items-center justify-between">
+          <div>
+            <label class="block font-bold text-slate-900 dark:text-white">
+              🔔 Audio Alerts & Synthesized Chimes
+            </label>
+            <p class="text-[11px] text-slate-500 dark:text-emerald-300">Play subtle audio chime when critical disruption signals arrive</p>
+          </div>
+          <div class="flex items-center space-x-3">
+            <button id="btnTestChime" class="text-[11px] bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-900/60 dark:hover:bg-emerald-800 text-emerald-900 dark:text-white px-2.5 py-1.5 rounded-lg border border-emerald-300 dark:border-emerald-600 font-semibold transition cursor-pointer">
+              🔊 Test Sound
+            </button>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="settingSoundToggle" checked class="sr-only peer">
+              <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-emerald-950 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Setting 5: Auto-Run Analysis on Scenario Click -->
+        <div class="bg-slate-50 dark:bg-[#06281b] p-4 rounded-2xl border border-slate-200 dark:border-emerald-800/60 flex items-center justify-between">
+          <div>
+            <label class="block font-bold text-slate-900 dark:text-white">
+              ⚡ Instant Scenario Execution
+            </label>
+            <p class="text-[11px] text-slate-500 dark:text-emerald-300">Automatically run pipeline when clicking benchmark scenario boxes</p>
+          </div>
+          <label class="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" id="settingAutoRunScenario" checked class="sr-only peer">
+            <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer dark:bg-emerald-950 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+          </label>
+        </div>
+
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="flex items-center justify-between border-t border-emerald-100 dark:border-emerald-800/40 pt-3">
+        <button id="btnResetSettings" class="text-xs text-rose-600 hover:text-rose-700 font-bold px-2 py-1 transition cursor-pointer">
+          Reset to Defaults
+        </button>
+        <div class="flex items-center space-x-2">
+          <button id="btnCloseSettingsModalBtn" class="text-xs bg-slate-100 hover:bg-slate-200 dark:bg-emerald-900/60 dark:hover:bg-emerald-800 text-slate-700 dark:text-white px-4 py-2 rounded-xl font-semibold transition cursor-pointer">
+            Cancel
+          </button>
+          <button id="btnSaveSettings" class="text-xs elite-btn-primary text-white px-5 py-2 rounded-xl font-bold transition shadow-md cursor-pointer">
+            Save Preferences
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
