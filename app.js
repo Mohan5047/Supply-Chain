@@ -1,2151 +1,1473 @@
-
-// ============================================================================
-// EMBEDDED FALLBACK BENCHMARK DATA (SAFE ESCAPED JSON)
-// ============================================================================
-const FALLBACK_SCENARIOS = JSON.parse("[{\"id\": \"scenario_1_critical_apex\", \"title\": \"Scenario 1: Critical Factory Halt (Apex APX-902 Sensors)\", \"category\": \"Supplier Production Halt\", \"difficulty\": \"Standard / High Impact\", \"description\": \"Supplier email reporting catastrophic hydraulic failure delaying sensor assembly dispatch by 14 days. Impacts mission-critical Platinum customer orders (Tesla, Siemens).\", \"notice_text\": \"From: Marcus Vance <dispatch@apexprecision.com>\\nSubject: URGENT: Production Line 3 Halt - PO-4482 / APX-902 Dispatch Delay\\nDate: September 5, 2026 06:40 AM\\n\\nLogistics Team,\\n\\nWe regret to inform you that earlier this morning Line 3 at our Apex Dynamics Fremont facility experienced a major hydraulic pump failure. All production of our APX-902 optical sensor assemblies scheduled for Inbound Shipment SH-8921 (PO-4482) is halted while technicians source replacement valves.\\n\\nDispatch was originally scheduled for delivery to your Chicago warehouse by September 8th. The revised estimated arrival date is now pushed back by 14 days to September 22, 2026. We can arrange partial air express upon request once initial testing resumes next week.\\n\\nWe apologize for the disruption.\\n\\nBest regards,\\nMarcus Vance\\nApex Precision Technologies\", \"structured_input\": {\"disruption_type\": \"Supplier Production Halt\", \"supplier_id\": \"SUP-001\", \"po_number\": \"PO-4482\", \"shipment_id\": \"SH-8921\", \"sku_id\": \"SKU-1049\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 14, \"affected_location\": \"Fremont, CA\", \"quantity_affected\": null, \"reason\": \"Production Line 3 hydraulic pump failure halting APX-902 assembly dispatch.\", \"severity\": \"Critical\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": \"SH-8921\", \"supplier_id\": \"SUP-001\", \"affected_sku\": \"SKU-1049\", \"delay_days\": 14, \"primary_impacted_orders\": [\"ORD-501\", \"ORD-502\"]}}, {\"id\": \"scenario_2_carrier_port_congestion\", \"title\": \"Scenario 2: Carrier Delay / Port Congestion (Maersk Long Beach)\", \"category\": \"Carrier/Shipment Delay\", \"difficulty\": \"Moderate / Trade-offs\", \"description\": \"Ocean carrier notice detailing port congestion at Long Beach delaying container of automotive microcontrollers by 10 days.\", \"notice_text\": \"EXCEPTION ALERT: OCEAN FREIGHT DISRUPTION\\nCARRIER: Maersk Line\\nVESSEL: MSC VALERIA / Voyage 402W\\nCONTAINER: MSKU-8839210 (Inbound SH-7714, PO-3910)\\nDESTINATION: Chicago Logistics Hub\\n\\nPlease be advised that due to severe berth congestion, labor shortages, and railhead bottlenecks at the Port of Long Beach, discharge of container MSKU-8839210 carrying 32-bit automotive microcontrollers (MC-320) cannot proceed as scheduled.\\n\\nThe scheduled arrival date of September 12, 2026 is delayed by 10 calendar days. Expected Chicago rail terminal arrival is rescheduled for September 22, 2026. Emergency off-dock drayage & air freight forwarding can be quoted upon escalation.\", \"structured_input\": {\"disruption_type\": \"Carrier/Shipment Delay\", \"supplier_id\": \"SUP-002\", \"po_number\": \"PO-3910\", \"shipment_id\": \"SH-7714\", \"sku_id\": \"SKU-2088\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 10, \"affected_location\": \"Port of Long Beach\", \"quantity_affected\": null, \"reason\": \"Berth and railhead bottlenecks at Port of Long Beach delaying container MSKU-8839210.\", \"severity\": \"High\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": \"SH-7714\", \"supplier_id\": \"SUP-002\", \"affected_sku\": \"SKU-2088\", \"delay_days\": 10, \"primary_impacted_orders\": [\"ORD-503\"]}}, {\"id\": \"scenario_3_warehouse_incident\", \"title\": \"Scenario 3: Internal Warehouse Incident (Bay C-12 Forklift Crush)\", \"category\": \"Warehouse Incident\", \"difficulty\": \"Immediate Stock Destruction\", \"description\": \"Internal warehouse incident report detailing forklift collision destroying 150 units of high-density lithium battery packs.\", \"notice_text\": \"INCIDENT REPORT #IR-2026-0905-01\\nFACILITY: WH-MAIN Chicago Logistics Hub\\nZONE: Bay C-12 Cross-Dock Aisle\\nTIME: 06:15 AM CST\\nREPORTED BY: Warehouse Supervisor D. Miller\\n\\nDuring morning inbound cross-dock staging, forklift #4 suffered a mast cable snap while transporting two pallet loads of industrial lithium battery packs (SKU BAT-4400 / SKU-3150).\\n\\nTotal of 150 battery pack units fell from height and sustained catastrophic casing fractures and cell puncture. Fire suppression protocols were activated and Bay C-12 quarantine was established. All 150 units have been formally condemned and written off to salvage scrap. Physical available inventory in WH-MAIN has dropped immediately from 180 to 30 units.\", \"structured_input\": {\"disruption_type\": \"Warehouse Incident\", \"supplier_id\": \"SUP-004\", \"po_number\": null, \"shipment_id\": null, \"sku_id\": \"SKU-3150\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 18, \"affected_location\": \"WH-MAIN\", \"quantity_affected\": 150, \"reason\": \"Forklift collision in Bay C-12 destroyed 150 units of BAT-4400 battery packs.\", \"severity\": \"Critical\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": null, \"supplier_id\": null, \"affected_sku\": \"SKU-3150\", \"quantity_lost\": 150, \"primary_impacted_orders\": [\"ORD-505\"]}}, {\"id\": \"scenario_4_false_alarm_no_impact\", \"title\": \"Scenario 4: False Alarm / Zero Impact (Acme Regional Road Closure)\", \"category\": \"Other\", \"difficulty\": \"Edge Case: False Alarm\", \"description\": \"Alarming emergency notice from Acme Logistics regarding Route 9 road closure, but distributor has no pending orders or shipments with Acme.\", \"notice_text\": \"URGENT LOGISTICS ADVISORY: ACME FREIGHT & LOGISTICS\\nBULLETIN: #ADV-9921-DENVER\\nEFFECTIVE: IMMEDIATELY\\n\\nSevere mudslides and structural damage have forced the Colorado Department of Transportation to close US Route 9 near Silverthorne / Denver junction in both directions. All Acme regional line-haul trucking and freight operations are suspended for the next 72 hours. Shipments transiting Denver hub will face extensive rerouting delays of up to 5 business days.\\n\\nAll dispatch operations advised to take immediate emergency measures.\", \"structured_input\": {\"disruption_type\": \"Other\", \"supplier_id\": \"SUP-006\", \"po_number\": null, \"shipment_id\": null, \"sku_id\": null, \"disruption_date\": \"2026-09-05\", \"delay_days\": 5, \"affected_location\": \"Denver, CO\", \"quantity_affected\": null, \"reason\": \"Route 9 closure near Denver affecting Acme freight trucking operations.\", \"severity\": \"Low\"}, \"expected_outcome\": {\"has_impact\": false, \"reason\": \"Acme Logistics is listed as a potential partner, but no active inbound purchase orders or scheduled shipments are pending via Acme or routing through Denver. System reports verified NO IMPACT.\"}}, {\"id\": \"scenario_5_ambiguous_entity\", \"title\": \"Scenario 5: Ambiguous / Underspecified Notice (Taiwan Weather Delay)\", \"category\": \"Carrier/Shipment Delay\", \"difficulty\": \"Edge Case: Entity Disambiguation\", \"description\": \"Vague regional weather alert naming 'Taiwan supplier shipments' without identifying whether it affects TSMC Micro or Foxconn Components.\", \"notice_text\": \"REGIONAL SUPPLY ADVISORY: Super Typhoon Gaemi has made landfall on the north-east coast of Taiwan. Port operations at Kaohsiung and Keelung, as well as freight terminals at Taoyuan International Airport, have ceased loading operations for safety. All shipments originating from our Taiwan suppliers will be stalled by at least 6 days pending civil aviation and maritime clearance.\", \"structured_input\": {\"disruption_type\": \"Carrier/Shipment Delay\", \"supplier_id\": \"SUP-002\", \"po_number\": \"PO-3910\", \"shipment_id\": \"SH-7714\", \"sku_id\": \"SKU-2088\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 6, \"affected_location\": \"Kaohsiung Port, Taiwan\", \"quantity_affected\": null, \"reason\": \"Super Typhoon Gaemi causing port closures and 6-day shipping delays.\", \"severity\": \"Medium\"}, \"expected_outcome\": {\"has_impact\": true, \"is_ambiguous\": true, \"candidate_suppliers\": [\"SUP-002\", \"SUP-003\"], \"action_required\": \"Prompt operator to select which supplier/shipment is confirmed, or simulate both branches.\"}}, {\"id\": \"scenario_6_customs_regulatory_hold\", \"title\": \"Scenario 6: Customs & Regulatory Hold (Port of Rotterdam Lithium Audit)\", \"category\": \"Carrier/Shipment Delay\", \"difficulty\": \"International Maritime & Compliance\", \"description\": \"European maritime customs authority has issued a mandatory compliance hold on container DHL-7710928 from Nordic Lithium awaiting UN38.3 battery certification, delaying inbound shipment SH-9011 by 8 days.\", \"notice_text\": \"CUSTOMS COMPLIANCE NOTIFICATION #EU-HL-2026-8841\\nPORT AUTHORITY: Port of Rotterdam Maritime Terminal\\nCONSIGNEE: Central Logistics Hub Chicago (WH-MAIN)\\nINBOUND CONSIGNMENT: SH-9011 / PO-6200\\nCARRIER: DHL Global Forwarding (Tracking #DHL-7710928)\\nORIGIN: Oslo, Norway (Nordic Lithium & Power)\\n\\nPlease be informed that container DHL-7710928 containing 150 units of BAT-4400 Industrial Lithium Battery Packs (SKU-3150) has been selected for mandatory secondary UN38.3 thermal runaway testing verification. Maritime clearance is temporarily halted for approximately 8 calendar days pending document apostille from the manufacturer.\", \"structured_input\": {\"disruption_type\": \"Carrier/Shipment Delay\", \"supplier_id\": \"SUP-004\", \"po_number\": \"PO-6200\", \"shipment_id\": \"SH-9011\", \"sku_id\": \"SKU-3150\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 8, \"affected_location\": \"Oslo, Norway\", \"quantity_affected\": null, \"reason\": \"Rotterdam customs mandatory UN38.3 compliance inspection delaying container DHL-7710928.\", \"severity\": \"High\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": \"SH-9011\", \"supplier_id\": \"SUP-004\", \"affected_sku\": \"SKU-3150\", \"delay_days\": 8, \"primary_impacted_orders\": [\"ORD-505\"]}}, {\"id\": \"scenario_7_quality_defect_quarantine\", \"title\": \"Scenario 7: Component Quality Quarantine (Foxconn Micro-Solder Inspection)\", \"category\": \"Supplier Production Halt\", \"difficulty\": \"Quality Assurance & Batch Defect\", \"description\": \"Quality bulletin from Foxconn Components Taipei halting dispatch of step-down power converters (SKU-4022) for 12 days to perform non-destructive X-ray inspection of solder joints.\", \"notice_text\": \"QUALITY ENGINEERING ADVISORY #QA-FXC-2026-09\\nSUPPLIER: Foxconn Components Corp (Taipei, Taiwan)\\nCOMMODITY: Industrial Step-Down Power Converter 12V/5A (SKU-4022 / PWR-12V)\\nTARGET SHIPMENT: SH-6520 (PO-5102)\\n\\nDuring routine automated optical inspection (AOI) on Subassembly Line B, engineering identified intermittent solder bridging on primary induction coils. As a mandatory safety precaution, 400 units designated for Inbound Shipment SH-6520 are placed in technical quarantine for comprehensive X-ray verification and thermal stress recertification.\\n\\nRevised dispatch will be postponed by 12 calendar days. Initial units passing stress test will be released on rolling batches.\", \"structured_input\": {\"disruption_type\": \"Supplier Production Halt\", \"supplier_id\": \"SUP-003\", \"po_number\": \"PO-5102\", \"shipment_id\": \"SH-6520\", \"sku_id\": \"SKU-4022\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 12, \"affected_location\": \"Taipei, Taiwan\", \"quantity_affected\": null, \"reason\": \"Intermittent solder bridging detected on Subassembly Line B requiring 12-day quarantine inspection.\", \"severity\": \"Medium\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": \"SH-6520\", \"supplier_id\": \"SUP-003\", \"affected_sku\": \"SKU-4022\", \"delay_days\": 12, \"primary_impacted_orders\": [\"ORD-506\"]}}, {\"id\": \"scenario_8_demand_surge_rush\", \"title\": \"Scenario 8: Priority Acceleration Surge (Tesla Emergency Production Pull)\", \"category\": \"Other\", \"difficulty\": \"High Priority Expedite Surge\", \"description\": \"Tesla Energy Solutions requests emergency priority delivery acceleration of 120 units APX-902 sensors by 3 days, requiring urgent stock reallocation from non-critical orders to avoid vehicle line halt.\", \"notice_text\": \"MEMORANDUM: GLOBAL VEHICLE MANUFACTURING OPERATIONS\\nCUSTOMER: Tesla Energy Solutions (Austin Gigafactory)\\nSUBJECT: CRITICAL ESCALATION - APX-902 Sensor Assembly Delivery Schedule Acceleration\\nDATE: September 5, 2026\\n\\nDue to unprecedented ramp in Model Y / Megapack power conditioning unit output, Austin Gigafactory requires delivery of 120 units High-Precision Optical Sensors (SKU-1049 / APX-902) accelerated from September 10th to September 7th (3-day acceleration).\\n\\nFailure to meet this expedited gate schedule will incur statutory $500/day tier SLA delivery penalties and risk vehicle final assembly bottleneck. Proactive stock reallocation or emergency expedited air delivery requested immediately.\", \"structured_input\": {\"disruption_type\": \"Other\", \"supplier_id\": \"SUP-001\", \"po_number\": \"PO-4482\", \"shipment_id\": \"SH-8921\", \"sku_id\": \"SKU-1049\", \"disruption_date\": \"2026-09-05\", \"delay_days\": 3, \"affected_location\": \"Fremont, CA\", \"quantity_affected\": null, \"reason\": \"Austin Gigafactory urgent production acceleration request for SKU-1049 optical sensors.\", \"severity\": \"High\"}, \"expected_outcome\": {\"has_impact\": true, \"disrupted_shipment\": \"SH-8921\", \"supplier_id\": \"SUP-001\", \"affected_sku\": \"SKU-1049\", \"delay_days\": 3, \"primary_impacted_orders\": [\"ORD-501\"]}}]");
-const FALLBACK_SEED_DATA = JSON.parse("{\"system_current_date\": \"2026-09-05\", \"suppliers\": [{\"supplier_id\": \"SUP-001\", \"name\": \"Apex Precision Technologies\", \"aliases\": [\"Apex Dynamics\", \"Apex Precision\", \"Apex Tech\", \"Apex Sensors\", \"Apex\"], \"contact_email\": \"dispatch@apexprecision.com\", \"location\": \"Fremont, CA, USA\", \"reliability_score\": 0.94, \"expedite_available\": true, \"expedite_cost_multiplier\": 1.45}, {\"supplier_id\": \"SUP-002\", \"name\": \"TSMC Micro Systems\", \"aliases\": [\"TSMC\", \"Taiwan Semiconductor\", \"TSMC Micro\", \"Taiwan Semi\"], \"contact_email\": \"orders@tsmc-micro.tw\", \"location\": \"Hsinchu Science Park, Taiwan\", \"reliability_score\": 0.98, \"expedite_available\": true, \"expedite_cost_multiplier\": 1.6}, {\"supplier_id\": \"SUP-003\", \"name\": \"Foxconn Components Corp\", \"aliases\": [\"Foxconn\", \"Foxconn Taiwan\", \"Foxconn Comps\", \"Foxconn Electronics\"], \"contact_email\": \"logistics@foxconn-comps.tw\", \"location\": \"Taipei, Taiwan\", \"reliability_score\": 0.91, \"expedite_available\": true, \"expedite_cost_multiplier\": 1.35}, {\"supplier_id\": \"SUP-004\", \"name\": \"Nordic Lithium & Power\", \"aliases\": [\"Nordic Lithium\", \"Nordic Power\", \"Nordic Batt\", \"Nordic\"], \"contact_email\": \"support@nordiclithium.no\", \"location\": \"Oslo, Norway\", \"reliability_score\": 0.88, \"expedite_available\": false, \"expedite_cost_multiplier\": 1.0}, {\"supplier_id\": \"SUP-005\", \"name\": \"Shenzhen Optical Electronics\", \"aliases\": [\"Shenzhen Optics\", \"Shenzhen Opto\", \"Shenzhen Electronics\"], \"contact_email\": \"sales@shenzhenoptics.cn\", \"location\": \"Shenzhen, China\", \"reliability_score\": 0.89, \"expedite_available\": true, \"expedite_cost_multiplier\": 1.5}, {\"supplier_id\": \"SUP-006\", \"name\": \"Acme Logistics & Freight\", \"aliases\": [\"Acme Logistics\", \"Acme Freight\", \"Acme Carriers\", \"Acme\"], \"contact_email\": \"dispatch@acmelogistics.com\", \"location\": \"Denver, CO, USA\", \"reliability_score\": 0.76, \"expedite_available\": false, \"expedite_cost_multiplier\": 1.0}], \"skus\": [{\"sku_id\": \"SKU-1049\", \"name\": \"High-Precision Optical Sensor Assembly\", \"aliases\": [\"APX-902\", \"APX-902 sensor\", \"optical sensor assembly\", \"Apex optical sensor\", \"optical sensors\", \"sensor assemblies\"], \"category\": \"Optoelectronics\", \"unit_cost\": 140.0, \"unit_price\": 280.0, \"lead_time_days\": 14, \"safety_stock_threshold\": 30, \"preferred_supplier_id\": \"SUP-001\"}, {\"sku_id\": \"SKU-2088\", \"name\": \"Automotive Edge Microcontroller 32-Bit\", \"aliases\": [\"MC-320\", \"auto microcontroller\", \"edge MCU\", \"automotive microcontrollers\", \"automotive MCUs\", \"microcontrollers\"], \"category\": \"Semiconductors\", \"unit_cost\": 85.0, \"unit_price\": 190.0, \"lead_time_days\": 21, \"safety_stock_threshold\": 50, \"preferred_supplier_id\": \"SUP-002\"}, {\"sku_id\": \"SKU-3150\", \"name\": \"Industrial High-Density Lithium Battery Pack\", \"aliases\": [\"BAT-4400\", \"lithium battery pack\", \"4400mAh industrial cell\", \"heavy-duty battery pack\", \"battery packs\", \"lithium batteries\"], \"category\": \"Power Systems\", \"unit_cost\": 210.0, \"unit_price\": 460.0, \"lead_time_days\": 18, \"safety_stock_threshold\": 40, \"preferred_supplier_id\": \"SUP-004\"}, {\"sku_id\": \"SKU-4022\", \"name\": \"Industrial Step-Down Power Converter 12V/5A\", \"aliases\": [\"PWR-12V\", \"step-down converter\", \"DC-DC power module\", \"power converter\", \"power modules\"], \"category\": \"Power Electronics\", \"unit_cost\": 45.0, \"unit_price\": 95.0, \"lead_time_days\": 10, \"safety_stock_threshold\": 60, \"preferred_supplier_id\": \"SUP-003\"}, {\"sku_id\": \"SKU-5011\", \"name\": \"Ultra-Low Latency 10G Optical Transceiver Module\", \"aliases\": [\"TRX-10G\", \"fiber transceiver\", \"10G optical module\", \"transceiver module\"], \"category\": \"Networking\", \"unit_cost\": 310.0, \"unit_price\": 650.0, \"lead_time_days\": 25, \"safety_stock_threshold\": 25, \"preferred_supplier_id\": \"SUP-005\"}], \"inventory\": [{\"warehouse_id\": \"WH-MAIN\", \"warehouse_name\": \"Central Logistics Hub - Chicago\", \"sku_id\": \"SKU-1049\", \"on_hand\": 55, \"allocated\": 50, \"reserved_safety\": 5, \"available\": 0, \"location_bin\": \"Aisle-3-Bay-04\"}, {\"warehouse_id\": \"WH-MAIN\", \"warehouse_name\": \"Central Logistics Hub - Chicago\", \"sku_id\": \"SKU-2088\", \"on_hand\": 120, \"allocated\": 80, \"reserved_safety\": 20, \"available\": 20, \"location_bin\": \"Aisle-2-Bay-11\"}, {\"warehouse_id\": \"WH-MAIN\", \"warehouse_name\": \"Central Logistics Hub - Chicago\", \"sku_id\": \"SKU-3150\", \"on_hand\": 180, \"allocated\": 150, \"reserved_safety\": 20, \"available\": 10, \"location_bin\": \"Aisle-5-Bay-12\"}, {\"warehouse_id\": \"WH-MAIN\", \"warehouse_name\": \"Central Logistics Hub - Chicago\", \"sku_id\": \"SKU-4022\", \"on_hand\": 250, \"allocated\": 120, \"reserved_safety\": 30, \"available\": 100, \"location_bin\": \"Aisle-1-Bay-08\"}, {\"warehouse_id\": \"WH-MAIN\", \"warehouse_name\": \"Central Logistics Hub - Chicago\", \"sku_id\": \"SKU-5011\", \"on_hand\": 45, \"allocated\": 40, \"reserved_safety\": 5, \"available\": 0, \"location_bin\": \"Aisle-4-Bay-02\"}], \"inbound_shipments\": [{\"shipment_id\": \"SH-8921\", \"po_number\": \"PO-4482\", \"supplier_id\": \"SUP-001\", \"carrier_name\": \"FedEx Freight Express\", \"tracking_number\": \"FX-88910411\", \"origin\": \"Fremont, CA\", \"destination_warehouse\": \"WH-MAIN\", \"status\": \"in_transit\", \"scheduled_arrival_date\": \"2026-09-08\", \"revised_arrival_date\": null, \"items\": [{\"sku_id\": \"SKU-1049\", \"quantity_ordered\": 200, \"quantity_shipped\": 200}], \"expedite_air_available\": true, \"expedite_air_lead_time_days\": 2, \"expedite_air_cost\": 1250.0}, {\"shipment_id\": \"SH-7714\", \"po_number\": \"PO-3910\", \"supplier_id\": \"SUP-002\", \"carrier_name\": \"Maersk Line\", \"tracking_number\": \"MSKU-8839210\", \"origin\": \"Kaohsiung Port, Taiwan\", \"destination_warehouse\": \"WH-MAIN\", \"status\": \"in_transit\", \"scheduled_arrival_date\": \"2026-09-12\", \"revised_arrival_date\": null, \"items\": [{\"sku_id\": \"SKU-2088\", \"quantity_ordered\": 500, \"quantity_shipped\": 500}], \"expedite_air_available\": true, \"expedite_air_lead_time_days\": 3, \"expedite_air_cost\": 3400.0}, {\"shipment_id\": \"SH-6520\", \"po_number\": \"PO-5102\", \"supplier_id\": \"SUP-003\", \"carrier_name\": \"Evergreen Marine\", \"tracking_number\": \"EGLV-991204\", \"origin\": \"Taipei, Taiwan\", \"destination_warehouse\": \"WH-MAIN\", \"status\": \"in_transit\", \"scheduled_arrival_date\": \"2026-09-20\", \"revised_arrival_date\": null, \"items\": [{\"sku_id\": \"SKU-4022\", \"quantity_ordered\": 400, \"quantity_shipped\": 400}], \"expedite_air_available\": true, \"expedite_air_lead_time_days\": 4, \"expedite_air_cost\": 1800.0}, {\"shipment_id\": \"SH-9011\", \"po_number\": \"PO-6200\", \"supplier_id\": \"SUP-004\", \"carrier_name\": \"DHL Global Forwarding\", \"tracking_number\": \"DHL-7710928\", \"origin\": \"Oslo, Norway\", \"destination_warehouse\": \"WH-MAIN\", \"status\": \"in_transit\", \"scheduled_arrival_date\": \"2026-09-15\", \"revised_arrival_date\": null, \"items\": [{\"sku_id\": \"SKU-3150\", \"quantity_ordered\": 150, \"quantity_shipped\": 150}], \"expedite_air_available\": false, \"expedite_air_lead_time_days\": null, \"expedite_air_cost\": 0.0}], \"customer_orders\": [{\"order_id\": \"ORD-501\", \"customer_name\": \"Tesla Energy Solutions\", \"customer_tier\": \"Platinum\", \"priority\": 1, \"order_date\": \"2026-08-28\", \"promise_date\": \"2026-09-10\", \"sla_penalty_per_day\": 500.0, \"destination_city\": \"Austin, TX\", \"status\": \"partially_allocated\", \"items\": [{\"sku_id\": \"SKU-1049\", \"quantity_demanded\": 120, \"quantity_allocated\": 50}], \"notes\": \"Mission-critical production run. Strictly penalizes delivery delays beyond 24h.\"}, {\"order_id\": \"ORD-502\", \"customer_name\": \"Siemens Mobility Systems\", \"customer_tier\": \"Platinum\", \"priority\": 1, \"order_date\": \"2026-08-30\", \"promise_date\": \"2026-09-11\", \"sla_penalty_per_day\": 350.0, \"destination_city\": \"Sacramento, CA\", \"status\": \"unfulfilled\", \"items\": [{\"sku_id\": \"SKU-1049\", \"quantity_demanded\": 60, \"quantity_allocated\": 0}], \"notes\": \"Train signaling subsystem assembly. Key strategic European partner.\"}, {\"order_id\": \"ORD-503\", \"customer_name\": \"Rivian Automotive\", \"customer_tier\": \"Gold\", \"priority\": 2, \"order_date\": \"2026-08-25\", \"promise_date\": \"2026-09-16\", \"sla_penalty_per_day\": 200.0, \"destination_city\": \"Normal, IL\", \"status\": \"partially_allocated\", \"items\": [{\"sku_id\": \"SKU-2088\", \"quantity_demanded\": 300, \"quantity_allocated\": 80}], \"notes\": \"R1T powertrain electronics batch. High volume tier.\"}, {\"order_id\": \"ORD-504\", \"customer_name\": \"Quantum Robotics Lab\", \"customer_tier\": \"Gold\", \"priority\": 2, \"order_date\": \"2026-09-01\", \"promise_date\": \"2026-09-25\", \"sla_penalty_per_day\": 100.0, \"destination_city\": \"Boston, MA\", \"status\": \"unfulfilled\", \"items\": [{\"sku_id\": \"SKU-1049\", \"quantity_demanded\": 20, \"quantity_allocated\": 0}], \"notes\": \"Research prototype run. Late-September target allows delivery flexibility.\"}, {\"order_id\": \"ORD-505\", \"customer_name\": \"General Industrial Robotics\", \"customer_tier\": \"Standard\", \"priority\": 3, \"order_date\": \"2026-08-20\", \"promise_date\": \"2026-09-18\", \"sla_penalty_per_day\": 50.0, \"destination_city\": \"Detroit, MI\", \"status\": \"partially_allocated\", \"items\": [{\"sku_id\": \"SKU-3150\", \"quantity_demanded\": 120, \"quantity_allocated\": 120}], \"notes\": \"Standard OEM factory replenishment.\"}, {\"order_id\": \"ORD-506\", \"customer_name\": \"Midwest Automation Parts\", \"customer_tier\": \"Standard\", \"priority\": 3, \"order_date\": \"2026-09-02\", \"promise_date\": \"2026-09-28\", \"sla_penalty_per_day\": 0.0, \"destination_city\": \"Columbus, OH\", \"status\": \"allocated\", \"items\": [{\"sku_id\": \"SKU-4022\", \"quantity_demanded\": 100, \"quantity_allocated\": 100}], \"notes\": \"Standard wholesale distributor order.\"}]}");
-
-const FALLBACK_REFERENCE_DATA = {
-  system_current_date: FALLBACK_SEED_DATA.system_current_date,
-  disruption_types: [
-    "Supplier Production Halt",
-    "Carrier/Shipment Delay",
-    "Warehouse Incident",
-    "Other"
-  ],
-  severities: ["Low", "Medium", "High", "Critical"],
-  suppliers: FALLBACK_SEED_DATA.suppliers.map(s => ({
-    supplier_id: s.supplier_id,
-    name: s.name,
-    location: s.location,
-    reliability_score: s.reliability_score,
-    expedite_available: s.expedite_available
-  })),
-  purchase_orders: FALLBACK_SEED_DATA.inbound_shipments.map(sh => ({
-    po_number: sh.po_number,
-    supplier_id: sh.supplier_id,
-    shipment_id: sh.shipment_id,
-    sku_ids: sh.items.map(it => it.sku_id)
-  })),
-  shipments: FALLBACK_SEED_DATA.inbound_shipments.map(sh => ({
-    shipment_id: sh.shipment_id,
-    po_number: sh.po_number,
-    supplier_id: sh.supplier_id,
-    carrier_name: sh.carrier_name,
-    tracking_number: sh.tracking_number,
-    origin: sh.origin,
-    destination_warehouse: sh.destination_warehouse,
-    scheduled_arrival_date: sh.scheduled_arrival_date,
-    sku_ids: sh.items.map(it => it.sku_id)
-  })),
-  skus: FALLBACK_SEED_DATA.skus.map(sku => ({
-    sku_id: sku.sku_id,
-    name: sku.name,
-    category: sku.category,
-    unit_cost: sku.unit_cost,
-    unit_price: sku.unit_price,
-    preferred_supplier_id: sku.preferred_supplier_id
-  })),
-  locations: [
-    { id: "WH-MAIN", name: "Central Logistics Hub - Chicago (WH-MAIN)" },
-    { id: "Fremont, CA", name: "Apex Fremont Facility (Fremont, CA)" },
-    { id: "Port of Long Beach", name: "Port of Long Beach Marine Terminal (CA)" },
-    { id: "Kaohsiung Port, Taiwan", name: "Kaohsiung Port (Taiwan)" },
-    { id: "Taipei, Taiwan", name: "Foxconn Logistics Hub (Taipei, Taiwan)" },
-    { id: "Oslo, Norway", name: "Nordic Power Distribution (Oslo, Norway)" },
-    { id: "Denver, CO", name: "Acme Regional Freight Hub (Denver, CO)" }
-  ]
-};
-
-const FALLBACK_PROFILES = {
-  operator: {
-    id: "OPERATOR-01",
-    name: "Username",
-    title: "Operations Controller (Distributor Admin)",
-    facility: "Central Logistics Hub - Chicago (WH-MAIN)",
-    role: "admin"
-  },
-  suppliers: FALLBACK_SEED_DATA.suppliers.map(s => ({
-    supplier_id: s.supplier_id,
-    name: s.name,
-    location: s.location,
-    contact_email: s.contact_email,
-    reliability_score: s.reliability_score,
-    expedite_available: s.expedite_available,
-    active_shipments: FALLBACK_SEED_DATA.inbound_shipments.filter(sh => sh.supplier_id === s.supplier_id)
-  })),
-  customers: (() => {
-    const map = {};
-    FALLBACK_SEED_DATA.customer_orders.forEach(o => {
-      if (!map[o.customer_name]) {
-        map[o.customer_name] = {
-          customer_name: o.customer_name,
-          customer_tier: o.customer_tier,
-          destination_city: o.destination_city,
-          orders: []
-        };
-      }
-      map[o.customer_name].orders.push(o);
-    });
-    return Object.values(map);
-  })()
-};
-
 /**
- * ChainSolve AI - Supplier Disruption Response Assistant (PS08)
- * Full Interactive Operator Workbench & Multi-Persona Stakeholder Portals
+ * Supply Chain Disruption Response Assistant
+ * Enterprise SPA Application Logic
  */
 
-// Global State
-let currentAssessment = null;
-let preloadedScenarios = [];
-let referenceData = null;
-let selectedOptions = {}; // { [order_id]: option_id }
-let systemProfiles = { operator: null, suppliers: [], customers: [] };
-let activePersona = {
-  type: "admin", // 'admin' | 'customer' | 'supplier'
-  id: "OPERATOR-01",
-  name: "Username",
-  title: "Operations Controller (Distributor Admin)",
-  avatar: "👑",
-  facility: "WH-MAIN (Chicago Central Hub)"
+// Application State
+const state = {
+  currentView: 'dashboard',
+  referenceData: null,
+  activeUser: {
+    username: 'admin',
+    full_name: 'Marcus Vance',
+    role: 'Admin',
+    department: 'Global Supply Chain Operations',
+    email: 'admin@chainsolve.io'
+  },
+  disruptions: [],
+  selectedDisruptionId: null,
+  notifications: [],
+  suppliers: [],
+  inventory: [],
+  shipments: [],
+  customerOrders: [],
+  recommendations: []
 };
-let liveStreamTimer = null;
-let liveStreamIndex = 0;
-let cachedStreamEvents = [];
-
-// App Settings & Preferences
-const DEFAULT_SETTINGS = {
-  username: "Username",
-  parserMode: "hybrid",
-  confidence: "0.85",
-  streamInterval: 10000,
-  soundEnabled: true,
-  autoRunScenario: true,
-  currency: "$"
-};
-let appSettings = { ...DEFAULT_SETTINGS };
 
 // ============================================================================
-// Initialization Lifecycle
+// Initialization
 // ============================================================================
-document.addEventListener("DOMContentLoaded", async () => {
-  loadSettings();
-  initTheme();
-  initSplashScreen();
-  initSidebarDrawer();
+document.addEventListener('DOMContentLoaded', async () => {
+  setupEventListeners();
   await loadReferenceData();
-  initEventListeners();
-  initStructuredFormCascading();
-  await loadProfiles();
-  handleURLParamsOnLoad();
-  await initScenarios();
-  await loadAuditCount();
-  startLiveTelemetryStream();
+  await refreshNotifications();
+  await navigateTo('dashboard');
 });
 
-// ============================================================================
-// 1. Sidebar Drawer Controls (Hidden by Default, Opens on Click)
-// ============================================================================
-function initSidebarDrawer() {
-  const sidebar = document.getElementById("leftSidebar");
-  const backdrop = document.getElementById("sidebarBackdrop");
-  const btnToggle = document.getElementById("btnToggleSidebar");
-  const btnClose = document.getElementById("btnCloseSidebar");
-
-  const openDrawer = () => {
-    if (sidebar) sidebar.classList.add("sidebar-open");
-    if (backdrop) backdrop.classList.add("active");
-  };
-
-  const closeDrawer = () => {
-    if (sidebar) sidebar.classList.remove("sidebar-open");
-    if (backdrop) backdrop.classList.remove("active");
-  };
-
-  if (btnToggle) btnToggle.addEventListener("click", openDrawer);
-  if (btnClose) btnClose.addEventListener("click", closeDrawer);
-  if (backdrop) backdrop.addEventListener("click", closeDrawer);
-
-  // Close drawer with Escape key if open
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && sidebar && sidebar.classList.contains("sidebar-open")) {
-      closeDrawer();
-    }
-  });
-}
-
-function closeSidebarDrawer() {
-  const sidebar = document.getElementById("leftSidebar");
-  const backdrop = document.getElementById("sidebarBackdrop");
-  if (sidebar) sidebar.classList.remove("sidebar-open");
-  if (backdrop) backdrop.classList.remove("active");
-}
-
-// ============================================================================
-// 2. Settings & Preferences Management
-// ============================================================================
-function loadSettings() {
-  try {
-    const saved = localStorage.getItem("chainSolve_settings");
-    if (saved) {
-      appSettings = { ...DEFAULT_SETTINGS, ...JSON.parse(saved) };
-    }
-  } catch (e) {
-    console.warn("Could not parse saved settings:", e);
-    appSettings = { ...DEFAULT_SETTINGS };
-  }
-
-  const customUser = localStorage.getItem("chainSolve_username") || appSettings.username;
-  if (customUser) {
-    appSettings.username = customUser;
-    if (activePersona.type === "admin") {
-      activePersona.name = customUser;
-    }
-  }
-  updateActivePersonaUI();
-  updateSoundButtonUI();
-}
-
-function saveSettingsFromModal() {
-  const userInput = document.getElementById("settingUsernameInput");
-  if (userInput && userInput.value.trim()) {
-    const newName = userInput.value.trim();
-    appSettings.username = newName;
-    localStorage.setItem("chainSolve_username", newName);
-    if (activePersona.type === "admin") {
-      activePersona.name = newName;
-      updateActivePersonaUI();
-    }
-  }
-
-  const parserSelect = document.getElementById("settingParserMode");
-  if (parserSelect) appSettings.parserMode = parserSelect.value;
-
-  const confRadio = document.querySelector('input[name="settingConfidence"]:checked');
-  if (confRadio) appSettings.confidence = confRadio.value;
-
-  const streamSelect = document.getElementById("settingStreamInterval");
-  if (streamSelect) appSettings.streamInterval = parseInt(streamSelect.value, 10);
-
-  const soundCheckbox = document.getElementById("settingSoundToggle");
-  if (soundCheckbox) appSettings.soundEnabled = soundCheckbox.checked;
-
-  const autoRunCheckbox = document.getElementById("settingAutoRunScenario");
-  if (autoRunCheckbox) appSettings.autoRunScenario = autoRunCheckbox.checked;
-
-  localStorage.setItem("chainSolve_settings", JSON.stringify(appSettings));
-  updateSoundButtonUI();
-  startLiveTelemetryStream();
-  closeSettingsModal();
-  showToast("Settings & Preferences saved successfully!", "success", "✓");
-  playAudioChime("success");
-}
-
-function resetSettingsToDefaults() {
-  appSettings = { ...DEFAULT_SETTINGS };
-  localStorage.setItem("chainSolve_settings", JSON.stringify(appSettings));
-  localStorage.removeItem("chainSolve_username");
-  if (activePersona.type === "admin") {
-    activePersona.name = "Username";
-    updateActivePersonaUI();
-  }
-  populateSettingsModal();
-  updateSoundButtonUI();
-  startLiveTelemetryStream();
-  showToast("Preferences reset to default configuration.", "info", "⚙️");
-}
-
-function populateSettingsModal() {
-  const userInput = document.getElementById("settingUsernameInput");
-  if (userInput) userInput.value = localStorage.getItem("chainSolve_username") || appSettings.username || "Username";
-
-  const parserSelect = document.getElementById("settingParserMode");
-  if (parserSelect) parserSelect.value = appSettings.parserMode;
-
-  const confRadio = document.querySelector(`input[name="settingConfidence"][value="${appSettings.confidence}"]`);
-  if (confRadio) confRadio.checked = true;
-
-  const streamSelect = document.getElementById("settingStreamInterval");
-  if (streamSelect) streamSelect.value = appSettings.streamInterval.toString();
-
-  const soundCheckbox = document.getElementById("settingSoundToggle");
-  if (soundCheckbox) soundCheckbox.checked = appSettings.soundEnabled;
-
-  const autoRunCheckbox = document.getElementById("settingAutoRunScenario");
-  if (autoRunCheckbox) autoRunCheckbox.checked = appSettings.autoRunScenario;
-}
-
-// ============================================================================
-// 3. Audio Chimes & Sound Synthesis (Web Audio API)
-// ============================================================================
-function playAudioChime(type = "ping") {
-  if (!appSettings.soundEnabled) return;
-  try {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-    const ctx = new AudioContext();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    if (type === "ping") {
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.12); // A5
-      gain.gain.setValueAtTime(0.1, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.3);
-    } else if (type === "alert") {
-      osc.type = "triangle";
-      osc.frequency.setValueAtTime(440, ctx.currentTime);
-      osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.12);
-      gain.gain.setValueAtTime(0.14, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.4);
-    } else if (type === "success") {
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-      osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08); // E5
-      osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.16); // G5
-      gain.gain.setValueAtTime(0.1, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.4);
-    }
-  } catch (e) {
-    console.debug("Web Audio Synthesizer:", e);
-  }
-}
-
-function updateSoundButtonUI() {
-  const soundIcon = document.getElementById("soundIcon");
-  const soundIconSymbol = document.getElementById("soundIconSymbol");
-  const btnToggle = document.getElementById("btnToggleSound");
-  if (soundIcon) {
-    soundIcon.textContent = appSettings.soundEnabled ? "ON" : "OFF";
-    soundIcon.className = appSettings.soundEnabled ? "text-[10px] font-black text-emerald-600 dark:text-emerald-400" : "text-[10px] font-black text-slate-400 dark:text-slate-500";
-  }
-  if (soundIconSymbol) {
-    soundIconSymbol.textContent = appSettings.soundEnabled ? "🔔" : "🔕";
-  }
-  if (btnToggle) {
-    btnToggle.title = appSettings.soundEnabled ? "Audio chime alerts active" : "Audio chime alerts muted";
-  }
-}
-
-// ============================================================================
-// 4. Floating Toast Notifications
-// ============================================================================
-function showToast(message, type = "info", icon = "🔔") {
-  const container = document.getElementById("toastContainer");
-  if (!container) return;
-  const toast = document.createElement("div");
-
-  let colorClasses = "bg-[#042016]/95 border-emerald-500/80 text-emerald-100";
-  if (type === "success") colorClasses = "bg-emerald-950/95 border-emerald-500 text-emerald-100";
-  else if (type === "alert") colorClasses = "bg-rose-950/95 border-rose-500 text-rose-100";
-
-  toast.className = `flex items-center space-x-3 px-4 py-3 rounded-2xl border shadow-2xl text-xs font-semibold backdrop-blur-md transform transition-all duration-300 translate-y-3 opacity-0 pointer-events-auto ${colorClasses}`;
-  toast.innerHTML = `
-    <span class="text-base shrink-0">${icon}</span>
-    <span class="leading-tight">${message}</span>
-  `;
-
-  container.appendChild(toast);
-  requestAnimationFrame(() => {
-    toast.classList.remove("translate-y-3", "opacity-0");
-  });
-
-  setTimeout(() => {
-    toast.classList.add("translate-y-3", "opacity-0");
-    setTimeout(() => toast.remove(), 350);
-  }, 4500);
-}
-
-// ============================================================================
-// 5. Dark / Light Theme System
-// ============================================================================
-function initTheme() {
-  const btnToggle = document.getElementById("btnThemeToggle");
-  const btnTopToggle = document.getElementById("btnTopThemeToggle");
-  const themeIcon = document.getElementById("themeIcon");
-  const topThemeIcon = document.getElementById("topThemeIcon");
-  const themeLabel = document.getElementById("themeLabel");
-
-  const applyTheme = (theme) => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-      if (themeIcon) themeIcon.textContent = "☀️";
-      if (topThemeIcon) topThemeIcon.textContent = "☀️";
-      if (themeLabel) themeLabel.textContent = "Light";
-      if (btnToggle) btnToggle.setAttribute("title", "Switch to Light Mode");
-    } else {
-      document.documentElement.classList.remove("dark");
-      if (themeIcon) themeIcon.textContent = "🌙";
-      if (topThemeIcon) topThemeIcon.textContent = "🌙";
-      if (themeLabel) themeLabel.textContent = "Dark";
-      if (btnToggle) btnToggle.setAttribute("title", "Switch to Dark Mode");
-    }
-  };
-
-  const savedTheme = localStorage.getItem("chainSolve_theme");
-  if (savedTheme) {
-    applyTheme(savedTheme);
-  } else {
-    applyTheme("dark");
-  }
-
-  const toggleHandler = () => {
-    const isDark = document.documentElement.classList.contains("dark");
-    const nextTheme = isDark ? "light" : "dark";
-    localStorage.setItem("chainSolve_theme", nextTheme);
-    applyTheme(nextTheme);
-    showToast(`Theme switched to ${nextTheme.toUpperCase()} mode`, "info", nextTheme === "dark" ? "🌙" : "☀️");
-  };
-
-  if (btnToggle) btnToggle.addEventListener("click", toggleHandler);
-  if (btnTopToggle) btnTopToggle.addEventListener("click", toggleHandler);
-}
-
-// ============================================================================
-// 6. Clean Splash Screen Loader (Logo & Loader Only)
-// ============================================================================
-function initSplashScreen() {
-  const splash = document.getElementById("splashScreen");
-  const btnSkip = document.getElementById("btnSkipSplash");
-
-  if (!splash) return;
-
-  const dismissSplash = () => {
-    splash.style.transition = "opacity 0.6s ease, transform 0.6s ease";
-    splash.style.opacity = "0";
-    splash.style.pointerEvents = "none";
-    setTimeout(() => {
-      splash.style.display = "none";
-    }, 650);
-  };
-
-  if (btnSkip) {
-    btnSkip.addEventListener("click", dismissSplash);
-  }
-
-  // Guaranteed dismiss after 2.5 seconds
-  setTimeout(() => {
-    dismissSplash();
-  }, 2500);
-}
-
-// ============================================================================
-// 7. Profiles & Multi-Persona Stakeholder Portals
-// ============================================================================
-async function loadProfiles() {
-  try {
-    const res = await fetch("/api/profiles");
-    if (!res.ok) throw new Error("Failed to load profiles");
-    systemProfiles = await res.json();
-    populateProfileModal(systemProfiles);
-  } catch (err) {
-    console.warn("Could not load profiles from API:", err);
-  }
-}
-
-function populateProfileModal(profiles) {
-  const custCountBadge = document.getElementById("profileCustCount");
-  if (custCountBadge && profiles.customers) custCountBadge.textContent = profiles.customers.length;
-
-  const suppCountBadge = document.getElementById("profileSuppCount");
-  if (suppCountBadge && profiles.suppliers) suppCountBadge.textContent = profiles.suppliers.length;
-
-  // 1. Customer Profiles List
-  const custList = document.getElementById("customerProfilesList");
-  if (custList && profiles.customers) {
-    custList.innerHTML = "";
-    profiles.customers.forEach(c => {
-      const card = document.createElement("div");
-      let tierColor = "bg-purple-100 text-purple-900 border-purple-200 dark:bg-purple-900/60 dark:text-purple-200";
-      if (c.customer_tier === "Platinum") tierColor = "bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-950/60 dark:text-rose-200";
-      else if (c.customer_tier === "Gold") tierColor = "bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/60 dark:text-amber-200";
-
-      card.className = "bg-slate-50 dark:bg-[#160731] p-4 rounded-2xl border border-slate-200 dark:border-purple-800/60 flex flex-col justify-between space-y-3.5 hover:border-purple-400 transition shadow-sm";
-      card.innerHTML = `
-        <div class="space-y-1.5">
-          <div class="flex items-center justify-between">
-            <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider border ${tierColor}">${c.customer_tier} Tier</span>
-            <span class="text-[11px] text-slate-500 dark:text-slate-300 font-mono">📍 ${c.destination_city}</span>
-          </div>
-          <h5 class="text-xs font-bold text-slate-900 dark:text-white">${c.customer_name}</h5>
-          <div class="text-[11px] text-slate-600 dark:text-purple-300">
-            Active Orders: <strong class="text-purple-950 dark:text-white font-bold">${c.orders.length}</strong> (${c.orders.map(o => o.order_id).join(", ")})
-          </div>
-        </div>
-        <button class="btn-login-customer w-full bg-white dark:bg-[#0e031f] hover:bg-purple-50 dark:hover:bg-purple-900/60 text-purple-950 dark:text-purple-200 border border-purple-200 dark:border-purple-700 text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1 cursor-pointer">
-          <span>🏢 Login as Customer</span>
-          <span>➔</span>
-        </button>
-      `;
-
-      card.querySelector(".btn-login-customer").addEventListener("click", () => {
-        loginAsCustomer(c);
-      });
-      custList.appendChild(card);
+function setupEventListeners() {
+  const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+  if (btnToggleSidebar) {
+    btnToggleSidebar.addEventListener('click', () => {
+      const sidebar = document.getElementById('mainSidebar');
+      sidebar.classList.toggle('hidden');
     });
   }
 
-  // 2. Supplier Profiles List
-  const suppList = document.getElementById("supplierProfilesList");
-  if (suppList && profiles.suppliers) {
-    suppList.innerHTML = "";
-    profiles.suppliers.forEach(s => {
-      const card = document.createElement("div");
-      card.className = "bg-slate-50 dark:bg-[#160731] p-4 rounded-2xl border border-slate-200 dark:border-purple-800/60 flex flex-col justify-between space-y-3.5 hover:border-purple-400 transition shadow-sm";
-      card.innerHTML = `
-        <div class="space-y-1.5">
-          <div class="flex items-center justify-between">
-            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-900 dark:bg-purple-900/60 dark:text-purple-200">${s.supplier_id}</span>
-            <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-bold">★ ${(s.reliability_score * 100).toFixed(0)}% Score</span>
-          </div>
-          <h5 class="text-xs font-bold text-slate-900 dark:text-white">${s.name}</h5>
-          <div class="text-[11px] text-slate-600 dark:text-purple-300">
-            📍 ${s.location} • Inbound POs: <strong>${s.active_shipments.length}</strong>
-          </div>
-        </div>
-        <button class="btn-login-supplier w-full bg-white dark:bg-[#0e031f] hover:bg-purple-50 dark:hover:bg-purple-900/60 text-purple-950 dark:text-purple-200 border border-purple-200 dark:border-purple-700 text-xs font-bold py-2 px-3 rounded-xl transition flex items-center justify-center space-x-1 cursor-pointer">
-          <span>🏭 Login as Supplier</span>
-          <span>➔</span>
-        </button>
-      `;
+  const btnThemeToggle = document.getElementById('btnThemeToggle');
+  if (btnThemeToggle) {
+    btnThemeToggle.addEventListener('click', toggleTheme);
+  }
 
-      card.querySelector(".btn-login-supplier").addEventListener("click", () => {
-        loginAsSupplier(s);
-      });
-      suppList.appendChild(card);
+  const btnNotifBell = document.getElementById('btnNotifBell');
+  const notificationDrawer = document.getElementById('notificationDrawer');
+  const btnCloseNotifDrawer = document.getElementById('btnCloseNotifDrawer');
+  const btnMarkAllRead = document.getElementById('btnMarkAllRead');
+
+  if (btnNotifBell && notificationDrawer) {
+    btnNotifBell.addEventListener('click', () => {
+      notificationDrawer.classList.remove('hidden');
+      renderNotifications();
     });
   }
-}
-
-function loginAsAdmin() {
-  const input = document.getElementById("profileModalNameInput");
-  let currentUsername = localStorage.getItem("chainSolve_username") || appSettings.username || "Username";
-  if (input && input.value.trim()) {
-    currentUsername = input.value.trim();
-    localStorage.setItem("chainSolve_username", currentUsername);
-    appSettings.username = currentUsername;
-    localStorage.setItem("chainSolve_settings", JSON.stringify(appSettings));
+  if (btnCloseNotifDrawer && notificationDrawer) {
+    btnCloseNotifDrawer.addEventListener('click', () => {
+      notificationDrawer.classList.add('hidden');
+    });
+  }
+  if (btnMarkAllRead) {
+    btnMarkAllRead.addEventListener('click', markAllNotificationsRead);
   }
 
-  activePersona = {
-    type: "admin",
-    id: "OPERATOR-01",
-    name: currentUsername,
-    title: "Operations Controller (Distributor Admin)",
-    avatar: "👑",
-    facility: "WH-MAIN (Chicago Central Hub)"
-  };
-  updateActivePersonaUI();
-  closeProfileModal();
-  closeSidebarDrawer();
-  showToast(`Logged in as Operations Controller (${currentUsername})`, "success", "👑");
-  playAudioChime("success");
-}
-
-function loginAsCustomer(cust) {
-  activePersona = {
-    type: "customer",
-    id: cust.customer_name,
-    name: cust.customer_name,
-    tier: cust.customer_tier,
-    city: cust.destination_city,
-    orders: cust.orders,
-    avatar: "🏢",
-    facility: `Client Destination: ${cust.destination_city}`
-  };
-  updateActivePersonaUI();
-  closeProfileModal();
-  closeSidebarDrawer();
-  showToast(`Switched to Customer Portal: ${cust.customer_name}`, "info", "🏢");
-  playAudioChime("ping");
-}
-
-function loginAsSupplier(supp) {
-  activePersona = {
-    type: "supplier",
-    id: supp.supplier_id,
-    name: supp.name,
-    location: supp.location,
-    shipments: supp.active_shipments,
-    reliability: supp.reliability_score,
-    avatar: "🏭",
-    facility: `Origin: ${supp.location}`
-  };
-  updateActivePersonaUI();
-  closeProfileModal();
-  closeSidebarDrawer();
-  showToast(`Switched to Supplier Portal: ${supp.name}`, "info", "🏭");
-  playAudioChime("ping");
-}
-
-function updateActivePersonaUI() {
-  const avatarEl = document.getElementById("sidebarAvatar");
-  const topAvatarEl = document.getElementById("topBarAvatar");
-  const nameEl = document.getElementById("profileName");
-  const topNameEl = document.getElementById("topBarName");
-  const adminCardName = document.getElementById("adminProfileCardName");
-  const modalInput = document.getElementById("profileModalNameInput");
-  const settingInput = document.getElementById("settingUsernameInput");
-  const roleSubtext = document.getElementById("sidebarRoleSubtext");
-  const facilitySubtext = document.getElementById("sidebarFacilitySubtext");
-  const rolePill = document.getElementById("sidebarRolePill");
-  const modalText = document.getElementById("modalActivePersonaText");
-
-  const currentSavedName = localStorage.getItem("chainSolve_username") || appSettings.username || "Username";
-
-  if (avatarEl) avatarEl.textContent = activePersona.avatar;
-  if (topAvatarEl) topAvatarEl.textContent = activePersona.avatar;
-  if (nameEl) nameEl.textContent = activePersona.name;
-  if (topNameEl) topNameEl.textContent = activePersona.name;
-  if (adminCardName) adminCardName.textContent = currentSavedName;
-  if (modalInput && document.activeElement !== modalInput) {
-    modalInput.value = currentSavedName;
-  }
-  if (settingInput && document.activeElement !== settingInput) {
-    settingInput.value = currentSavedName;
+  const btnProfileMenu = document.getElementById('btnProfileMenu');
+  const profileDropdown = document.getElementById('profileDropdown');
+  if (btnProfileMenu && profileDropdown) {
+    btnProfileMenu.addEventListener('click', (e) => {
+      e.stopPropagation();
+      profileDropdown.classList.toggle('hidden');
+    });
+    document.addEventListener('click', () => {
+      profileDropdown.classList.add('hidden');
+    });
   }
 
-  if (roleSubtext) {
-    if (activePersona.type === "customer") roleSubtext.textContent = `Customer (${activePersona.tier} Tier)`;
-    else if (activePersona.type === "supplier") roleSubtext.textContent = `Supplier (${activePersona.id})`;
-    else roleSubtext.textContent = "Operations Controller (Admin)";
+  const globalSearchInput = document.getElementById('globalSearchInput');
+  if (globalSearchInput) {
+    globalSearchInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const query = globalSearchInput.value.trim();
+        if (query) {
+          navigateTo('disruptions');
+          const filterInput = document.getElementById('filterSearchInput');
+          if (filterInput) {
+            filterInput.value = query;
+            loadDisruptionsData();
+          }
+        }
+      }
+    });
   }
-  if (facilitySubtext) facilitySubtext.textContent = activePersona.facility || "WH-MAIN (Chicago Central Hub)";
-  if (rolePill) rolePill.textContent = `${activePersona.type.toUpperCase()} PORTAL`;
-  if (modalText) modalText.textContent = `${activePersona.name} (${activePersona.type.toUpperCase()})`;
 
-  const custBanner = document.getElementById("customerPortalBanner");
-  const suppBanner = document.getElementById("supplierPortalBanner");
-
-  if (activePersona.type === "customer") {
-    if (custBanner) {
-      custBanner.classList.remove("hidden");
-      document.getElementById("custBannerName").textContent = activePersona.name;
-      const tierBadge = document.getElementById("custBannerTier");
-      tierBadge.textContent = `${activePersona.tier} Tier`;
-      if (activePersona.tier === "Platinum") tierBadge.className = "px-2.5 py-0.5 text-[10px] font-extrabold rounded-full bg-rose-500 text-white uppercase tracking-wider";
-      else if (activePersona.tier === "Gold") tierBadge.className = "px-2.5 py-0.5 text-[10px] font-extrabold rounded-full bg-amber-500 text-white uppercase tracking-wider";
-      else tierBadge.className = "px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-purple-700 text-purple-200 uppercase tracking-wider";
-
-      const ordersSummary = document.getElementById("customerOrdersSummary");
-      ordersSummary.innerHTML = "";
-      (activePersona.orders || []).forEach(ord => {
-        const div = document.createElement("div");
-        div.className = "bg-purple-950/80 border border-purple-700/70 rounded-xl p-3.5 text-xs space-y-1.5";
-        div.innerHTML = `
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-white">Order: ${ord.order_id}</span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${ord.status === 'allocated' ? 'bg-emerald-800 text-emerald-200' : 'bg-amber-800 text-amber-200'}">${ord.status}</span>
-          </div>
-          <div class="text-[11px] text-purple-200">Promise Delivery: <strong>${ord.promise_date}</strong> • Penalty: <strong>$${ord.sla_penalty_per_day}/day</strong></div>
-        `;
-        ordersSummary.appendChild(div);
-      });
-    }
-    if (suppBanner) suppBanner.classList.add("hidden");
-  } else if (activePersona.type === "supplier") {
-    if (suppBanner) {
-      suppBanner.classList.remove("hidden");
-      document.getElementById("suppBannerName").textContent = activePersona.name;
-      document.getElementById("suppBannerId").textContent = activePersona.id;
-    }
-    if (custBanner) custBanner.classList.add("hidden");
-  } else {
-    // Admin
-    if (custBanner) custBanner.classList.add("hidden");
-    if (suppBanner) suppBanner.classList.add("hidden");
+  ['filterSeverity', 'filterStatus', 'filterType', 'filterSupplier'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('change', loadDisruptionsData);
+  });
+  const filterSearchInput = document.getElementById('filterSearchInput');
+  if (filterSearchInput) {
+    filterSearchInput.addEventListener('input', debounce(loadDisruptionsData, 300));
   }
 }
 
 // ============================================================================
-// 8. Live Telemetry Stream Engine
+// Navigation & Router
 // ============================================================================
-async function startLiveTelemetryStream() {
-  if (liveStreamTimer) clearInterval(liveStreamTimer);
-  await fetchLiveTelemetry();
+async function navigateTo(viewName) {
+  state.currentView = viewName;
 
-  if (appSettings.streamInterval > 0) {
-    liveStreamTimer = setInterval(async () => {
-      await fetchLiveTelemetry();
-    }, appSettings.streamInterval);
+  const breadcrumb = document.getElementById('currentBreadcrumb');
+  if (breadcrumb) {
+    const titles = {
+      'landing': 'Home',
+      'dashboard': 'Dashboard',
+      'disruptions': 'Disruptions',
+      'create-disruption': 'Report Incident',
+      'impact-analysis': 'Impact Analysis',
+      'risk-assessment': 'Risk Assessment',
+      'recommendations': 'Action Plans',
+      'suppliers': 'Suppliers',
+      'inventory': 'Inventory',
+      'shipments': 'Shipments',
+      'orders': 'Customer Orders',
+      'resolution': 'Resolution Center',
+      'reports': 'Reports & Analytics',
+      'settings': 'Settings & Users'
+    };
+    breadcrumb.textContent = titles[viewName] || viewName;
+  }
+
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.classList.remove('nav-tab-active');
+  });
+  const activeBtn = document.getElementById(`nav-${viewName}`);
+  if (activeBtn) {
+    activeBtn.classList.add('nav-tab-active');
+  }
+
+  document.querySelectorAll('.view-panel').forEach(panel => {
+    panel.classList.add('hidden');
+  });
+  const targetPanel = document.getElementById(`view-${viewName}`);
+  if (targetPanel) {
+    targetPanel.classList.remove('hidden');
+  }
+
+  switch (viewName) {
+    case 'dashboard':
+      await loadDashboardData();
+      break;
+    case 'disruptions':
+      await loadDisruptionsData();
+      break;
+    case 'create-disruption':
+      populateCreateDisruptionDropdowns();
+      break;
+    case 'impact-analysis':
+      await initImpactAnalysisView();
+      break;
+    case 'risk-assessment':
+      await loadRiskAssessmentView();
+      break;
+    case 'recommendations':
+      await loadRecommendationsData();
+      break;
+    case 'suppliers':
+      await loadSuppliersData();
+      break;
+    case 'inventory':
+      await loadInventoryData();
+      break;
+    case 'shipments':
+      await loadShipmentsData();
+      break;
+    case 'orders':
+      await loadCustomerOrdersData();
+      break;
+    case 'resolution':
+      await loadResolutionCenterData();
+      break;
+    case 'reports':
+      await loadReportsData();
+      break;
   }
 }
 
-async function fetchLiveTelemetry() {
+// ============================================================================
+// API Fetch Helpers
+// ============================================================================
+async function fetchAPI(endpoint, options = {}) {
   try {
-    const res = await fetch("/api/live/stream");
-    if (!res.ok) return;
-    const data = await res.json();
-    if (data.events && data.events.length > 0) {
-      cachedStreamEvents = data.events;
-      rotateLiveTicker();
+    const res = await fetch(`/api${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(options.headers || {})
+      },
+      ...options
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ detail: res.statusText }));
+      throw new Error(err.detail || `HTTP Error ${res.status}`);
     }
+    return await res.json();
   } catch (err) {
-    console.debug("Telemetry polling skipped:", err);
+    console.error(`API Error on ${endpoint}:`, err);
+    showToast(err.message, 'error');
+    throw err;
   }
-}
-
-function rotateLiveTicker() {
-  if (!cachedStreamEvents.length) return;
-  const ev = cachedStreamEvents[liveStreamIndex % cachedStreamEvents.length];
-  liveStreamIndex++;
-
-  const iconEl = document.getElementById("liveTickerIcon");
-  const textEl = document.getElementById("liveTickerText");
-
-  if (iconEl && textEl) {
-    textEl.style.opacity = "0";
-    setTimeout(() => {
-      iconEl.textContent = ev.icon || "📡";
-      textEl.textContent = `${ev.source}: ${ev.message}`;
-      textEl.style.opacity = "1";
-    }, 200);
-  }
-}
-
-function pushManualTelemetryPing() {
-  const pings = [
-    { icon: "🚢", text: "Vessel EVER GLOBE: Long Beach pilot boarded; container offload queue positioned #2." },
-    { icon: "📦", text: "WH-MAIN RFID Gate 4: Cross-dock staging verified 45 units SKU-1049 in clean Bay B." },
-    { icon: "⚡", text: "Apex Dynamics Line 2 EDI: Component pressure telemetry restored to nominal 120 PSI." },
-    { icon: "✈️", text: "FedEx Express Cargo: Flight FX-912 booked with priority airway bill 88910411-FX." },
-    { icon: "⏱️", text: "SLA Sentinel: Siemens Mobility Systems order ORD-502 promise clock: 6 days remaining." }
-  ];
-  const rand = pings[Math.floor(Math.random() * pings.length)];
-  const iconEl = document.getElementById("liveTickerIcon");
-  const textEl = document.getElementById("liveTickerText");
-
-  if (iconEl && textEl) {
-    iconEl.textContent = rand.icon;
-    textEl.textContent = `Live Push: ${rand.text}`;
-  }
-
-  showToast(rand.text, "info", rand.icon);
-  playAudioChime("ping");
 }
 
 // ============================================================================
-// 8.5. Structured Reference Data & Form Cascading Engine
+// 1. Reference Data Loading
 // ============================================================================
 async function loadReferenceData() {
   try {
-    const res = await fetch("/api/reference-data");
-    if (res.ok) {
-      referenceData = await res.json();
-    } else {
-      referenceData = FALLBACK_REFERENCE_DATA;
-    }
+    state.referenceData = await fetchAPI('/reference-data');
+    populateSupplierFilters();
   } catch (err) {
-    console.warn("Using embedded reference data fallback:", err);
-    referenceData = FALLBACK_REFERENCE_DATA;
-  }
-  populateFormDropdowns(referenceData);
-}
-
-function populateFormDropdowns(data) {
-  if (!data) return;
-
-  // 1. Suppliers
-  const supplierSelect = document.getElementById("inputSupplier");
-  if (supplierSelect && data.suppliers) {
-    supplierSelect.innerHTML = `<option value="">-- Select Supplier --</option>`;
-    data.suppliers.forEach(s => {
-      supplierSelect.innerHTML += `<option value="${s.supplier_id}">${s.name} (${s.supplier_id})</option>`;
-    });
-  }
-
-  // 2. Purchase Orders
-  const poSelect = document.getElementById("inputPO");
-  if (poSelect && data.purchase_orders) {
-    poSelect.innerHTML = `<option value="">-- Select Purchase Order --</option>`;
-    data.purchase_orders.forEach(po => {
-      poSelect.innerHTML += `<option value="${po.po_number}" data-supplier="${po.supplier_id}" data-shipment="${po.shipment_id}">${po.po_number} (${po.supplier_id})</option>`;
-    });
-  }
-
-  // 3. Inbound Shipments
-  const shipmentSelect = document.getElementById("inputShipment");
-  if (shipmentSelect && data.shipments) {
-    shipmentSelect.innerHTML = `<option value="">-- Select Shipment --</option>`;
-    data.shipments.forEach(sh => {
-      shipmentSelect.innerHTML += `<option value="${sh.shipment_id}" data-supplier="${sh.supplier_id}" data-po="${sh.po_number}">${sh.shipment_id} - ${sh.carrier_name} (${sh.po_number})</option>`;
-    });
-  }
-
-  // 4. Catalog SKUs
-  const skuSelect = document.getElementById("inputSKU");
-  if (skuSelect && data.skus) {
-    skuSelect.innerHTML = `<option value="">-- Select SKU / Product --</option>`;
-    data.skus.forEach(sku => {
-      skuSelect.innerHTML += `<option value="${sku.sku_id}" data-supplier="${sku.preferred_supplier_id}">${sku.sku_id} - ${sku.name}</option>`;
-    });
-  }
-
-  // 5. Locations
-  const locationSelect = document.getElementById("inputLocation");
-  if (locationSelect && data.locations) {
-    locationSelect.innerHTML = "";
-    data.locations.forEach(loc => {
-      locationSelect.innerHTML += `<option value="${loc.id}">${loc.name}</option>`;
-    });
-  }
-
-  // Default Disruption Date to System Date
-  const dateInput = document.getElementById("inputDisruptionDate");
-  if (dateInput && data.system_current_date) {
-    dateInput.value = data.system_current_date;
+    console.warn('Fallback to local reference state');
   }
 }
 
-function initStructuredFormCascading() {
-  const supplierSelect = document.getElementById("inputSupplier");
-  const poSelect = document.getElementById("inputPO");
-  const shipmentSelect = document.getElementById("inputShipment");
-  const skuSelect = document.getElementById("inputSKU");
-  const typeSelect = document.getElementById("inputDisruptionType");
-
-  if (!supplierSelect || !poSelect || !shipmentSelect || !skuSelect || !typeSelect) return;
-
-  // 1. Supplier Change -> Filter and auto-sync POs, Shipments & SKUs
-  supplierSelect.addEventListener("change", () => {
-    hideValidationError();
-    const selectedSupplier = supplierSelect.value;
-
-    // Filter POs
-    let firstMatchingPO = "";
-    Array.from(poSelect.options).forEach((opt, idx) => {
-      if (idx === 0) return;
-      const supp = opt.getAttribute("data-supplier");
-      const matches = !selectedSupplier || supp === selectedSupplier;
-      opt.hidden = !matches;
-      if (matches && !firstMatchingPO) firstMatchingPO = opt.value;
-    });
-    if (poSelect.selectedOptions[0] && poSelect.selectedOptions[0].hidden) {
-      poSelect.value = firstMatchingPO || "";
-    }
-
-    // Filter Shipments
-    let firstMatchingShip = "";
-    Array.from(shipmentSelect.options).forEach((opt, idx) => {
-      if (idx === 0) return;
-      const supp = opt.getAttribute("data-supplier");
-      const matches = !selectedSupplier || supp === selectedSupplier;
-      opt.hidden = !matches;
-      if (matches && !firstMatchingShip) firstMatchingShip = opt.value;
-    });
-    if (shipmentSelect.selectedOptions[0] && shipmentSelect.selectedOptions[0].hidden) {
-      shipmentSelect.value = firstMatchingShip || "";
-    }
-
-    // Filter SKUs
-    let firstMatchingSKU = "";
-    Array.from(skuSelect.options).forEach((opt, idx) => {
-      if (idx === 0) return;
-      const supp = opt.getAttribute("data-supplier");
-      const matches = !selectedSupplier || !supp || supp === selectedSupplier;
-      opt.hidden = !matches;
-      if (matches && !firstMatchingSKU) firstMatchingSKU = opt.value;
-    });
-    if (skuSelect.selectedOptions[0] && skuSelect.selectedOptions[0].hidden) {
-      skuSelect.value = firstMatchingSKU || "";
-    }
-
-    // Auto-select corresponding shipment and SKU if available
-    if (selectedSupplier && referenceData) {
-      const matchShip = referenceData.shipments.find(s => s.supplier_id === selectedSupplier);
-      if (matchShip) {
-        if (!shipmentSelect.value) shipmentSelect.value = matchShip.shipment_id;
-        if (!poSelect.value && matchShip.po_number) poSelect.value = matchShip.po_number;
-        if (!skuSelect.value && matchShip.sku_ids && matchShip.sku_ids.length > 0) {
-          skuSelect.value = matchShip.sku_ids[0];
-        }
-      }
-    }
+function populateSupplierFilters() {
+  const filterSupplier = document.getElementById('filterSupplier');
+  if (!filterSupplier || !state.referenceData) return;
+  filterSupplier.innerHTML = '<option value="All">All Suppliers</option>';
+  state.referenceData.suppliers.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.supplier_id;
+    opt.textContent = `${s.name} (${s.supplier_id})`;
+    filterSupplier.appendChild(opt);
   });
-
-  // 2. Purchase Order Change -> Auto-fill Supplier & Filter Shipments / SKUs
-  poSelect.addEventListener("change", () => {
-    hideValidationError();
-    const selectedPO = poSelect.value;
-    if (!selectedPO) return;
-
-    if (referenceData && referenceData.purchase_orders) {
-      const poObj = referenceData.purchase_orders.find(p => p.po_number === selectedPO);
-      if (poObj) {
-        if (poObj.supplier_id) supplierSelect.value = poObj.supplier_id;
-        if (poObj.shipment_id) shipmentSelect.value = poObj.shipment_id;
-        if (poObj.sku_ids && poObj.sku_ids.length > 0) {
-          skuSelect.value = poObj.sku_ids[0];
-        }
-      }
-    }
-  });
-
-  // 3. Shipment Change -> Auto-fill Supplier, PO & SKU
-  shipmentSelect.addEventListener("change", () => {
-    hideValidationError();
-    const selectedShipment = shipmentSelect.value;
-    if (!selectedShipment) return;
-
-    if (referenceData && referenceData.shipments) {
-      const shipObj = referenceData.shipments.find(s => s.shipment_id === selectedShipment);
-      if (shipObj) {
-        if (shipObj.supplier_id) supplierSelect.value = shipObj.supplier_id;
-        if (shipObj.po_number) poSelect.value = shipObj.po_number;
-        if (shipObj.sku_ids && shipObj.sku_ids.length > 0) {
-          skuSelect.value = shipObj.sku_ids[0];
-        }
-      }
-    }
-  });
-
-  // 4. SKU Change -> Auto-fill Preferred Supplier and Linked Shipment
-  skuSelect.addEventListener("change", () => {
-    hideValidationError();
-    const selectedSKU = skuSelect.value;
-    if (!selectedSKU || !referenceData) return;
-
-    const skuObj = referenceData.skus ? referenceData.skus.find(s => s.sku_id === selectedSKU) : null;
-    if (skuObj && skuObj.preferred_supplier_id && !supplierSelect.value) {
-      supplierSelect.value = skuObj.preferred_supplier_id;
-    }
-
-    if (referenceData.shipments) {
-      const shipObj = referenceData.shipments.find(s => s.sku_ids && s.sku_ids.includes(selectedSKU));
-      if (shipObj) {
-        if (!shipmentSelect.value) shipmentSelect.value = shipObj.shipment_id;
-        if (!poSelect.value) poSelect.value = shipObj.po_number;
-        if (!supplierSelect.value) supplierSelect.value = shipObj.supplier_id;
-      }
-    }
-  });
-
-  // 5. Disruption Type Change -> Adjust UI hints
-  typeSelect.addEventListener("change", () => {
-    hideValidationError();
-    const isWarehouse = (typeSelect.value === "Warehouse Incident");
-    const suppStar = document.getElementById("supplierRequiredStar");
-    if (suppStar) suppStar.style.display = isWarehouse ? "none" : "inline";
-
-    if (isWarehouse) {
-      const locSelect = document.getElementById("inputLocation");
-      if (locSelect) locSelect.value = "WH-MAIN";
-      if (!skuSelect.value && referenceData && referenceData.skus && referenceData.skus.length > 0) {
-        skuSelect.value = "SKU-3150";
-      }
-    }
-  });
-
-  // Close button on validation error banner
-  const btnCloseAlert = document.getElementById("btnCloseValidationAlert");
-  if (btnCloseAlert) btnCloseAlert.addEventListener("click", hideValidationError);
-}
-
-function showValidationError(message) {
-  const banner = document.getElementById("formValidationError");
-  const textEl = document.getElementById("validationErrorText");
-  if (banner && textEl) {
-    textEl.textContent = message;
-    banner.classList.remove("hidden");
-    banner.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  }
-  showToast(message, "alert", "⚠️");
-  playAudioChime("alert");
-}
-
-function hideValidationError() {
-  const banner = document.getElementById("formValidationError");
-  if (banner) banner.classList.add("hidden");
-}
-
-function populateStructuredForm(structured) {
-  hideValidationError();
-  if (!structured) return;
-
-  const typeSelect = document.getElementById("inputDisruptionType");
-  const suppSelect = document.getElementById("inputSupplier");
-  const poSelect = document.getElementById("inputPO");
-  const shipmentSelect = document.getElementById("inputShipment");
-  const skuSelect = document.getElementById("inputSKU");
-  const dateInput = document.getElementById("inputDisruptionDate");
-  const delayInput = document.getElementById("inputDelayDays");
-  const qtyInput = document.getElementById("inputQuantityAffected");
-  const locSelect = document.getElementById("inputLocation");
-  const reasonInput = document.getElementById("inputReason");
-  const severitySelect = document.getElementById("inputSeverity");
-
-  if (typeSelect) typeSelect.value = structured.disruption_type || "Supplier Production Halt";
-  if (suppSelect) suppSelect.value = structured.supplier_id || "";
-  if (poSelect) poSelect.value = structured.po_number || "";
-  if (shipmentSelect) shipmentSelect.value = structured.shipment_id || "";
-  if (skuSelect) skuSelect.value = structured.sku_id || "";
-  if (dateInput) dateInput.value = structured.disruption_date || (referenceData ? referenceData.system_current_date : "2026-09-05");
-  if (delayInput) delayInput.value = structured.delay_days || 14;
-  if (qtyInput) qtyInput.value = structured.quantity_affected || "";
-  if (locSelect) locSelect.value = structured.affected_location || "WH-MAIN";
-  if (reasonInput) reasonInput.value = structured.reason || "";
-  if (severitySelect) severitySelect.value = structured.severity || "High";
-
-  // Trigger type change update
-  if (typeSelect) {
-    const isWarehouse = (typeSelect.value === "Warehouse Incident");
-    const suppStar = document.getElementById("supplierRequiredStar");
-    if (suppStar) suppStar.style.display = isWarehouse ? "none" : "inline";
-  }
-}
-
-function clearStructuredForm() {
-  hideValidationError();
-  const form = document.getElementById("structuredDisruptionForm");
-  if (form) form.reset();
-
-  // Reset dropdown filters
-  if (referenceData) populateFormDropdowns(referenceData);
-
-  document.getElementById("scenarioTag").classList.add("hidden");
-  document.getElementById("resultsSection").classList.add("hidden");
-  document.getElementById("ambiguityBanner").classList.add("hidden");
-  selectedOptions = {};
-  currentAssessment = null;
-
-  document.querySelectorAll("#scenarioButtonContainer button").forEach(b => {
-    b.classList.remove("selected-scenario");
-  });
-
-  showToast("Disruption form reset to clean state.", "info", "🧹");
 }
 
 // ============================================================================
-// 9. Benchmark Scenarios Loader
+// 2. Dashboard View
 // ============================================================================
-async function initScenarios() {
+async function loadDashboardData() {
   try {
-    const res = await fetch("/api/scenarios");
-    if (res.ok) {
-      preloadedScenarios = await res.json();
-    } else {
-      preloadedScenarios = FALLBACK_SCENARIOS;
+    const [summary, analytics] = await Promise.all([
+      fetchAPI('/dashboard/summary'),
+      fetchAPI('/dashboard/analytics')
+    ]);
+
+    document.getElementById('kpiActiveDisruptions').textContent = summary.active_disruptions_count;
+    document.getElementById('kpiCriticalDisruptions').textContent = summary.critical_disruptions_count;
+    document.getElementById('kpiAtRiskOrders').textContent = summary.at_risk_orders_count;
+    document.getElementById('kpiAffectedShipments').textContent = summary.affected_shipments_count;
+    document.getElementById('kpiAffectedProducts').textContent = summary.affected_products_count;
+    document.getElementById('kpiFinancialImpact').textContent = `$${summary.estimated_financial_impact.toLocaleString()}`;
+
+    const badgeDisr = document.getElementById('navDisruptionCount');
+    if (badgeDisr) badgeDisr.textContent = summary.active_disruptions_count;
+
+    renderSeverityChart(analytics.severity_distribution);
+    renderTypeChart(analytics.disruptions_by_type);
+    renderTierChart(analytics.orders_by_tier);
+
+    const tbody = document.getElementById('dashboardIncidentsTableBody');
+    if (tbody) {
+      tbody.innerHTML = '';
+      if (!analytics.highest_priority_incidents || analytics.highest_priority_incidents.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-slate-400">No active incidents</td></tr>`;
+      } else {
+        analytics.highest_priority_incidents.forEach(inc => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td class="font-mono font-bold text-indigo-600">${inc.disruption_id}</td>
+            <td>
+              <div class="font-bold text-slate-900 dark:text-white">${escapeHTML(inc.title)}</div>
+              <div class="text-[11px] text-slate-500 truncate max-w-xs">${escapeHTML(inc.description)}</div>
+            </td>
+            <td><span class="text-slate-600 dark:text-slate-300">${inc.disruption_type}</span></td>
+            <td>${inc.supplier_id || inc.location || 'Central Facility'}</td>
+            <td><span class="${getSeverityBadgeClass(inc.severity)} px-2 py-0.5 rounded-full text-[10px] font-bold">${inc.severity}</span></td>
+            <td><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 dark:bg-slate-800">${inc.status}</span></td>
+            <td>
+              <button onclick="inspectDisruption('${inc.disruption_id}')" class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-bold cursor-pointer">
+                Analyze ➔
+              </button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
     }
+
+    const supBody = document.getElementById('dashboardSupplierRiskBody');
+    if (supBody && analytics.supplier_risk_overview) {
+      supBody.innerHTML = '';
+      analytics.supplier_risk_overview.slice(0, 6).forEach(s => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="font-bold text-slate-900 dark:text-white">${escapeHTML(s.name)}</td>
+          <td class="text-slate-500">${escapeHTML(s.location)}</td>
+          <td><span class="font-mono font-bold">${Math.round(s.reliability_score * 100)}%</span></td>
+          <td>${s.active_disruptions} active</td>
+          <td><span class="${getSeverityBadgeClass(s.risk_level)} px-2 py-0.5 rounded-full text-[10px] font-bold">${s.risk_level}</span></td>
+        `;
+        supBody.appendChild(tr);
+      });
+    }
+
+    const recs = await fetchAPI('/disruptions/DISR-2026-001/recommendations').catch(() => []);
+    const recsList = document.getElementById('dashboardRecsList');
+    if (recsList) {
+      recsList.innerHTML = '';
+      recs.slice(0, 3).forEach(r => {
+        const div = document.createElement('div');
+        div.className = 'p-3.5 border border-slate-200 dark:border-slate-800 rounded-xl space-y-1.5';
+        div.innerHTML = `
+          <div class="flex items-center justify-between">
+            <span class="badge-critical px-2 py-0.5 rounded text-[10px] font-bold">Priority ${r.priority}</span>
+            <span class="text-[10px] font-semibold text-slate-400">${r.responsible_role}</span>
+          </div>
+          <h4 class="font-bold text-xs text-slate-900 dark:text-white">${escapeHTML(r.action)}</h4>
+          <p class="text-[11px] text-slate-500">${escapeHTML(r.reason)}</p>
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-[10px] font-semibold text-emerald-600">Benefit: ${escapeHTML(r.expected_benefit)}</span>
+            <button onclick="navigateTo('recommendations')" class="text-[11px] text-indigo-600 font-bold hover:underline cursor-pointer">Review Action</button>
+          </div>
+        `;
+        recsList.appendChild(div);
+      });
+    }
+
   } catch (err) {
-    console.warn("API scenarios unavailable, using embedded benchmark dataset:", err);
-    preloadedScenarios = FALLBACK_SCENARIOS;
+    console.error('Error loading dashboard:', err);
   }
+}
 
-  const badge = document.getElementById("scenarioCountBadge");
-  if (badge) badge.textContent = `${preloadedScenarios.length} Scenarios`;
+function renderSeverityChart(distribution) {
+  const container = document.getElementById('chartSeverityBars');
+  if (!container || !distribution) return;
+  container.innerHTML = '';
+  const total = distribution.reduce((sum, d) => sum + d.count, 0) || 1;
 
-  const container = document.getElementById("scenarioButtonContainer");
-  if (!container) return;
-  container.innerHTML = "";
-
-  const icons = ["⚡", "🚢", "💥", "🛑", "❓", "⚓", "🔬", "🚀"];
-
-  preloadedScenarios.forEach((sc, idx) => {
-    const btn = document.createElement("button");
-    btn.className = "scenario-box cursor-pointer group";
-
-    const rawTitle = sc.title.includes(":") ? sc.title.split(":")[1] : sc.title;
-    const cleanTitle = rawTitle.trim();
-
-    btn.innerHTML = `
-      <div class="w-full space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-purple-950/90 text-purple-200 border border-purple-500/60 shadow-sm">
-            Scenario ${idx + 1}
-          </span>
-          <span class="text-base group-hover:scale-110 transition-transform">${icons[idx] || "📌"}</span>
-        </div>
-        <h4 class="text-xs font-bold text-slate-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-200 leading-snug line-clamp-2 text-left">
-          ${cleanTitle}
-        </h4>
+  distribution.forEach(d => {
+    const pct = Math.round((d.count / total) * 100);
+    const colorClass = d.severity === 'Critical' ? 'bg-red-500' : (
+      d.severity === 'High' ? 'bg-amber-500' : (d.severity === 'Medium' ? 'bg-yellow-400' : 'bg-indigo-400')
+    );
+    const row = document.createElement('div');
+    row.className = 'space-y-1';
+    row.innerHTML = `
+      <div class="flex justify-between text-xs font-semibold">
+        <span class="text-slate-700 dark:text-slate-300">${d.severity}</span>
+        <span class="text-slate-500">${d.count} (${pct}%)</span>
       </div>
-      <div class="w-full pt-2 border-t border-purple-200 dark:border-purple-800/60 flex flex-col space-y-0.5 text-left">
-        <span class="text-[11px] font-semibold text-purple-700 dark:text-purple-300 truncate">${sc.category}</span>
-        <span class="text-[10px] text-purple-600/80 dark:text-purple-400/80 font-medium truncate">${sc.difficulty}</span>
+      <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+        <div class="${colorClass} h-full rounded-full" style="width: ${pct}%"></div>
       </div>
     `;
-    btn.addEventListener("click", () => loadScenario(sc, btn));
-    container.appendChild(btn);
+    container.appendChild(row);
   });
 }
 
-function loadScenario(sc, clickedBtn) {
-  document.querySelectorAll("#scenarioButtonContainer button").forEach(b => {
-    b.classList.remove("selected-scenario");
+function renderTypeChart(distribution) {
+  const container = document.getElementById('chartTypeBars');
+  if (!container || !distribution) return;
+  container.innerHTML = '';
+  const total = distribution.reduce((sum, d) => sum + d.count, 0) || 1;
+
+  distribution.forEach(d => {
+    const pct = Math.round((d.count / total) * 100);
+    const row = document.createElement('div');
+    row.className = 'space-y-1';
+    row.innerHTML = `
+      <div class="flex justify-between text-xs font-semibold">
+        <span class="text-slate-700 dark:text-slate-300 truncate max-w-[160px]">${d.type}</span>
+        <span class="text-slate-500">${d.count}</span>
+      </div>
+      <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+        <div class="bg-indigo-600 h-full rounded-full" style="width: ${pct}%"></div>
+      </div>
+    `;
+    container.appendChild(row);
   });
-  if (clickedBtn) clickedBtn.classList.add("selected-scenario");
+}
 
-  selectedOptions = {};
+function renderTierChart(distribution) {
+  const container = document.getElementById('chartTierBars');
+  if (!container || !distribution) return;
+  container.innerHTML = '';
+  const total = distribution.reduce((sum, d) => sum + d.count, 0) || 1;
 
-  // Populate structured form directly with scenario fields
-  if (sc.structured_input) {
-    populateStructuredForm(sc.structured_input);
-  }
-
-  const tag = document.getElementById("scenarioTag");
-  tag.textContent = sc.title;
-  tag.classList.remove("hidden");
-
-  if (appSettings.autoRunScenario) {
-    analyzeDisruption();
-  } else {
-    showToast(`Loaded ${sc.title}. Click 'Analyze Disruption' to run.`, "info", "📥");
-  }
+  distribution.forEach(d => {
+    const pct = Math.round((d.count / total) * 100);
+    const colorClass = d.tier === 'Platinum' ? 'bg-red-500' : (d.tier === 'Gold' ? 'bg-amber-500' : 'bg-slate-400');
+    const row = document.createElement('div');
+    row.className = 'space-y-1';
+    row.innerHTML = `
+      <div class="flex justify-between text-xs font-semibold">
+        <span class="text-slate-700 dark:text-slate-300">${d.tier} Tier</span>
+        <span class="text-slate-500">${d.count} orders</span>
+      </div>
+      <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+        <div class="${colorClass} h-full rounded-full" style="width: ${pct}%"></div>
+      </div>
+    `;
+    container.appendChild(row);
+  });
 }
 
 // ============================================================================
-// 10. Event Listeners Setup
+// 3. Disruption Management View
 // ============================================================================
-function initEventListeners() {
-  // 1. Core Action Buttons
-  document.getElementById("btnAnalyze").addEventListener("click", () => {
-    selectedOptions = {};
-    analyzeDisruption();
+async function loadDisruptionsData() {
+  const severity = document.getElementById('filterSeverity')?.value || 'All';
+  const status = document.getElementById('filterStatus')?.value || 'All';
+  const type = document.getElementById('filterType')?.value || 'All';
+  const supplier = document.getElementById('filterSupplier')?.value || 'All';
+  const search = document.getElementById('filterSearchInput')?.value || '';
+
+  const params = new URLSearchParams();
+  if (severity !== 'All') params.append('severity', severity);
+  if (status !== 'All') params.append('status', status);
+  if (type !== 'All') params.append('disruption_type', type);
+  if (supplier !== 'All') params.append('supplier_id', supplier);
+  if (search) params.append('search', search);
+
+  const disruptions = await fetchAPI(`/disruptions?${params.toString()}`);
+  state.disruptions = disruptions;
+
+  const tbody = document.getElementById('disruptionsTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  if (disruptions.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="10" class="text-center py-6 text-slate-400">No matching disruptions found.</td></tr>`;
+    return;
+  }
+
+  disruptions.forEach(d => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="font-mono font-bold text-indigo-600">${d.disruption_id}</td>
+      <td>
+        <div class="font-bold text-slate-900 dark:text-white">${escapeHTML(d.title)}</div>
+        <div class="text-[11px] text-slate-500 truncate max-w-xs">${escapeHTML(d.description)}</div>
+      </td>
+      <td><span class="text-slate-600 dark:text-slate-300">${d.disruption_type}</span></td>
+      <td>${d.supplier_id || d.shipment_id || '--'}</td>
+      <td>${escapeHTML(d.location || 'Unknown')}</td>
+      <td><span class="${getSeverityBadgeClass(d.severity)} px-2.5 py-0.5 rounded-full text-[10px] font-bold">${d.severity}</span></td>
+      <td><span class="text-[11px] text-slate-500">${formatDate(d.reported_at)}</span></td>
+      <td class="font-bold">${d.affected_orders_count || 0}</td>
+      <td><span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 dark:bg-slate-800">${d.status}</span></td>
+      <td class="space-x-2">
+        <button onclick="inspectDisruption('${d.disruption_id}')" class="text-xs text-indigo-600 dark:text-indigo-400 font-bold hover:underline cursor-pointer">Analyze</button>
+        ${d.status !== 'Resolved' ? `<button onclick="openResolveModal('${d.disruption_id}')" class="text-xs text-emerald-600 font-bold hover:underline cursor-pointer">Resolve</button>` : ''}
+      </td>
+    `;
+    tbody.appendChild(tr);
   });
+}
 
-  document.getElementById("btnClear").addEventListener("click", clearStructuredForm);
+function inspectDisruption(disruptionId) {
+  state.selectedDisruptionId = disruptionId;
+  navigateTo('impact-analysis');
+}
 
-  document.getElementById("btnResetDB").addEventListener("click", async () => {
-    if (!confirm("Reset database state to pristine initial seed values?")) return;
-    try {
-      const res = await fetch("/api/system/reset", { method: "POST" });
-      const data = await res.json();
-      showToast(data.message, "success", "🔄");
-      playAudioChime("success");
-      await loadReferenceData();
-      await loadProfiles();
-  handleURLParamsOnLoad();
-      await loadAuditCount();
-      clearStructuredForm();
-    } catch (e) {
-      alert("Error resetting database: " + e.message);
+// ============================================================================
+// 4. Create Disruption Form & Notice Extraction
+// ============================================================================
+function populateCreateDisruptionDropdowns() {
+  if (!state.referenceData) return;
+
+  const selectSup = document.getElementById('inputFormSupplier');
+  const selectShip = document.getElementById('inputFormShipment');
+  const selectSKU = document.getElementById('inputFormSKU');
+
+  if (selectSup) {
+    selectSup.innerHTML = '<option value="">-- None / Internal Incident --</option>';
+    state.referenceData.suppliers.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.supplier_id;
+      opt.textContent = `${s.name} (${s.supplier_id})`;
+      selectSup.appendChild(opt);
+    });
+  }
+
+  if (selectShip) {
+    selectShip.innerHTML = '<option value="">-- None / Warehouse Incident --</option>';
+    state.referenceData.shipments.forEach(sh => {
+      const opt = document.createElement('option');
+      opt.value = sh.shipment_id;
+      opt.textContent = `${sh.shipment_id} - PO ${sh.po_number} (${sh.carrier_name})`;
+      selectShip.appendChild(opt);
+    });
+  }
+
+  if (selectSKU) {
+    selectSKU.innerHTML = '<option value="">-- Auto-linked or Selectable --</option>';
+    state.referenceData.skus.forEach(sku => {
+      const opt = document.createElement('option');
+      opt.value = sku.sku_id;
+      opt.textContent = `${sku.sku_id} - ${sku.name}`;
+      selectSKU.appendChild(opt);
+    });
+  }
+}
+
+function loadScenarioPreset(presetIndex) {
+  const presets = [
+    {
+      title: "Production Line 3 Hydraulic Pump Failure",
+      type: "Supplier Production Halt",
+      supplier: "SUP-001",
+      shipment: "SH-8921",
+      sku: "SKU-1049",
+      location: "Fremont, CA",
+      delay: 14,
+      severity: "Critical",
+      quantity: 200,
+      description: "Catastrophic hydraulic pump failure on Line 3 halting all production of APX-902 sensor assemblies.",
+      evidence: "EDI notice from Marcus Vance; confirmed zero unallocated safety stock in WH-MAIN."
+    },
+    {
+      title: "Port of Long Beach Berth & Railhead Congestion",
+      type: "Carrier/Shipment Delay",
+      supplier: "SUP-002",
+      shipment: "SH-7714",
+      sku: "SKU-2088",
+      location: "Port of Long Beach, CA",
+      delay: 10,
+      severity: "High",
+      quantity: 500,
+      description: "Severe vessel anchorage queue and intermodal chassis shortage delaying discharge of container MSKU-8839210.",
+      evidence: "Maersk Line AIS tracking update and terminal gate hold advisory."
+    },
+    {
+      title: "WH-MAIN Bay C-12 Forklift Mast Failure & Pallet Crush",
+      type: "Warehouse Incident",
+      supplier: "SUP-004",
+      shipment: "",
+      sku: "SKU-3150",
+      location: "Central Logistics Hub - Chicago",
+      delay: 18,
+      severity: "Critical",
+      quantity: 150,
+      description: "Forklift cable snap during cross-dock staging destroying 150 units of industrial lithium battery packs.",
+      evidence: "Warehouse Incident Report #IR-2026-0905-01 signed by D. Miller."
+    },
+    {
+      title: "Hsinchu Fab 12 Wafer Stepper Allocation Shortage",
+      type: "Inventory Shortage",
+      supplier: "SUP-002",
+      shipment: "SH-1008",
+      sku: "SKU-1012",
+      location: "Hsinchu Science Park, Taiwan",
+      delay: 12,
+      severity: "High",
+      quantity: 60,
+      description: "TSMC quota reduction on 64K LE FPGA SoM exhausting available inventory across western depots.",
+      evidence: "TSMC Fab 12 quota revision notice #TSMC-Q3-881."
+    },
+    {
+      title: "I-80 Freight Corridor Bridge Structural Closure",
+      type: "Transportation Disruption",
+      supplier: "SUP-007",
+      shipment: "SH-1019",
+      sku: "SKU-1020",
+      location: "Denver to Dallas Corridor (I-80/I-25)",
+      delay: 6,
+      severity: "Medium",
+      quantity: 300,
+      description: "DOT emergency closure of interstate freight bridge causing truck rerouting delays.",
+      evidence: "DOT Freight Alert #DOT-WY-991."
     }
-  });
+  ];
 
-  // 2. Modals Triggers
-  document.getElementById("btnProfile").addEventListener("click", () => openProfileModal(false));
-  document.getElementById("btnCloseProfileModal").addEventListener("click", closeProfileModal);
-  document.getElementById("btnCloseProfileModalBtn").addEventListener("click", closeProfileModal);
+  const p = presets[presetIndex - 1];
+  if (!p) return;
 
-  // Quick edit name from sidebar profile card
-  const btnQuickEdit = document.getElementById("btnQuickEditName");
-  if (btnQuickEdit) {
-    btnQuickEdit.addEventListener("click", () => {
-      openProfileModal(true);
-    });
+  document.getElementById('inputFormTitle').value = p.title;
+  document.getElementById('inputFormType').value = p.type;
+  document.getElementById('inputFormSupplier').value = p.supplier;
+  document.getElementById('inputFormShipment').value = p.shipment;
+  document.getElementById('inputFormSKU').value = p.sku;
+  document.getElementById('inputFormLocation').value = p.location;
+  document.getElementById('inputFormDelay').value = p.delay;
+  document.getElementById('inputFormSeverity').value = p.severity;
+  document.getElementById('inputFormQuantity').value = p.quantity;
+  document.getElementById('inputFormDescription').value = p.description;
+  document.getElementById('inputFormEvidence').value = p.evidence;
+
+  showToast(`Loaded scenario preset #${presetIndex}: ${p.title}`, 'info');
+}
+
+function extractFromNoticeText() {
+  const text = document.getElementById('rawNoticeTextarea')?.value.trim();
+  if (!text) {
+    showToast('Please paste a disruption notice text first.', 'error');
+    return;
   }
 
-  // Save profile name button & Enter key in Profile Modal
-  const btnSaveProfName = document.getElementById("btnSaveProfileNameModal");
-  if (btnSaveProfName) {
-    btnSaveProfName.addEventListener("click", saveProfileNameFromModal);
-  }
-  const inputProfName = document.getElementById("profileModalNameInput");
-  if (inputProfName) {
-    inputProfName.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        saveProfileNameFromModal();
-      }
-    });
-  }
+  let matchedSupplier = '';
+  let matchedShipment = '';
+  let matchedSKU = '';
+  let delay = 7;
+  let severity = 'Medium';
 
-  document.getElementById("btnSettings").addEventListener("click", openSettingsModal);
-  const btnTopSettings = document.getElementById("btnTopSettings");
-  if (btnTopSettings) btnTopSettings.addEventListener("click", openSettingsModal);
-
-  document.getElementById("btnCloseSettingsModal").addEventListener("click", closeSettingsModal);
-  document.getElementById("btnCloseSettingsModalBtn").addEventListener("click", closeSettingsModal);
-  document.getElementById("btnSaveSettings").addEventListener("click", saveSettingsFromModal);
-  document.getElementById("btnResetSettings").addEventListener("click", resetSettingsToDefaults);
-  document.getElementById("btnTestChime").addEventListener("click", () => {
-    playAudioChime("ping");
-    showToast("Synthesized audio alert chime test successful!", "info", "🔊");
-  });
-
-  document.getElementById("btnAuditLog").addEventListener("click", openAuditModal);
-  document.getElementById("btnCloseAuditModal").addEventListener("click", closeAuditModal);
-  document.getElementById("btnCloseAuditModalBtn").addEventListener("click", closeAuditModal);
-
-  document.getElementById("btnCloseCommModal").addEventListener("click", closeCommModal);
-  document.getElementById("btnCloseCommModalBtn").addEventListener("click", closeCommModal);
-  document.getElementById("btnCopyComm").addEventListener("click", () => {
-    const text = document.getElementById("commModalBody").textContent;
-    navigator.clipboard.writeText(text).then(() => {
-      showToast("Communication draft copied to clipboard!", "success", "📋");
-      playAudioChime("success");
-    });
-  });
-
-  // 3. Telemetry Controls
-  document.getElementById("btnSimulatePing").addEventListener("click", pushManualTelemetryPing);
-  document.getElementById("btnToggleSound").addEventListener("click", () => {
-    appSettings.soundEnabled = !appSettings.soundEnabled;
-    localStorage.setItem("chainSolve_settings", JSON.stringify(appSettings));
-    updateSoundButtonUI();
-    if (appSettings.soundEnabled) playAudioChime("ping");
-    showToast(`Audio alerts ${appSettings.soundEnabled ? "ENABLED" : "MUTED"}`, "info", appSettings.soundEnabled ? "🔔" : "🔕");
-  });
-
-  // 4. Portal Banner Switchers
-  const btnCustSwitch = document.getElementById("btnCustomerSwitchAdmin");
-  if (btnCustSwitch) btnCustSwitch.addEventListener("click", loginAsAdmin);
-
-  const btnSuppSwitch = document.getElementById("btnSupplierSwitchAdmin");
-  if (btnSuppSwitch) btnSuppSwitch.addEventListener("click", loginAsAdmin);
-
-  const btnSuppSubmit = document.getElementById("btnSupplierSubmitIncident");
-  if (btnSuppSubmit) {
-    btnSuppSubmit.addEventListener("click", () => {
-      const type = document.getElementById("suppIncidentType").value;
-      const days = parseInt(document.getElementById("suppDelayDays").value, 10) || 14;
-      const suppName = activePersona.name || "Apex Precision Technologies";
-      const suppId = activePersona.id || "SUP-001";
-
-      const mappedType = (type === "production_halt") ? "Supplier Production Halt" : "Carrier/Shipment Delay";
-
-      // Find first active shipment for this supplier if any
-      let poNum = "";
-      let shipId = "";
-      let skuId = "";
-      if (referenceData && referenceData.shipments) {
-        const sh = referenceData.shipments.find(s => s.supplier_id === suppId);
-        if (sh) {
-          shipId = sh.shipment_id;
-          poNum = sh.po_number;
-          skuId = sh.sku_ids ? sh.sku_ids[0] : "";
-        }
-      }
-
-      populateStructuredForm({
-        disruption_type: mappedType,
-        supplier_id: suppId,
-        po_number: poNum,
-        shipment_id: shipId,
-        sku_id: skuId,
-        disruption_date: referenceData ? referenceData.system_current_date : "2026-09-05",
-        delay_days: days,
-        affected_location: "WH-MAIN",
-        reason: `Supplier portal alert from ${suppName}: ${type.replace(/_/g, " ")} reported.`,
-        severity: "Critical"
-      });
-
-      document.getElementById("scenarioTag").textContent = `Supplier Direct Alert: ${suppName}`;
-      document.getElementById("scenarioTag").classList.remove("hidden");
-      analyzeDisruption();
-      showToast(`Transmitted structured incident alert from ${suppName} to impact engine!`, "alert", "⚡");
-    });
+  if (text.includes('Apex') || text.includes('SUP-001') || text.includes('APX')) {
+    matchedSupplier = 'SUP-001';
+    matchedShipment = 'SH-8921';
+    matchedSKU = 'SKU-1049';
+    severity = 'Critical';
+    delay = 14;
+  } else if (text.includes('TSMC') || text.includes('SUP-002') || text.includes('MC-320') || text.includes('SH-7714')) {
+    matchedSupplier = 'SUP-002';
+    matchedShipment = 'SH-7714';
+    matchedSKU = 'SKU-2088';
+    severity = 'High';
+    delay = 10;
+  } else if (text.includes('Nordic') || text.includes('SUP-004') || text.includes('BAT-4400') || text.includes('forklift')) {
+    matchedSupplier = 'SUP-004';
+    matchedSKU = 'SKU-3150';
+    severity = 'Critical';
+    delay = 18;
   }
 
-  // 5. Admin button in profile modal
-  const btnSelectAdmin = document.getElementById("btnSelectAdminProfile");
-  if (btnSelectAdmin) btnSelectAdmin.addEventListener("click", loginAsAdmin);
+  const delayMatch = text.match(/(\d+)\s*(?:calendar\s*)?(?:business\s*)?days/i);
+  if (delayMatch) {
+    delay = parseInt(delayMatch[1], 10);
+  }
 
-  // 6. Profile Tabs Filtering
-  const tabAll = document.getElementById("tabRoleAll");
-  const tabAdmin = document.getElementById("tabRoleAdmin");
-  const tabCust = document.getElementById("tabRoleCustomers");
-  const tabSupp = document.getElementById("tabRoleSuppliers");
+  document.getElementById('inputFormTitle').value = `Notice Ingest: ${text.slice(0, 45)}...`;
+  document.getElementById('inputFormDescription').value = text;
+  document.getElementById('inputFormDelay').value = delay;
+  document.getElementById('inputFormSeverity').value = severity;
+  if (matchedSupplier) document.getElementById('inputFormSupplier').value = matchedSupplier;
+  if (matchedShipment) document.getElementById('inputFormShipment').value = matchedShipment;
+  if (matchedSKU) document.getElementById('inputFormSKU').value = matchedSKU;
 
-  const secAdmin = document.getElementById("sectionAdminProfiles");
-  const secCust = document.getElementById("sectionCustomerProfiles");
-  const secSupp = document.getElementById("sectionSupplierProfiles");
+  showToast('Entities extracted successfully! Confirm details below.', 'success');
+}
 
-  const resetTabs = () => {
-    [tabAll, tabAdmin, tabCust, tabSupp].forEach(t => {
-      if (t) {
-        t.className = "profile-tab px-3.5 py-1.5 rounded-xl text-slate-600 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition cursor-pointer";
-      }
-    });
+async function handleCreateDisruptionSubmit(e) {
+  e.preventDefault();
+
+  if (state.activeUser.role === 'Viewer') {
+    showToast('Role "Viewer" has read-only access. Switch role in top right menu to report incidents.', 'error');
+    return false;
+  }
+
+  const payload = {
+    title: document.getElementById('inputFormTitle').value.trim(),
+    disruption_type: document.getElementById('inputFormType').value,
+    supplier_id: document.getElementById('inputFormSupplier').value || null,
+    shipment_id: document.getElementById('inputFormShipment').value || null,
+    sku_id: document.getElementById('inputFormSKU').value || null,
+    location: document.getElementById('inputFormLocation').value.trim() || 'Central Facility',
+    delay_days: parseInt(document.getElementById('inputFormDelay').value, 10),
+    severity: document.getElementById('inputFormSeverity').value,
+    quantity_affected: parseInt(document.getElementById('inputFormQuantity').value, 10) || 0,
+    description: document.getElementById('inputFormDescription').value.trim(),
+    evidence: document.getElementById('inputFormEvidence').value.trim()
   };
-
-  const setActiveTab = (btn) => {
-    resetTabs();
-    if (btn) btn.className = "profile-tab active px-3.5 py-1.5 rounded-xl bg-emerald-100 text-emerald-950 dark:bg-emerald-900/80 dark:text-white transition cursor-pointer";
-  };
-
-  if (tabAll) {
-    tabAll.addEventListener("click", () => {
-      setActiveTab(tabAll);
-      if (secAdmin) secAdmin.style.display = "block";
-      if (secCust) secCust.style.display = "block";
-      if (secSupp) secSupp.style.display = "block";
-    });
-  }
-  if (tabAdmin) {
-    tabAdmin.addEventListener("click", () => {
-      setActiveTab(tabAdmin);
-      if (secAdmin) secAdmin.style.display = "block";
-      if (secCust) secCust.style.display = "none";
-      if (secSupp) secSupp.style.display = "none";
-    });
-  }
-  if (tabCust) {
-    tabCust.addEventListener("click", () => {
-      setActiveTab(tabCust);
-      if (secAdmin) secAdmin.style.display = "none";
-      if (secCust) secCust.style.display = "block";
-      if (secSupp) secSupp.style.display = "none";
-    });
-  }
-  if (tabSupp) {
-    tabSupp.addEventListener("click", () => {
-      setActiveTab(tabSupp);
-      if (secAdmin) secAdmin.style.display = "none";
-      if (secCust) secCust.style.display = "none";
-      if (secSupp) secSupp.style.display = "block";
-    });
-  }
-
-  // 7. Global Keyboard ESC handler for closing modals
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      closeProfileModal();
-      closeSettingsModal();
-      closeAuditModal();
-      closeCommModal();
-      closeSidebarDrawer();
-    }
-  });
-
-  // 8. Backdrop click close handlers
-  ["profileModal", "settingsModal", "auditModal", "commModal"].forEach(id => {
-    const m = document.getElementById(id);
-    if (m) {
-      m.addEventListener("click", (e) => {
-        if (e.target === m) {
-          m.classList.add("hidden");
-        }
-      });
-    }
-  });
-}
-
-// ============================================================================
-// 11. Structured Pipeline Analysis Execution
-// ============================================================================
-async function analyzeDisruption(customPayload = null) {
-  hideValidationError();
-  const btn = document.getElementById("btnAnalyze");
-  const spinner = document.getElementById("analyzeSpinner");
-
-  let payload = customPayload;
-
-  if (!payload) {
-    // Collect and validate from structured form
-    const type = document.getElementById("inputDisruptionType").value;
-    const supplier = document.getElementById("inputSupplier").value;
-    const po = document.getElementById("inputPO").value;
-    const shipment = document.getElementById("inputShipment").value;
-    const sku = document.getElementById("inputSKU").value;
-    const date = document.getElementById("inputDisruptionDate").value;
-    const delayVal = document.getElementById("inputDelayDays").value;
-    const qtyVal = document.getElementById("inputQuantityAffected").value;
-    const location = document.getElementById("inputLocation").value;
-    const reason = document.getElementById("inputReason").value;
-    const severity = document.getElementById("inputSeverity").value;
-
-    const delayDays = parseInt(delayVal, 10);
-    if (isNaN(delayDays) || delayDays <= 0) {
-      showValidationError("Expected delay days must be greater than 0.");
-      return;
-    }
-
-    if (type === "Warehouse Incident" && !sku) {
-      showValidationError("Please select a Product SKU for the warehouse incident.");
-      return;
-    }
-
-    if (type !== "Warehouse Incident" && !supplier && !shipment && !sku) {
-      showValidationError("Please select at least a Supplier, Shipment, or SKU.");
-      return;
-    }
-
-    payload = {
-      disruption_type: type,
-      supplier_id: supplier || null,
-      po_number: po || null,
-      shipment_id: shipment || null,
-      sku_id: sku || null,
-      disruption_date: date || (referenceData ? referenceData.system_current_date : "2026-09-05"),
-      delay_days: delayDays,
-      quantity_affected: qtyVal ? parseInt(qtyVal, 10) : null,
-      affected_location: location || null,
-      reason: reason || "",
-      severity: severity || "High"
-    };
-  }
-
-  btn.disabled = true;
-  spinner.classList.remove("hidden");
 
   try {
-        const res = await fetch("/api/disruption/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const res = await fetchAPI('/disruptions', {
+      method: 'POST',
       body: JSON.stringify(payload)
     });
 
-    let assessment;
-    if (res.ok) {
-      assessment = await res.json();
-    } else {
-      console.warn("API disruption analyze returned non-ok, using deterministic simulation fallback.");
-      assessment = simulateOfflineAssessment(payload);
-    }
+    const newId = res.disruption.disruption_id;
+    showToast(`Disruption ${newId} logged. Triggering deterministic impact simulation...`, 'success');
 
-    currentAssessment = assessment;
-    renderResults(assessment);
-    loadAuditCount();
+    await fetchAPI(`/disruptions/${newId}/analyze`, { method: 'POST' });
 
-    if (assessment.has_system_impact) {
-      playAudioChime("alert");
-      showToast(`Operational Impact Confirmed: ${assessment.total_orders_impacted} order(s) slip`, "alert", "⚠️");
-    } else {
-      playAudioChime("success");
-      showToast("Verified Zero Operational Impact. All customer orders safe.", "success", "✅");
-    }
+    state.selectedDisruptionId = newId;
+    navigateTo('impact-analysis');
   } catch (err) {
-    console.warn("Analysis Error:", err.message);
-  } finally {
-    btn.disabled = false;
-    spinner.classList.add("hidden");
+    showToast(`Failed to create disruption: ${err.message}`, 'error');
   }
+  return false;
 }
 
 // ============================================================================
-// 12. Render Assessment Results
+// 5. Impact Analysis View
 // ============================================================================
-function renderResults(asm) {
-  const results = document.getElementById("resultsSection");
-  results.classList.remove("hidden");
+async function initImpactAnalysisView() {
+  const selector = document.getElementById('impactDisruptionSelector');
+  if (!selector) return;
 
-  // Ambiguity Banner
-  const ambBanner = document.getElementById("ambiguityBanner");
-  if (asm.grounding && asm.grounding.is_ambiguous) {
-    ambBanner.classList.remove("hidden");
-    document.getElementById("ambiguityText").textContent = asm.grounding.ambiguity_reason;
-    const candContainer = document.getElementById("ambiguityCandidateContainer");
-    candContainer.innerHTML = "";
+  const disruptions = await fetchAPI('/disruptions');
+  selector.innerHTML = '';
+  disruptions.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d.disruption_id;
+    opt.textContent = `${d.disruption_id} - ${d.title} (${d.severity})`;
+    if (d.disruption_id === state.selectedDisruptionId) opt.selected = true;
+    selector.appendChild(opt);
+  });
 
-    const ambMatch = asm.grounding.matches.find(m => m.is_ambiguous);
-    if (ambMatch && ambMatch.candidate_matches) {
-      ambMatch.candidate_matches.forEach(cand => {
-        const b = document.createElement("button");
-        b.className = "bg-emerald-50 dark:bg-emerald-950/70 hover:bg-emerald-100 dark:hover:bg-emerald-900 border border-emerald-300 dark:border-emerald-600 text-emerald-950 dark:text-emerald-200 text-xs px-3.5 py-2.5 rounded-xl transition text-left shadow-sm hover:shadow-md cursor-pointer";
-        b.innerHTML = `<strong>Confirm: ${cand.name}</strong> (${cand.supplier_id})<br><span class="text-[10px] text-emerald-700 dark:text-emerald-300">Active Shipments: ${(cand.pending_shipments && cand.pending_shipments.length) ? cand.pending_shipments.join(", ") : "None scheduled"}</span>`;
-        b.addEventListener("click", () => {
-          const suppSelect = document.getElementById("inputSupplier");
-          if (suppSelect) {
-            suppSelect.value = cand.supplier_id;
-            suppSelect.dispatchEvent(new Event("change"));
-          }
-          analyzeDisruption();
-        });
-        candContainer.appendChild(b);
+  const activeId = state.selectedDisruptionId || (disruptions[0] ? disruptions[0].disruption_id : null);
+  if (activeId) {
+    state.selectedDisruptionId = activeId;
+    await loadImpactAnalysis(activeId);
+  }
+}
+
+async function loadImpactAnalysis(disruptionId) {
+  state.selectedDisruptionId = disruptionId;
+  const impact = await fetchAPI(`/disruptions/${disruptionId}/impact`);
+
+  document.getElementById('impactSummaryTitle').textContent = impact.summary.title;
+  document.getElementById('impactSummaryType').textContent = impact.summary.type;
+  document.getElementById('impactSummaryLocation').textContent = impact.summary.location;
+  document.getElementById('impactSummaryDuration').textContent = `${impact.summary.duration_days} Days Delay`;
+  document.getElementById('impactSummaryUnknowns').textContent = impact.summary.unknown_factors;
+  
+  const badge = document.getElementById('impactSummarySeverityBadge');
+  if (badge) {
+    badge.className = `${getSeverityBadgeClass(impact.summary.severity)} px-2.5 py-0.5 rounded-full text-xs font-bold`;
+    badge.textContent = impact.summary.severity;
+  }
+
+  const supContainer = document.getElementById('impactSupplierContainer');
+  if (supContainer) {
+    supContainer.innerHTML = '';
+    const s = impact.supplier_impact.supplier;
+    if (s) {
+      supContainer.innerHTML = `
+        <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl space-y-2">
+          <div class="flex justify-between items-center">
+            <strong class="text-sm font-bold text-slate-900 dark:text-white">${escapeHTML(s.name)}</strong>
+            <span class="font-mono text-emerald-600 font-bold">${Math.round(s.reliability_score * 100)}% Reliability</span>
+          </div>
+          <p class="text-slate-500">Location: ${s.location} • Contact: ${s.contact_email}</p>
+          <div class="flex items-center space-x-2 text-[11px]">
+            <span class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 font-semibold">
+              Air Expedite: ${s.expedite_available ? 'Available (1.45x Multiplier)' : 'Not Supported'}
+            </span>
+            <span class="px-2 py-0.5 rounded ${impact.supplier_impact.is_sole_source ? 'bg-red-100 text-red-800' : 'bg-emerald-100 text-emerald-800'} font-semibold">
+              ${impact.supplier_impact.is_sole_source ? 'Sole Source Dependency' : 'Multiple Suppliers Available'}
+            </span>
+          </div>
+        </div>
+
+        <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl space-y-2">
+          <strong class="block font-bold text-slate-700 dark:text-slate-300">Qualified Alternative Suppliers in Database:</strong>
+          ${impact.supplier_impact.alternative_suppliers.length > 0 ? `
+            <div class="space-y-1.5">
+              ${impact.supplier_impact.alternative_suppliers.map(alt => `
+                <div class="flex items-center justify-between p-2 rounded bg-slate-50 dark:bg-slate-800">
+                  <span class="font-bold">${alt.name} (${alt.supplier_id})</span>
+                  <span class="text-emerald-600 font-mono text-[11px] font-bold">${Math.round(alt.reliability_score * 100)}% score</span>
+                </div>
+              `).join('')}
+            </div>
+          ` : '<p class="text-slate-400">No alternate supplier configured for this commodity.</p>'}
+        </div>
+      `;
+    } else {
+      supContainer.innerHTML = `<div class="col-span-2 text-slate-400">Internal warehouse or transit incident without direct external supplier fault.</div>`;
+    }
+  }
+
+  const invBody = document.getElementById('impactInventoryTableBody');
+  if (invBody) {
+    invBody.innerHTML = '';
+    impact.inventory_impact.forEach(inv => {
+      const isShortage = inv.available === 0;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="font-bold">${inv.warehouse_id} (${inv.warehouse_name})</td>
+        <td class="font-mono text-indigo-600 font-bold">${inv.sku_id}</td>
+        <td>${inv.on_hand}</td>
+        <td>${inv.allocated}</td>
+        <td>${inv.reserved_safety}</td>
+        <td class="font-bold ${isShortage ? 'text-red-600' : 'text-slate-900 dark:text-white'}">${inv.available}</td>
+        <td>
+          <span class="${isShortage ? 'badge-critical' : 'badge-success'} px-2 py-0.5 rounded-full text-[10px] font-bold">
+            ${isShortage ? 'Stockout Deficit' : 'Buffer Sufficient'}
+          </span>
+        </td>
+      `;
+      invBody.appendChild(tr);
+    });
+  }
+
+  const shipContainer = document.getElementById('impactShipmentContainer');
+  if (shipContainer) {
+    const sh = impact.shipment_impact;
+    if (sh) {
+      shipContainer.innerHTML = `
+        <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <strong class="text-indigo-600 font-bold font-mono text-sm">${sh.shipment_id}</strong>
+              <span class="text-slate-500 ml-2">PO: ${sh.po_number} • Carrier: ${sh.carrier_name}</span>
+            </div>
+            <span class="badge-high px-2 py-0.5 rounded text-[10px] font-bold">In-Transit Delay</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+            <div><span class="text-slate-400 block">Origin:</span><strong>${sh.origin}</strong></div>
+            <div><span class="text-slate-400 block">Destination:</span><strong>${sh.destination_warehouse}</strong></div>
+            <div><span class="text-slate-400 block">Scheduled ETA:</span><strong>${sh.scheduled_arrival_date}</strong></div>
+            <div><span class="text-slate-400 block">Air Expedite Option:</span><strong>${sh.expedite_air_available ? `Yes ($${sh.expedite_air_cost})` : 'No'}</strong></div>
+          </div>
+        </div>
+      `;
+    } else {
+      shipContainer.innerHTML = `<p class="text-slate-400">No direct inbound carrier consignment linked to this incident.</p>`;
+    }
+  }
+
+  const ordBody = document.getElementById('impactOrdersTableBody');
+  let totalPenalty = 0;
+  if (ordBody) {
+    ordBody.innerHTML = '';
+    if (impact.affected_orders.length === 0) {
+      ordBody.innerHTML = `<tr><td colspan="9" class="text-center py-4 text-emerald-600 font-bold">✓ Zero customer delivery commitments impacted!</td></tr>`;
+    } else {
+      impact.affected_orders.forEach(o => {
+        const item = o.items[0] || {};
+        const deficit = Math.max(0, (item.quantity_demanded || 0) - (item.quantity_allocated || 0));
+        const penaltyExposure = (o.sla_penalty_per_day || 0) * 14;
+        totalPenalty += penaltyExposure;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="font-mono font-bold text-indigo-600">${o.order_id}</td>
+          <td class="font-bold text-slate-900 dark:text-white">${escapeHTML(o.customer_name)}</td>
+          <td><span class="${getTierBadgeClass(o.customer_tier)} px-2 py-0.5 rounded text-[10px] font-bold">${o.customer_tier}</span></td>
+          <td>${item.quantity_demanded || 0}</td>
+          <td>${o.promise_date}</td>
+          <td class="font-mono text-red-600 font-bold">$${o.sla_penalty_per_day}/day</td>
+          <td class="font-bold text-red-600">${deficit}</td>
+          <td>+14 Days</td>
+          <td><span class="badge-critical px-2 py-0.5 rounded-full text-[10px] font-bold">Critical SLA Threat</span></td>
+        `;
+        ordBody.appendChild(tr);
       });
     }
-  } else {
-    ambBanner.classList.add("hidden");
+  }
+  const exposureBadge = document.getElementById('impactOrdersExposureBadge');
+  if (exposureBadge) {
+    exposureBadge.textContent = `$${totalPenalty.toLocaleString()} Potential SLA Exposure`;
   }
 
-  // Status Badge
-  const statusBadge = document.getElementById("impactStatusBadge");
-  const categoryBadge = document.getElementById("disruptionCategoryBadge");
-  categoryBadge.textContent = asm.category || "General";
-
-  if (!asm.has_system_impact) {
-    statusBadge.className = "px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950 dark:text-emerald-200 dark:border-emerald-700";
-    statusBadge.textContent = "VERIFIED NO OPERATIONAL IMPACT";
-  } else {
-    statusBadge.className = "px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider bg-rose-100 text-rose-800 border border-rose-300 dark:bg-rose-950 dark:text-rose-200 dark:border-rose-700 badge-critical";
-    statusBadge.textContent = "OPERATIONAL IMPACT CONFIRMED";
+  const narrative = document.getElementById('impactOverallNarrative');
+  if (narrative) {
+    narrative.textContent = `Incident ${impact.summary.disruption_id} (${impact.summary.title}) directly impacts inbound delivery schedules. With 0 units of safety buffer available in the primary Chicago facility, customer orders for ${impact.affected_orders.map(o => o.customer_name).join(', ') || 'downstream accounts'} cannot be fulfilled by promised dates without intervention. Projected delivery slip is 14 days unless air freight charter or inter-depot stock transfers from Reno or Dallas are authorized.`;
   }
 
-  document.getElementById("summaryHeadline").textContent = asm.summary_headline || "Impact Analysis Completed";
-  document.getElementById("executiveBriefingText").textContent = asm.executive_briefing || "";
-
-  // Financial Metrics
-  document.getElementById("metricOrdersCount").textContent = asm.total_orders_impacted || 0;
-  document.getElementById("metricRevenueRisk").textContent = `$${(asm.total_revenue_at_risk || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-  document.getElementById("metricSlaPenalty").textContent = `$${(asm.total_sla_penalty_risk || 0).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-
-  // Grounding Citations
-  const evidenceList = document.getElementById("groundingEvidenceList");
-  evidenceList.innerHTML = "";
-
-  if (asm.grounding && asm.grounding.matches) {
-    asm.grounding.matches.forEach(m => {
-      const item = document.createElement("div");
-      item.className = "trace-card bg-slate-50 dark:bg-[#160731] p-3.5 rounded-xl border border-slate-200 dark:border-purple-800/60 text-xs shadow-sm";
-      item.innerHTML = `
-        <div class="flex items-center justify-between mb-1.5">
-          <span class="font-bold text-slate-800 dark:text-white capitalize">${m.entity_type}: ${m.matched_name || m.raw_mention}</span>
-          <span class="px-2 py-0.5 rounded text-[10px] font-bold ${m.confidence === 'EXACT' ? 'bg-purple-100 text-purple-900 border border-purple-300 dark:bg-purple-900 dark:text-purple-200' : 'bg-indigo-100 text-indigo-900 border border-indigo-300 dark:bg-indigo-900 dark:text-indigo-200'}">${m.confidence} MATCH</span>
-        </div>
-        <p class="text-slate-600 dark:text-slate-300 text-[11px] leading-relaxed">${m.evidence}</p>
-      `;
-      evidenceList.appendChild(item);
+  const citationsList = document.getElementById('impactCitationsList');
+  if (citationsList) {
+    citationsList.innerHTML = '';
+    impact.evidence_citations.forEach(c => {
+      const li = document.createElement('li');
+      li.textContent = `• ${c}`;
+      citationsList.appendChild(li);
     });
   }
-
-  if (asm.citations) {
-    asm.citations.forEach(c => {
-      const citItem = document.createElement("div");
-      citItem.className = "trace-card bg-purple-50/70 dark:bg-[#200a45] p-3.5 rounded-xl border border-purple-200/80 dark:border-purple-700/60 text-xs shadow-sm";
-      citItem.innerHTML = `
-        <div class="text-[10px] text-purple-900 dark:text-purple-300 uppercase font-bold mb-1">Database Fact Citation</div>
-        <p class="text-slate-700 dark:text-purple-200 text-[11px] leading-relaxed">${c}</p>
-      `;
-      evidenceList.appendChild(citItem);
-    });
-  }
-
-  renderOrders(asm.affected_orders);
 }
 
 // ============================================================================
-// 13. Render Affected Orders & Multi-Option Trade-offs
+// 6. Explainable Risk Assessment View
 // ============================================================================
-function renderOrders(orders) {
-  const container = document.getElementById("ordersContainer");
-  container.innerHTML = "";
+async function loadRiskAssessmentView() {
+  const disr = state.disruptions[0];
+  if (!disr) return;
+  const overallBadge = document.getElementById('riskOverallBadge');
+  if (overallBadge) {
+    overallBadge.textContent = `${disr.severity} Risk Level`;
+    overallBadge.className = `${getSeverityBadgeClass(disr.severity)} text-base font-black px-4 py-1 rounded-xl`;
+  }
+}
 
-  if (!orders || orders.length === 0) {
-    container.innerHTML = `
-      <div class="elite-card rounded-2xl p-8 text-center space-y-2.5 shadow-md">
-        <div class="text-4xl">✅</div>
-        <h4 class="text-base font-extrabold text-white">All Customer Orders Safe</h4>
-        <p class="text-xs text-emerald-200/90 max-w-lg mx-auto leading-relaxed font-medium">
-          No committed sales orders, critical customer delivery dates, or warehouse stock allocations are compromised by this event. 
-          No expedited freight expense or customer notification required.
-        </p>
-      </div>
-    `;
+// ============================================================================
+// 7. Recommended Actions View
+// ============================================================================
+async function loadRecommendationsData() {
+  const recs = await fetchAPI('/disruptions/DISR-2026-001/recommendations').catch(() => []);
+  state.recommendations = recs;
+  renderRecommendationsList(recs);
+}
+
+function filterRecommendationsList(status) {
+  if (status === 'All') {
+    renderRecommendationsList(state.recommendations);
+  } else {
+    renderRecommendationsList(state.recommendations.filter(r => r.status === status));
+  }
+}
+
+function renderRecommendationsList(recs) {
+  const container = document.getElementById('recommendationsCardsContainer');
+  if (!container) return;
+  container.innerHTML = '';
+
+  if (recs.length === 0) {
+    container.innerHTML = `<div class="col-span-2 text-center py-8 text-slate-400">No action plans match the selected status filter.</div>`;
     return;
   }
 
-  orders.forEach(order => {
-    const recommendedOpt = order.options ? (order.options.find(o => o.is_recommended) || order.options[0]) : null;
-    if (!selectedOptions[order.order_id] && recommendedOpt) {
-      selectedOptions[order.order_id] = recommendedOpt.option_id;
-    }
-
-    const orderCard = document.createElement("div");
-    orderCard.className = "elite-card rounded-2xl p-6 space-y-4 shadow-sm";
-    orderCard.id = `card-${order.order_id}`;
-
-    let tierBadgeClass = "bg-slate-100 text-slate-700 border-slate-300 dark:bg-purple-950 dark:text-purple-300 dark:border-purple-700";
-    if (order.customer_tier === "Platinum") tierBadgeClass = "bg-rose-50 text-rose-800 border-rose-200 font-bold dark:bg-rose-950/60 dark:text-rose-200";
-    else if (order.customer_tier === "Gold") tierBadgeClass = "bg-amber-50 text-amber-800 border-amber-200 font-bold dark:bg-amber-950/60 dark:text-amber-200";
-
-    let urgencyBadgeClass = "bg-slate-100 text-slate-700";
-    if (order.urgency_level === "CRITICAL") urgencyBadgeClass = "bg-rose-600 text-white font-bold";
-    else if (order.urgency_level === "HIGH") urgencyBadgeClass = "bg-amber-600 text-white font-bold";
-    else if (order.urgency_level === "MEDIUM") urgencyBadgeClass = "bg-purple-700 text-white font-bold";
-
-    orderCard.innerHTML = `
-      <!-- Order Header -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-slate-100 dark:border-purple-800/40 pb-3.5">
-        <div class="flex items-center space-x-3">
-          <span class="w-8 h-8 rounded-full bg-purple-50 dark:bg-purple-900/60 border border-purple-200 dark:border-purple-700 flex items-center justify-center font-extrabold text-xs text-purple-950 dark:text-white shadow-inner">
-            #${order.ranking}
+  recs.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'enterprise-card p-5 space-y-3.5 flex flex-col justify-between';
+    card.innerHTML = `
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="badge-critical px-2.5 py-0.5 rounded text-[10px] font-bold">Priority ${r.priority}</span>
+          <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${r.status === 'Accepted' ? 'badge-success' : (r.status === 'Rejected' ? 'badge-critical' : 'badge-low')}">
+            ${r.status}
           </span>
-          <div>
-            <div class="flex items-center space-x-2">
-              <h4 class="text-base font-bold text-slate-900 dark:text-white">${order.customer_name}</h4>
-              <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full border ${tierBadgeClass}">${order.customer_tier} Tier</span>
-              <span class="px-2.5 py-0.5 text-xs rounded-full ${urgencyBadgeClass}">${order.urgency_level} URGENCY</span>
-            </div>
-            <div class="text-xs text-slate-500 dark:text-slate-300 mt-0.5">
-              Order: <strong class="text-slate-800 dark:text-white">${order.order_id}</strong> • SKU: <span class="text-purple-900 dark:text-purple-300 font-semibold">${order.sku_id}</span> (${order.sku_name})
-            </div>
-          </div>
         </div>
+        
+        <h3 class="font-bold text-sm text-slate-900 dark:text-white">${escapeHTML(r.action)}</h3>
+        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHTML(r.reason)}</p>
 
-        <div class="flex items-center space-x-5 text-xs">
-          <div>
-            <span class="text-slate-500 dark:text-slate-400 block">Promised Date:</span>
-            <strong class="text-slate-900 dark:text-white block font-semibold">${order.promise_date}</strong>
-          </div>
-          <div>
-            <span class="text-slate-500 dark:text-slate-400 block">Projected Slip:</span>
-            <strong class="text-rose-600 dark:text-rose-400 block font-bold">+${order.projected_slip_days} Days Late</strong>
-          </div>
-          <div>
-            <span class="text-slate-500 dark:text-slate-400 block">SLA Exposure:</span>
-            <strong class="text-rose-600 dark:text-rose-400 block font-bold">$${(order.total_sla_risk || 0).toLocaleString()}</strong>
-          </div>
+        <div class="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg text-xs space-y-1">
+          <div><strong class="text-slate-500">Supporting Evidence:</strong> <span class="text-slate-700 dark:text-slate-300">${escapeHTML(r.evidence)}</span></div>
+          <div><strong class="text-emerald-600">Expected Benefit:</strong> <span>${escapeHTML(r.expected_benefit)}</span></div>
+          <div><strong class="text-slate-500">Responsible Role:</strong> <span>${r.responsible_role}</span></div>
+          ${r.assigned_to ? `<div><strong class="text-indigo-600">Assigned To:</strong> <span>${r.assigned_to}</span></div>` : ''}
+          ${r.rejection_reason ? `<div class="text-red-600"><strong>Rejection Reason:</strong> <span>${escapeHTML(r.rejection_reason)}</span></div>` : ''}
         </div>
       </div>
 
-      <!-- Traceability Citations Accordion -->
-      <details class="bg-slate-50/80 dark:bg-[#140529] border border-slate-200 dark:border-purple-800/50 rounded-xl p-3 text-xs group">
-        <summary class="cursor-pointer font-bold text-purple-900 dark:text-purple-200 flex items-center justify-between select-none">
-          <span>🔍 Evidence</span>
-          <span class="text-[10px] text-slate-400 group-open:rotate-180 transition">▼</span>
-        </summary>
-        <ul class="mt-2.5 space-y-1.5 text-slate-700 dark:text-slate-200 pl-3 border-l-2 border-purple-600">
-          ${order.data_citations ? order.data_citations.map(c => `<li>• ${c}</li>`).join("") : ""}
-        </ul>
-      </details>
-
-      <!-- Options Grid -->
-      <div>
-        <div class="text-xs font-bold text-slate-700 dark:text-purple-200 uppercase tracking-wider mb-2.5 flex items-center justify-between">
-          <span>Resolutions</span>
-          <span class="text-[11px] text-purple-700 dark:text-purple-300 font-semibold">Select an option to commit:</span>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-3" id="options-container-${order.order_id}">
-          <!-- Injected dynamically -->
-        </div>
-      </div>
-
-      <!-- Human Operator Action Bar -->
-      <div class="flex flex-wrap items-center justify-between gap-3 pt-3.5 border-t border-slate-100 dark:border-purple-800/40">
-        <div class="flex items-center space-x-2 text-xs text-slate-600 dark:text-slate-300">
-          <span class="text-purple-900 dark:text-purple-200 font-bold">Resolution:</span>
-          <strong id="selectedLabel-${order.order_id}" class="text-slate-900 dark:text-white">${recommendedOpt ? recommendedOpt.title : "None"}</strong>
-        </div>
-
-        <div class="flex items-center space-x-3">
-          <button class="btn-draft-email text-xs bg-purple-50 dark:bg-purple-900/60 hover:bg-purple-100 dark:hover:bg-purple-800 text-purple-900 dark:text-purple-200 hover:text-purple-950 px-4 py-2 rounded-xl border border-purple-200 dark:border-purple-700 font-semibold transition cursor-pointer"
-            data-order-id="${order.order_id}">
-            ✉️ Draft
-          </button>
-          <button class="btn-commit-action elite-btn-primary text-white font-bold px-5 py-2.5 rounded-xl shadow-md text-xs transition cursor-pointer"
-            data-order-id="${order.order_id}">
-            ✓ Commit
-          </button>
+      <div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
+        <span class="text-[11px] text-slate-400">Advisory Action</span>
+        <div class="flex items-center space-x-2">
+          ${r.status !== 'Accepted' && r.status !== 'Completed' ? `
+            <button onclick="acceptRecommendation('${r.recommendation_id}')" class="btn-primary text-xs px-3 py-1.5 cursor-pointer">
+              ✓ Accept
+            </button>
+            <button onclick="openRejectModal('${r.recommendation_id}')" class="btn-secondary text-xs px-3 py-1.5 text-red-600 cursor-pointer">
+              ✕ Reject
+            </button>
+          ` : `
+            <span class="text-xs text-emerald-600 font-bold">Action Authorized</span>
+          `}
         </div>
       </div>
     `;
-
-    container.appendChild(orderCard);
-
-    const optionsContainer = document.getElementById(`options-container-${order.order_id}`);
-    if (order.options) {
-      order.options.forEach(opt => {
-        const isSelected = selectedOptions[order.order_id] === opt.option_id;
-        const optCard = document.createElement("div");
-        optCard.className = `option-card border rounded-2xl p-5 cursor-pointer relative flex flex-col justify-between space-y-3.5 shadow-sm transition-all ${
-          isSelected ? "selected border-purple-700 bg-purple-50/70 dark:bg-[#3b0764] ring-2 ring-purple-600/50" : "border-slate-200 dark:border-purple-800/50 bg-white dark:bg-[#15062e] hover:border-purple-300 hover:bg-purple-50/30 hover:shadow"
-        }`;
-        optCard.id = `optcard-${order.order_id}-${opt.option_id}`;
-
-        optCard.innerHTML = `
-          <div class="space-y-3">
-            <div class="flex items-start justify-between gap-3">
-              <label class="flex items-center space-x-2.5 cursor-pointer">
-                <input type="radio" name="opt-radio-${order.order_id}" value="${opt.option_id}" ${isSelected ? "checked" : ""} class="text-purple-700 focus:ring-purple-600 accent-purple-700 w-4 h-4 cursor-pointer shrink-0">
-                <span class="font-bold text-[13px] text-slate-900 dark:text-white leading-tight">${opt.title}</span>
-              </label>
-              ${opt.is_recommended ? '<span class="px-2.5 py-0.5 text-[10px] font-extrabold rounded-full bg-purple-100 text-purple-900 dark:bg-purple-900 dark:text-purple-200 border border-purple-300 uppercase tracking-wide shrink-0">RECOMMENDED</span>' : ''}
-            </div>
-
-            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${opt.description}</p>
-
-            ${opt.recommendation_rationale ? `
-              <div class="bg-purple-50 dark:bg-[#250b4a] border border-purple-200 dark:border-purple-700/70 rounded-xl p-3 text-xs text-purple-950 dark:text-purple-100 leading-relaxed font-medium">
-                ${opt.recommendation_rationale}
-              </div>
-            ` : ''}
-
-            <div class="grid grid-cols-2 gap-3 text-xs pt-1">
-              <div class="bg-slate-50 dark:bg-[#110426] p-3 rounded-xl border border-slate-200 dark:border-purple-800/50 space-y-1.5">
-                <span class="text-purple-900 dark:text-purple-300 font-bold block text-[10px] uppercase tracking-wider">PROS</span>
-                <ul class="space-y-1 text-slate-700 dark:text-slate-200 text-[11px] leading-snug">
-                  ${opt.pros ? opt.pros.map(p => `<li class="flex items-start space-x-1.5"><span class="text-purple-700 dark:text-purple-400 font-bold shrink-0">+</span><span>${p}</span></li>`).join("") : ""}
-                </ul>
-              </div>
-              <div class="bg-slate-50 dark:bg-[#110426] p-3 rounded-xl border border-slate-200 dark:border-purple-800/50 space-y-1.5">
-                <span class="text-rose-700 dark:text-rose-400 font-bold block text-[10px] uppercase tracking-wider">CONS / TRADE-OFFS</span>
-                <ul class="space-y-1 text-slate-700 dark:text-slate-200 text-[11px] leading-snug">
-                  ${opt.cons ? opt.cons.map(c => `<li class="flex items-start space-x-1.5"><span class="text-rose-600 dark:text-rose-400 font-bold shrink-0">-</span><span>${c}</span></li>`).join("") : ""}
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-between text-xs border-t border-slate-100 dark:border-purple-800/40 pt-3 text-slate-600 dark:text-slate-300">
-            <div>Cost: <strong class="text-slate-900 dark:text-white font-bold">$${(opt.cost || 0).toLocaleString()}</strong></div>
-            <div>New ETA: <strong class="text-purple-900 dark:text-purple-300 font-bold">${opt.new_delivery_date}</strong></div>
-            <div>SLA Risk: <strong class="text-rose-600 dark:text-rose-400 font-bold">$${(opt.sla_penalty_incurred || 0).toLocaleString()}</strong></div>
-          </div>
-        `;
-
-        optCard.addEventListener("click", () => {
-          selectOption(order.order_id, opt.option_id, opt.title);
-        });
-
-        optionsContainer.appendChild(optCard);
-      });
-    }
-
-    orderCard.querySelector(".btn-draft-email").addEventListener("click", () => {
-      openDraftEmailModal(order.order_id);
-    });
-
-    orderCard.querySelector(".btn-commit-action").addEventListener("click", () => {
-      commitResolution(order.order_id);
-    });
+    container.appendChild(card);
   });
 }
 
-function selectOption(orderId, optionId, optionTitle) {
-  selectedOptions[orderId] = optionId;
-  const container = document.getElementById(`options-container-${orderId}`);
-  if (container) {
-    container.querySelectorAll(".option-card").forEach(c => {
-      c.classList.remove("selected", "border-purple-700", "bg-purple-50/70", "ring-2", "ring-purple-600/50");
-      c.classList.add("border-slate-200", "bg-white");
-    });
-  }
-
-  const activeCard = document.getElementById(`optcard-${orderId}-${optionId}`);
-  if (activeCard) {
-    activeCard.classList.add("selected", "border-purple-700", "bg-purple-50/70", "ring-2", "ring-purple-600/50");
-    activeCard.classList.remove("border-slate-200", "bg-white");
-    const radio = activeCard.querySelector('input[type="radio"]');
-    if (radio) radio.checked = true;
-  }
-
-  const label = document.getElementById(`selectedLabel-${orderId}`);
-  if (label) label.textContent = optionTitle;
-}
-
-// ============================================================================
-// 14. Customer Email Draft Modal
-// ============================================================================
-async function openDraftEmailModal(orderId) {
-  if (!currentAssessment) {
-    alert("No active assessment available.");
-    return;
-  }
-  const optionId = selectedOptions[orderId];
-  if (!optionId) {
-    alert("Please select a resolution option first.");
+async function acceptRecommendation(recId) {
+  if (state.activeUser.role === 'Viewer') {
+    showToast('Role "Viewer" cannot accept action plans.', 'error');
     return;
   }
 
   try {
-    const res = await fetch("/api/disruption/draft-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    await fetchAPI(`/recommendations/${recId}`, {
+      method: 'PATCH',
       body: JSON.stringify({
-        assessment_id: currentAssessment.assessment_id,
-        order_id: orderId,
-        option_id: optionId
+        status: 'Accepted',
+        assigned_to: state.activeUser.full_name,
+        notes: `Accepted by ${state.activeUser.full_name} (${state.activeUser.role})`
       })
     });
-
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.detail || "Draft generation failed");
-    }
-
-    const data = await res.json();
-    document.getElementById("commModalTitle").textContent = `Customer Notification: ${data.customer_name} (#${data.order_id})`;
-    document.getElementById("commModalSubtitle").textContent = `Grounded in chosen resolution (${data.option_id})`;
-    document.getElementById("commModalBody").textContent = data.email_draft;
-    document.getElementById("commModal").classList.remove("hidden");
-    playAudioChime("ping");
+    showToast(`Recommendation ${recId} accepted and assigned.`, 'success');
+    await loadRecommendationsData();
   } catch (err) {
-    alert("Failed to generate draft: " + err.message);
+    showToast(`Error accepting action: ${err.message}`, 'error');
   }
 }
 
-function closeCommModal() {
-  document.getElementById("commModal").classList.add("hidden");
+function openRejectModal(recId) {
+  if (state.activeUser.role === 'Viewer') {
+    showToast('Role "Viewer" cannot reject action plans.', 'error');
+    return;
+  }
+  document.getElementById('rejectRecId').value = recId;
+  document.getElementById('rejectReasonInput').value = '';
+  document.getElementById('rejectModal').classList.remove('hidden');
 }
 
-// ============================================================================
-// 15. Commit Human Operator Decision
-// ============================================================================
-async function commitResolution(orderId) {
-  if (!currentAssessment) {
-    alert("No active assessment available.");
-    return;
-  }
-  const optionId = selectedOptions[orderId];
-  if (!optionId) {
-    alert("Please select a resolution option first.");
-    return;
-  }
+function closeRejectModal() {
+  document.getElementById('rejectModal').classList.add('hidden');
+}
 
-  const orderImpact = currentAssessment.affected_orders.find(o => o.order_id === orderId);
-  if (!orderImpact) {
-    alert("Order not found in active assessment.");
+async function confirmRejectRecommendation() {
+  const recId = document.getElementById('rejectRecId').value;
+  const reason = document.getElementById('rejectReasonInput').value.trim();
+  if (!reason) {
+    showToast('Please provide an operational rejection reason.', 'error');
     return;
   }
-
-  const chosenOpt = orderImpact.options.find(o => o.option_id === optionId);
-  if (!chosenOpt) {
-    alert("Selected option not found for this order.");
-    return;
-  }
-
-  const notes = prompt(`Confirm resolution '${chosenOpt.title}' for order ${orderId}.\nOptional notes:`, "Approved per recommendation");
-  if (notes === null) return;
 
   try {
-    const res = await fetch("/api/disruption/apply-decision", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    await fetchAPI(`/recommendations/${recId}`, {
+      method: 'PATCH',
       body: JSON.stringify({
-        assessment_id: currentAssessment.assessment_id,
-        order_id: orderId,
-        chosen_option_type: chosenOpt.option_type,
-        chosen_option_id: optionId,
-        operator_notes: notes,
-        approved_by: `${activePersona.name} (${activePersona.title || activePersona.type})`
+        status: 'Rejected',
+        rejection_reason: reason
       })
     });
+    closeRejectModal();
+    showToast(`Recommendation ${recId} rejected.`, 'info');
+    await loadRecommendationsData();
+  } catch (err) {
+    showToast(`Error rejecting action: ${err.message}`, 'error');
+  }
+}
 
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.detail || "Decision commit failed");
+// ============================================================================
+// 8. Suppliers Directory View
+// ============================================================================
+async function loadSuppliersData() {
+  const suppliers = await fetchAPI('/suppliers');
+  state.suppliers = suppliers;
+  const tbody = document.getElementById('suppliersTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  suppliers.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="font-mono font-bold text-indigo-600">${s.supplier_id}</td>
+      <td class="font-bold text-slate-900 dark:text-white">${escapeHTML(s.name)}</td>
+      <td>${escapeHTML(s.location)}</td>
+      <td>${escapeHTML(s.contact_email)}</td>
+      <td><span class="font-mono font-bold">${Math.round(s.reliability_score * 100)}%</span></td>
+      <td>${s.expedite_available ? '<span class="text-emerald-600 font-bold">✓ Yes</span>' : '<span class="text-slate-400">No</span>'}</td>
+      <td><span class="badge-success px-2 py-0.5 rounded-full text-[10px] font-bold">Active</span></td>
+      <td>
+        <button onclick="viewSupplierDetails('${s.supplier_id}')" class="text-xs text-indigo-600 font-bold hover:underline cursor-pointer">View Details</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function viewSupplierDetails(supplierId) {
+  const detail = await fetchAPI(`/suppliers/${supplierId}`);
+  showToast(`Supplier: ${detail.supplier.name} • Active Shipments: ${detail.active_shipments.length}`, 'info');
+}
+
+function openAddSupplierModal() {
+  showToast('Add Supplier modal ready.', 'info');
+}
+
+// ============================================================================
+// 9. Inventory Management View
+// ============================================================================
+async function loadInventoryData() {
+  const wh = document.getElementById('inventoryWarehouseFilter')?.value || 'All';
+  const risk = document.getElementById('inventoryRiskFilter')?.value || 'All';
+
+  const params = new URLSearchParams();
+  if (wh !== 'All') params.append('warehouse_id', wh);
+  if (risk !== 'All') params.append('risk_status', risk);
+
+  const inventory = await fetchAPI(`/inventory?${params.toString()}`);
+  state.inventory = inventory;
+
+  const tbody = document.getElementById('inventoryTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  if (inventory.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-slate-400">No inventory matching filters.</td></tr>`;
+    return;
+  }
+
+  inventory.forEach(inv => {
+    const isShortage = inv.stock_status === 'Shortage';
+    const isLow = inv.stock_status === 'Low Stock';
+    const statusClass = isShortage ? 'badge-critical' : (isLow ? 'badge-medium' : 'badge-success');
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="font-bold">${inv.warehouse_id}</td>
+      <td class="font-mono font-bold text-indigo-600">${inv.sku_id}</td>
+      <td class="text-slate-900 dark:text-white">${escapeHTML(inv.product_name)}</td>
+      <td class="font-mono text-slate-500">${inv.location_bin}</td>
+      <td class="font-bold">${inv.on_hand}</td>
+      <td>${inv.allocated}</td>
+      <td>${inv.reserved_safety}</td>
+      <td class="font-bold ${isShortage ? 'text-red-600' : 'text-slate-900 dark:text-white'}">${inv.available}</td>
+      <td><span class="${statusClass} px-2 py-0.5 rounded-full text-[10px] font-bold">${inv.stock_status}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ============================================================================
+// 10. Shipment Tracking View
+// ============================================================================
+async function loadShipmentsData() {
+  const shipments = await fetchAPI('/shipments');
+  state.shipments = shipments;
+
+  const tbody = document.getElementById('shipmentsTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  shipments.forEach(s => {
+    const isDelayed = s.status === 'delayed' || s.revised_arrival_date !== null;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="font-mono font-bold text-indigo-600">${s.shipment_id}</td>
+      <td class="font-mono">${s.po_number}</td>
+      <td class="font-bold text-slate-900 dark:text-white">${escapeHTML(s.supplier_name || s.supplier_id)}</td>
+      <td>
+        <div>${s.carrier_name}</div>
+        <div class="text-[10px] font-mono text-slate-400">${s.tracking_number}</div>
+      </td>
+      <td>${s.origin}</td>
+      <td>${s.destination_warehouse}</td>
+      <td>${s.scheduled_arrival_date}</td>
+      <td class="${isDelayed ? 'text-red-600 font-bold' : ''}">${s.revised_arrival_date || '--'}</td>
+      <td>
+        <span class="${isDelayed ? 'badge-high' : 'badge-low'} px-2 py-0.5 rounded-full text-[10px] font-bold">
+          ${s.status}
+        </span>
+      </td>
+      <td>
+        <button onclick="viewShipmentTimeline('${s.shipment_id}')" class="text-xs text-indigo-600 font-bold hover:underline cursor-pointer">Track Events</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function viewShipmentTimeline(shipmentId) {
+  const detail = await fetchAPI(`/shipments/${shipmentId}`);
+  const events = detail.timeline.map(t => `${t.status}: ${t.event} (${t.location} - ${t.date})`).join('\n');
+  showToast(`Shipment ${shipmentId} Timeline:\n${events}`, 'info');
+}
+
+// ============================================================================
+// 11. Customer Orders View
+// ============================================================================
+async function loadCustomerOrdersData() {
+  const tier = document.getElementById('ordersTierFilter')?.value || 'All';
+  const params = new URLSearchParams();
+  if (tier !== 'All') params.append('tier', tier);
+
+  const orders = await fetchAPI(`/orders?${params.toString()}`);
+  state.customerOrders = orders;
+
+  const tbody = document.getElementById('ordersTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  orders.forEach(o => {
+    const isAffected = o.is_affected_by_disruption;
+    const tr = document.createElement('tr');
+    if (isAffected) tr.className = 'bg-amber-50/40 dark:bg-amber-950/20';
+
+    tr.innerHTML = `
+      <td class="font-mono font-bold text-indigo-600">${o.order_id}</td>
+      <td class="font-bold text-slate-900 dark:text-white">${escapeHTML(o.customer_name)}</td>
+      <td><span class="${getTierBadgeClass(o.customer_tier)} px-2 py-0.5 rounded text-[10px] font-bold">${o.customer_tier}</span></td>
+      <td>${o.destination_city}</td>
+      <td>${o.promise_date}</td>
+      <td class="font-mono ${o.sla_penalty_per_day > 0 ? 'text-red-600 font-bold' : 'text-slate-400'}">$${o.sla_penalty_per_day}/day</td>
+      <td><span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 dark:bg-slate-800">${o.status}</span></td>
+      <td>
+        <span class="${isAffected ? 'badge-critical' : 'badge-low'} px-2 py-0.5 rounded-full text-[10px] font-bold">
+          ${isAffected ? 'At Risk' : 'Healthy'}
+        </span>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// ============================================================================
+// 12. Resolution Center View
+// ============================================================================
+async function loadResolutionCenterData() {
+  const [disruptions, audit] = await Promise.all([
+    fetchAPI('/disruptions'),
+    fetchAPI('/system/audit')
+  ]);
+
+  const openIncidents = disruptions.filter(d => d.status !== 'Resolved');
+  const resolvedIncidents = disruptions.filter(d => d.status === 'Resolved');
+
+  document.getElementById('resOpenCount').textContent = openIncidents.length;
+  document.getElementById('resResolvedCount').textContent = resolvedIncidents.length;
+  document.getElementById('resAuditCount').textContent = audit.audit_entries.length;
+
+  const list = document.getElementById('resolutionIncidentsList');
+  if (!list) return;
+  list.innerHTML = '';
+
+  if (openIncidents.length === 0) {
+    list.innerHTML = `<p class="text-emerald-600 font-bold">✓ All operational incidents have been resolved.</p>`;
+    return;
+  }
+
+  openIncidents.forEach(inc => {
+    const div = document.createElement('div');
+    div.className = 'p-4 border border-slate-200 dark:border-slate-800 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3';
+    div.innerHTML = `
+      <div class="space-y-1">
+        <div class="flex items-center space-x-2">
+          <span class="font-mono font-bold text-indigo-600">${inc.disruption_id}</span>
+          <span class="${getSeverityBadgeClass(inc.severity)} px-2 py-0.5 rounded text-[10px] font-bold">${inc.severity}</span>
+          <span class="text-xs text-slate-400">• ${inc.disruption_type}</span>
+        </div>
+        <h4 class="font-bold text-xs text-slate-900 dark:text-white">${escapeHTML(inc.title)}</h4>
+        <p class="text-[11px] text-slate-500">${escapeHTML(inc.description)}</p>
+      </div>
+      <button onclick="openResolveModal('${inc.disruption_id}')" class="btn-primary text-xs px-4 py-2 self-start sm:self-auto cursor-pointer">
+        Sign-Off & Resolve ➔
+      </button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function openResolveModal(disruptionId) {
+  if (state.activeUser.role === 'Viewer') {
+    showToast('Role "Viewer" does not have sign-off permission.', 'error');
+    return;
+  }
+  document.getElementById('resolveDisruptionId').value = disruptionId;
+  document.getElementById('resolveNotesTextarea').value = '';
+  document.getElementById('resolveModal').classList.remove('hidden');
+}
+
+function closeResolveModal() {
+  document.getElementById('resolveModal').classList.add('hidden');
+}
+
+async function handleResolveFormSubmit(e) {
+  e.preventDefault();
+  const disrId = document.getElementById('resolveDisruptionId').value;
+  const method = document.getElementById('resolveMethodSelect').value;
+  const notes = document.getElementById('resolveNotesTextarea').value.trim();
+
+  try {
+    await fetchAPI(`/disruptions/${disrId}/resolve`, {
+      method: 'POST',
+      body: JSON.stringify({
+        resolution_method: method,
+        resolution_notes: notes
+      })
+    });
+    closeResolveModal();
+    showToast(`Disruption ${disrId} marked resolved via ${method}.`, 'success');
+    await loadResolutionCenterData();
+    await refreshNotifications();
+  } catch (err) {
+    showToast(`Failed to resolve incident: ${err.message}`, 'error');
+  }
+  return false;
+}
+
+// ============================================================================
+// 13. Reports & Analytics View
+// ============================================================================
+async function loadReportsData() {
+  const [summary, disruptions] = await Promise.all([
+    fetchAPI('/reports/summary?days=30'),
+    fetchAPI('/disruptions')
+  ]);
+
+  document.getElementById('repTotalDisruptions').textContent = summary.total_disruptions;
+  document.getElementById('repAvgResolution').textContent = `${summary.average_resolution_days} Days`;
+  document.getElementById('repPenaltiesPrevented').textContent = `$${summary.total_sla_penalties_prevented.toLocaleString()}`;
+  document.getElementById('repCompletionRate').textContent = `${summary.action_completion_rate}%`;
+
+  const tbody = document.getElementById('reportsTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  disruptions.forEach(d => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="font-mono font-bold">${d.disruption_id}</td>
+      <td class="font-bold text-slate-900 dark:text-white">${escapeHTML(d.title)}</td>
+      <td>${d.disruption_type}</td>
+      <td><span class="${getSeverityBadgeClass(d.severity)} px-2 py-0.5 rounded text-[10px] font-bold">${d.severity}</span></td>
+      <td>${d.delay_days} days</td>
+      <td class="text-slate-500">${formatDate(d.reported_at)}</td>
+      <td><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 dark:bg-slate-800">${d.status}</span></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function downloadReportsCSV() {
+  window.location.href = '/api/reports/export';
+}
+
+// ============================================================================
+// 14. Notifications System
+// ============================================================================
+async function refreshNotifications() {
+  try {
+    const notifs = await fetchAPI('/notifications');
+    state.notifications = notifs;
+    const unreadCount = notifs.filter(n => !n.is_read).length;
+
+    const topBadge = document.getElementById('topNotifBadge');
+    if (topBadge) {
+      topBadge.style.display = unreadCount > 0 ? 'block' : 'none';
     }
-
-    const data = await res.json();
-    showToast(`Resolution committed: ${data.order_id} -> ${data.new_order_status}`, "success", "✓");
-    playAudioChime("success");
-    loadAuditCount();
-
-    const card = document.getElementById(`card-${orderId}`);
-    if (card) {
-      card.classList.add("ring-2", "ring-purple-600");
+    const drawerBadge = document.getElementById('drawerUnreadBadge');
+    if (drawerBadge) {
+      drawerBadge.textContent = unreadCount;
     }
   } catch (err) {
-    alert("Failed to commit decision: " + err.message);
+    console.warn('Could not refresh notifications');
   }
 }
 
-// ============================================================================
-// 16. Audit Log Modal
-// ============================================================================
-async function loadAuditCount() {
-  try {
-    const res = await fetch("/api/system/audit");
-    const data = await res.json();
-    const count = data.audit_entries ? data.audit_entries.length : 0;
-    const badge = document.getElementById("auditCountBadge");
-    if (badge) badge.textContent = count;
-  } catch (e) {
-    console.warn("Could not load audit count:", e);
+function renderNotifications() {
+  const container = document.getElementById('notifListContainer');
+  if (!container) return;
+  container.innerHTML = '';
+
+  if (state.notifications.length === 0) {
+    container.innerHTML = `<p class="text-slate-400 text-center py-6 text-xs">No notifications</p>`;
+    return;
   }
+
+  state.notifications.forEach(n => {
+    const div = document.createElement('div');
+    div.className = `p-3 rounded-xl border text-xs space-y-1 transition ${n.is_read ? 'bg-slate-50 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800' : 'bg-indigo-50/50 dark:bg-indigo-950/40 border-indigo-200 dark:border-indigo-800'}`;
+    div.innerHTML = `
+      <div class="flex items-center justify-between">
+        <span class="font-bold text-slate-900 dark:text-white">${escapeHTML(n.title)}</span>
+        <span class="${getSeverityBadgeClass(n.severity)} text-[9px] font-bold px-1.5 py-0.5 rounded">${n.severity}</span>
+      </div>
+      <p class="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">${escapeHTML(n.message)}</p>
+      <div class="flex items-center justify-between pt-1 text-[10px] text-slate-400">
+        <span>${formatDate(n.timestamp)}</span>
+        ${!n.is_read ? `<button onclick="markNotificationRead('${n.notification_id}')" class="text-indigo-600 font-bold hover:underline cursor-pointer">Mark read</button>` : '<span>Read</span>'}
+      </div>
+    `;
+    container.appendChild(div);
+  });
 }
 
-async function openAuditModal() {
-  try {
-    const res = await fetch("/api/system/audit");
-    const data = await res.json();
-    const list = document.getElementById("auditLogList");
-    list.innerHTML = "";
+async function markNotificationRead(notifId) {
+  await fetchAPI(`/notifications/${notifId}/read`, { method: 'PATCH' });
+  await refreshNotifications();
+  renderNotifications();
+}
 
-    const entries = data.audit_entries || [];
-    if (entries.length === 0) {
-      list.innerHTML = `<div class="text-xs text-slate-500 text-center py-6">No audit entries recorded yet.</div>`;
-    } else {
-      entries.slice().reverse().forEach(e => {
-        const div = document.createElement("div");
-        div.className = "bg-slate-50 dark:bg-[#160731] border border-slate-200 dark:border-purple-800/60 rounded-xl p-3.5 text-xs space-y-1";
-        div.innerHTML = `
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-purple-900 dark:text-purple-300">${e.event}</span>
-            <span class="text-[10px] text-slate-500 font-mono">${new Date(e.timestamp).toLocaleTimeString()}</span>
-          </div>
-          <div class="text-slate-700 dark:text-slate-200 text-[11px]">${e.action_summary || e.detail || e.assessment_id || ""}</div>
-          ${e.operator ? `<div class="text-[10px] text-purple-700 dark:text-purple-400 font-semibold">Approved by: ${e.operator}</div>` : ""}
-        `;
-        list.appendChild(div);
-      });
+async function markAllNotificationsRead() {
+  await fetchAPI('/notifications/mark-all-read', { method: 'POST' });
+  await refreshNotifications();
+  renderNotifications();
+}
+
+// ============================================================================
+// 15. Settings, Personas & Theme
+// ============================================================================
+function switchUserRole(newRole) {
+  state.activeUser.role = newRole;
+
+  document.getElementById('topRole').textContent = newRole;
+  document.getElementById('menuFullName').textContent = `${state.activeUser.full_name} (${newRole})`;
+  document.getElementById('settingProfileRole').value = newRole;
+
+  ['Admin', 'Manager', 'Analyst', 'Viewer'].forEach(r => {
+    const el = document.getElementById(`roleIndicator${r}`);
+    if (el) el.classList.toggle('hidden', r !== newRole && (newRole !== 'Supply Chain Manager' || r !== 'Manager'));
+  });
+
+  showToast(`Switched active persona to ${newRole}. Permissions updated.`, 'info');
+}
+
+function saveUserProfile() {
+  const name = document.getElementById('settingProfileName').value.trim();
+  const email = document.getElementById('settingProfileEmail').value.trim();
+  const dept = document.getElementById('settingProfileDept').value.trim();
+
+  state.activeUser.full_name = name;
+  state.activeUser.email = email;
+  state.activeUser.department = dept;
+
+  document.getElementById('topUsername').textContent = name;
+  document.getElementById('menuFullName').textContent = `${name} (${state.activeUser.role})`;
+  document.getElementById('menuEmail').textContent = email;
+
+  showToast('Profile updated successfully.', 'success');
+}
+
+async function resetSystemState() {
+  if (confirm('Are you sure you want to reset all database records back to the pristine seed state?')) {
+    try {
+      await fetchAPI('/system/reset', { method: 'POST' });
+      showToast('Database reset to pristine seed state.', 'success');
+      await loadReferenceData();
+      await navigateTo('dashboard');
+    } catch (err) {
+      showToast('Error resetting database.', 'error');
     }
-
-    document.getElementById("auditModal").classList.remove("hidden");
-  } catch (err) {
-    alert("Failed to load audit logs: " + err.message);
   }
 }
 
-function closeAuditModal() {
-  document.getElementById("auditModal").classList.add("hidden");
-}
-
-// ============================================================================
-// 17. Profile & Settings Modal Controls
-// ============================================================================
-function openProfileModal(focusEdit = false) {
-  const input = document.getElementById("profileModalNameInput");
-  const currentSaved = localStorage.getItem("chainSolve_username") || appSettings.username || "Username";
-  if (input) {
-    input.value = currentSaved;
-  }
-  const modal = document.getElementById("profileModal");
-  if (modal) modal.classList.remove("hidden");
-
-  if (focusEdit && input) {
-    setTimeout(() => {
-      input.focus();
-      input.select();
-    }, 120);
-  }
-}
-
-function saveProfileNameFromModal() {
-  const input = document.getElementById("profileModalNameInput");
-  if (!input) return;
-  const newName = input.value.trim() || "Username";
-  localStorage.setItem("chainSolve_username", newName);
-  appSettings.username = newName;
-  localStorage.setItem("chainSolve_settings", JSON.stringify(appSettings));
-
-  if (activePersona.type === "admin") {
-    activePersona.name = newName;
-  }
-  updateActivePersonaUI();
-  showToast(`Profile login name saved as: ${newName}`, "success", "💾");
-  playAudioChime("success");
-}
-
-function closeProfileModal() {
-  document.getElementById("profileModal").classList.add("hidden");
-}
-
-function openSettingsModal() {
-  populateSettingsModal();
-  document.getElementById("settingsModal").classList.remove("hidden");
-}
-
-function closeSettingsModal() {
-  document.getElementById("settingsModal").classList.add("hidden");
-}
-
-
-// ============================================================================
-// Multi-Portal Query Parameter Handler (?role=...&id=...)
-// ============================================================================
-function handleURLParamsOnLoad() {
-  const params = new URLSearchParams(window.location.search);
-  const role = params.get("role");
-  const id = params.get("id");
-
-  if (role === "supplier") {
-    const suppId = id || localStorage.getItem("chainSolve_supplier_id") || "SUP-001";
-    loginAsSupplier(suppId);
-    showToast(`Logged in to Supplier Portal (${suppId})`, "success", "🏭");
-  } else if (role === "customer") {
-    const custName = id || localStorage.getItem("chainSolve_customer_name") || "Tesla Energy Solutions";
-    loginAsCustomer(custName);
-    showToast(`Logged in to Customer Portal (${custName})`, "success", "🏢");
-  } else if (role === "operator") {
-    loginAsAdmin();
-  }
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('chainsolve_theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeToggleIcon').textContent = isDark ? '☀️' : '🌙';
 }
 
 // ============================================================================
-// Client-Side Deterministic Disruption Simulator (Zero-API / GitHub Pages)
+// Utilities
 // ============================================================================
-function simulateOfflineAssessment(payload) {
-  const isFalseAlarm = payload.supplier_id === "SUP-006" || payload.disruption_type === "Other" && (!payload.sku_id && !payload.shipment_id && payload.delay_days <= 5);
-  const isTaiwanAmbiguous = payload.affected_location && payload.affected_location.includes("Taiwan") && !payload.supplier_id;
-  const isWarehouse = payload.disruption_type === "Warehouse Incident" || payload.sku_id === "SKU-3150" && payload.quantity_affected;
+function showToast(message, type = 'info') {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
 
-  if (isFalseAlarm) {
-    return {
-      assessment_id: "ASM-OFFLINE-FALSE-ALARM",
-      has_system_impact: false,
-      total_orders_impacted: 0,
-      total_sla_penalty_exposure: 0,
-      impact_summary: "Verified Zero Operational Impact. Acme Logistics notice verified against active supply chain repository: 0 active purchase orders and 0 shipments route through the affected Denver corridor.",
-      grounding: {
-        is_ambiguous: false,
-        matches: [{ entity_type: "supplier", entity_id: "SUP-006", name: "Acme Logistics & Freight", has_active_dependencies: false }]
-      },
-      affected_orders: []
-    };
+  const toast = document.createElement('div');
+  const bg = type === 'error' ? 'bg-red-600' : (type === 'success' ? 'bg-emerald-600' : 'bg-slate-900');
+  toast.className = `${bg} text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow-xl flex items-center space-x-2 transition-all transform duration-300 pointer-events-auto`;
+  toast.innerHTML = `<span>${type === 'error' ? '⚠️' : (type === 'success' ? '✓' : 'ℹ️')}</span><span>${escapeHTML(message)}</span>`;
+
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 300);
+  }, 4000);
+}
+
+function getSeverityBadgeClass(sev) {
+  switch ((sev || '').toLowerCase()) {
+    case 'critical': return 'badge-critical';
+    case 'high': return 'badge-high';
+    case 'medium': return 'badge-medium';
+    case 'low': return 'badge-low';
+    default: return 'badge-low';
   }
+}
 
-  if (isTaiwanAmbiguous) {
-    return {
-      assessment_id: "ASM-OFFLINE-AMBIGUOUS",
-      has_system_impact: true,
-      total_orders_impacted: 1,
-      total_sla_penalty_exposure: 1200,
-      impact_summary: "Ambiguous Regional Disruption Detected. Multiple suppliers operate within the impacted Taiwan zone (TSMC Micro Systems SUP-002, Foxconn Components SUP-003). Operator disambiguation required.",
-      grounding: {
-        is_ambiguous: true,
-        ambiguity_reason: "Notice mentions 'Taiwan suppliers' affecting 2 active contracted suppliers with scheduled shipments.",
-        matches: [{
-          entity_type: "region",
-          entity_id: "Taiwan",
-          is_ambiguous: true,
-          candidate_matches: [
-            { supplier_id: "SUP-002", name: "TSMC Micro Systems", pending_shipments: ["SH-7714"] },
-            { supplier_id: "SUP-003", name: "Foxconn Components Corp", pending_shipments: ["SH-6520"] }
-          ]
-        }]
-      },
-      affected_orders: [{
-        order_id: "ORD-503",
-        customer_name: "Rivian Automotive",
-        customer_tier: "Gold",
-        promise_date: "2026-09-16",
-        projected_delivery_date: "2026-09-22",
-        slip_days: 6,
-        sla_penalty_per_day: 200,
-        total_sla_exposure: 1200,
-        urgency_level: "High",
-        root_cause_summary: "Inbound Shipment SH-7714 delayed 6 days by Taiwan weather advisory.",
-        citations: [{ source_record: "Shipment SH-7714", detail: "500 units SKU-2088" }],
-        options: [
-          { option_id: "OPT-1", title: "Expedite Air Express", description: "Reroute via air charter from Taipei", type: "expedite_air", cost: 1800, delay_days: 0, penalty_savings: 1200, net_savings: -600, recommended: false },
-          { option_id: "OPT-2", title: "Part-Ship (80 units available)", description: "Dispatch 80 units from WH-MAIN stock immediately", type: "part_ship", cost: 250, delay_days: 0, penalty_savings: 800, net_savings: 550, recommended: true }
-        ]
-      }]
-    };
+function getTierBadgeClass(tier) {
+  switch ((tier || '').toLowerCase()) {
+    case 'platinum': return 'badge-critical';
+    case 'gold': return 'badge-high';
+    case 'standard': return 'badge-low';
+    default: return 'badge-low';
   }
+}
 
-  let impactedOrders = [];
-  let summary = "";
-  let totalExposure = 0;
-
-  if (isWarehouse) {
-    summary = "Physical Warehouse Incident: Bay C-12 forklift accident destroyed 150 units of BAT-4400. Stockout triggered on ORD-505.";
-    totalExposure = 450;
-    impactedOrders.push({
-      order_id: "ORD-505",
-      customer_name: "General Industrial Robotics",
-      customer_tier: "Standard",
-      promise_date: "2026-09-18",
-      projected_delivery_date: "2026-09-27",
-      slip_days: 9,
-      sla_penalty_per_day: 50,
-      total_sla_exposure: 450,
-      urgency_level: "High",
-      root_cause_summary: "Destroyed 150 units in WH-MAIN Bay C-12",
-      citations: [{ source_record: "WH-MAIN Inventory", detail: "On-hand dropped from 180 to 30 units" }],
-      options: [
-        { option_id: "OPT-1", title: "Emergency Supplier Replenishment", description: "Rush replenishment cycle from Nordic Lithium", type: "expedite_air", cost: 600, delay_days: 2, penalty_savings: 350, net_savings: -250, recommended: true }
-      ]
-    });
-  } else if (payload.supplier_id === "SUP-003" || payload.sku_id === "SKU-4022") {
-    summary = "Quality Quarantine Hold: Foxconn Components inspection delay of 12 days impacting Midwest Automation Parts.";
-    totalExposure = 0;
-    impactedOrders.push({
-      order_id: "ORD-506",
-      customer_name: "Midwest Automation Parts",
-      customer_tier: "Standard",
-      promise_date: "2026-09-28",
-      projected_delivery_date: "2026-10-02",
-      slip_days: 4,
-      sla_penalty_per_day: 0,
-      total_sla_exposure: 0,
-      urgency_level: "Medium",
-      root_cause_summary: "Inbound Shipment SH-6520 delayed by 12 days.",
-      citations: [{ source_record: "Shipment SH-6520", detail: "400 units SKU-4022" }],
-      options: [
-        { option_id: "OPT-1", title: "Part-Ship Existing Warehouse Stock", description: "Fulfill from 100 available units in WH-MAIN", type: "part_ship", cost: 150, delay_days: 0, penalty_savings: 0, net_savings: -150, recommended: true }
-      ]
-    });
-  } else if (payload.supplier_id === "SUP-004" || payload.shipment_id === "SH-9011") {
-    summary = "Customs Maritime Hold: Rotterdam compliance audit on SH-9011 delaying 150 units BAT-4400 by 8 days.";
-    totalExposure = 400;
-    impactedOrders.push({
-      order_id: "ORD-505",
-      customer_name: "General Industrial Robotics",
-      customer_tier: "Standard",
-      promise_date: "2026-09-18",
-      projected_delivery_date: "2026-09-26",
-      slip_days: 8,
-      sla_penalty_per_day: 50,
-      total_sla_exposure: 400,
-      urgency_level: "High",
-      root_cause_summary: "Inbound SH-9011 customs clearance delayed.",
-      citations: [{ source_record: "Shipment SH-9011", detail: "150 units SKU-3150" }],
-      options: [
-        { option_id: "OPT-1", title: "Expedite Customs Clearance Brokerage", description: "Engage expedited maritime customs clearance", type: "expedite_air", cost: 350, delay_days: 2, penalty_savings: 300, net_savings: -50, recommended: true }
-      ]
-    });
-  } else if (payload.supplier_id === "SUP-002" || payload.shipment_id === "SH-7714") {
-    summary = "Carrier Congestion: Port of Long Beach container delay of 10 days impacting Rivian Automotive.";
-    totalExposure = 1200;
-    impactedOrders.push({
-      order_id: "ORD-503",
-      customer_name: "Rivian Automotive",
-      customer_tier: "Gold",
-      promise_date: "2026-09-16",
-      projected_delivery_date: "2026-09-22",
-      slip_days: 6,
-      sla_penalty_per_day: 200,
-      total_sla_exposure: 1200,
-      urgency_level: "High",
-      root_cause_summary: "Inbound SH-7714 delayed 10 days by berth bottlenecks.",
-      citations: [{ source_record: "Shipment SH-7714", detail: "500 units SKU-2088" }],
-      options: [
-        { option_id: "OPT-1", title: "Part-Ship 80 Units On-Hand", description: "Deliver 80 units immediately to avoid assembly stoppage; balance backordered.", type: "part_ship", cost: 300, delay_days: 0, penalty_savings: 1200, net_savings: 900, recommended: true },
-        { option_id: "OPT-2", title: "Expedite Air Drayage", description: "Off-dock priority air drayage from Long Beach", type: "expedite_air", cost: 1600, delay_days: 1, penalty_savings: 1000, net_savings: -600, recommended: false }
-      ]
-    });
-  } else {
-    summary = `Critical Supplier Halt: Line 3 failure at Apex Precision delaying Inbound SH-8921 by ${payload.delay_days || 14} days. Downstream shock impacts Tesla Energy Solutions and Siemens Mobility Systems.`;
-    totalExposure = 9350;
-    impactedOrders.push({
-      order_id: "ORD-501",
-      customer_name: "Tesla Energy Solutions",
-      customer_tier: "Platinum",
-      promise_date: "2026-09-10",
-      projected_delivery_date: "2026-09-21",
-      slip_days: 11,
-      sla_penalty_per_day: 500,
-      total_sla_exposure: 5500,
-      urgency_level: "Critical",
-      root_cause_summary: "Inbound Shipment SH-8921 delayed by 14 days.",
-      citations: [{ source_record: "Shipment SH-8921", detail: "200 units SKU-1049" }],
-      options: [
-        { option_id: "OPT-1", title: "Expedite Air Freight", description: "Rush inbound shipment via dedicated FedEx air express charter", type: "expedite_air", cost: 1250, delay_days: 0, penalty_savings: 5500, net_savings: 4250, recommended: true },
-        { option_id: "OPT-2", title: "Part-Ship 50 Units On-Hand", description: "Ship 50 units immediately from WH-MAIN warehouse stock", type: "part_ship", cost: 350, delay_days: 0, penalty_savings: 3000, net_savings: 2650, recommended: false },
-        { option_id: "OPT-3", title: "Reschedule Delivery with Notice", description: "Issue transparent customer notification with courtesy account credit", type: "reschedule", cost: 200, delay_days: 11, penalty_savings: 0, net_savings: -200, recommended: false }
-      ]
-    });
-    impactedOrders.push({
-      order_id: "ORD-502",
-      customer_name: "Siemens Mobility Systems",
-      customer_tier: "Platinum",
-      promise_date: "2026-09-11",
-      projected_delivery_date: "2026-09-22",
-      slip_days: 11,
-      sla_penalty_per_day: 350,
-      total_sla_exposure: 3850,
-      urgency_level: "Critical",
-      root_cause_summary: "Inbound Shipment SH-8921 delayed by 14 days.",
-      citations: [{ source_record: "Shipment SH-8921", detail: "200 units SKU-1049" }],
-      options: [
-        { option_id: "OPT-1", title: "Stock Reallocation from ORD-504", description: "Reallocate 20 units from flexible research order ORD-504 (Quantum Robotics)", type: "reallocate_stock", cost: 0, delay_days: 0, penalty_savings: 3850, net_savings: 3850, recommended: true },
-        { option_id: "OPT-2", title: "Expedite Inbound Air Express", description: "Air freight dispatch for balance of 40 units", type: "expedite_air", cost: 950, delay_days: 2, penalty_savings: 3150, net_savings: 2200, recommended: false }
-      ]
-    });
+function formatDate(isoStr) {
+  if (!isoStr) return '--';
+  try {
+    const d = new Date(isoStr);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  } catch {
+    return isoStr;
   }
+}
 
-  return {
-    assessment_id: "ASM-" + Date.now().toString(36).toUpperCase(),
-    has_system_impact: true,
-    total_orders_impacted: impactedOrders.length,
-    total_sla_penalty_exposure: totalExposure,
-    impact_summary: summary,
-    grounding: {
-      is_ambiguous: false,
-      matches: [{ entity_type: "supplier", entity_id: payload.supplier_id || "SUP-001", name: "Apex Precision Technologies", has_active_dependencies: true }]
-    },
-    affected_orders: impactedOrders
+function escapeHTML(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function debounce(func, wait) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
   };
 }
