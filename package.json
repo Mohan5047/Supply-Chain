@@ -1,0 +1,19 @@
+{
+  "name": "supply-chain-disruption-response-assistant",
+  "version": "1.0.0",
+  "description": "Supply Chain Disruption Response Assistant - Detect Disruptions. Analyze Impact. Respond Smarter.",
+  "main": "app.py",
+  "scripts": {
+    "dev": "python app.py",
+    "start": "python app.py",
+    "test": "python -m pytest tests/ -v"
+  },
+  "keywords": [
+    "supply-chain",
+    "disruption-management",
+    "fastapi",
+    "decision-support"
+  ],
+  "author": "Mohan",
+  "license": "MIT"
+}
