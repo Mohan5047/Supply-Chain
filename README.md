@@ -1,221 +1,263 @@
-# Supply Chain Disruption Response Assistant (TRACK_ID=PS08)
+# Supply Chain Disruption Response Assistant
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com)
+[![PostgreSQL Ready](https://img.shields.io/badge/PostgreSQL-15%2B-336791.svg)](https://www.postgresql.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests: 13 Passed](https://img.shields.io/badge/tests-13%20passed-brightgreen.svg)]()
+[![Tests: 40 Passed](https://img.shields.io/badge/tests-40%2F40%20passed-brightgreen.svg)]()
 
-> An enterprise-grade AI decision support assistant for a distributor. Ingests noisy, unstructured disruption notices (supplier production halts, carrier delay notifications, warehouse incident reports), maps them to live system inventory and orders, computes downstream stockouts and customer order slips, and generates an urgency-ranked action plan with plain trade-offs for a human operator.
+> **Detect Disruptions. Analyze Impact. Respond Smarter.**  
+> An enterprise-grade decision-support platform designed for supply-chain managers. Connects noisy disruption notices with suppliers, multi-facility inventory, shipments, and customer orders to quantify operational and financial impact, evaluate risk transparently, and recommend actionable responses.
 
 ---
 
 ## 🌟 Executive Summary & Problem Understanding
 
-When a shipment slips or a supplier halts production, the delay is rarely in reacting—**it is in working out what the disruption actually affects**. 
+Supply-chain disruptions—supplier factory shutdowns, port strikes, carrier delays, and warehouse incidents—cost enterprises billions annually. When a disruption occurs, the primary operational bottleneck is rarely taking action—**it is identifying what is affected, calculating downstream customer impact, and evaluating trade-offs**.
 
-In a distributor business model:
-1. Goods are bought from **Suppliers** via Inbound Shipments / Purchase Orders.
-2. Inventory is held in a **Central Warehouse** (`WH-MAIN`).
-3. Committed **Customer Orders** are fulfilled with contractual delivery promise dates and financial SLA penalty clauses.
-
-### What This Assistant Does
-- **Ingests Real-World Noisy Text**: Ingests loose, informal text (emails, freight exception notices, incident tickets) where part numbers or entities are loosely named.
-- **Grounds Claims Against System Data**: Links loose mentions to database records (Suppliers, Purchase Orders, Shipments, SKUs, and Warehouse Bins).
-- **Discipline to Refuse / Verified Zero Impact**: When an alarming notice arrives about an entity with *no pending orders or shipments* (e.g., regional highway closures), the system verifies the absence of operational dependencies and returns **Zero Impact**.
-- **Detects Ambiguity**: Flags underspecified notices (e.g. "Taiwan supplier shipments") and presents candidate matches for operator disambiguation.
-- **Pure Deterministic Impact Simulation**: Calculates exact daily inventory trajectories, stock deficits, order slip dates, and SLA penalty liabilities without LLM hallucination.
-- **Action Plan with Plain Trade-Offs**: Evaluates 4 concrete operational alternatives per impacted order:
-  - ✈️ **Expedite Inbound Air Freight**: Rush shipment to protect high-tier SLAs at an expediting fee.
-  - 🔄 **Reallocate On-Hand Stock**: Divert stock from flexible downstream orders to immediately fulfill VIP orders at $0 cost.
-  - 📦 **Part-Ship (Split Fulfillment)**: Dispatch available inventory immediately to keep customer lines moving; backorder the rest.
-  - 📅 **Reschedule & Proactively Inform**: Issue transparent customer notice with confirmed dates and courtesy SLA credits.
-- **Human-in-the-Loop Operator Workbench**: The system recommends; the human decides. Operators can compare trade-offs, toggle options, preview auto-drafted communications, and commit resolutions directly into the system state with full audit logging.
-
----
-
-## 🏛️ System Architecture & Separation of Concerns
-
-```mermaid
-flowchart TD
-    A[Unstructured Disruption Notice] --> B[Notice Extractor<br/>LLM + Heuristic NLP Fallback]
-    B --> C[Extracted Disruption Event]
-    C --> D{Grounding Engine<br/>Entity Resolution}
-    D -->|No Active Dependencies| E[Verified Zero Impact<br/>Discipline to Refuse]
-    D -->|Ambiguous Description| F[Operator Disambiguation<br/>Candidate Prompt]
-    D -->|Confirmed Entity Matches| G[Deterministic Impact Analyzer<br/>Stock Simulation & Order Slips]
-    G --> H[Multi-Factor Urgency Ranking<br/>Tiers, Slips, SLA Risk]
-    H --> I[Trade-Off Recommender<br/>Expedite, Reallocate, Part-Ship, Reschedule]
-    I --> J[Grounded Explainer<br/>Briefings & Communication Drafts]
-    J --> K[Interactive Operator Workbench UI<br/>Port 8000]
-    K --> L[Human Decision Committed]
-    L --> M[(Active State Repository & Audit Trail)]
+### The Core Operational Workflow
+```
+Detect Disruption  ──>  Analyze Impact  ──>  Evaluate Risk  ──>  Recommend Actions  ──>  Track Resolution
 ```
 
-### Architectural Separation
-| Layer | Responsibility | Implementation |
-|---|---|---|
-| **Extractor** | Parses noisy, informal prose into structured disruption signals. | Gemini GenAI with deterministic heuristic NLP regex fallback. |
-| **Grounding** | Entity resolution against active database records with alias resolution and ambiguity detection. | Exact/fuzzy alias matcher + dependency verifier (`src/engine/grounding.py`). |
-| **Impact Engine** | Pure mathematical stockout timeline, order slip calculation, and SLA penalty risk. | Pure deterministic Python (`src/engine/impact_analyzer.py`). |
-| **Recommender** | Mathematical trade-off modeling across all 4 operational paths. | Rules-based optimization (`src/engine/recommender.py`). |
-| **Explainer** | Synthesizes grounded executive briefings, customer emails, and supplier escalation drafts. | Grounded template & LLM synthesis (`src/engine/explainer.py`). |
+1. **Detect**: Ingest informal disruption notices (emails, carrier exception reports, warehouse incident logs) or structured reports.
+2. **Analyze**: Link notices to database entities (suppliers, purchase orders, shipments, multi-warehouse inventory, and customer commitments) to compute real stock deficits and order slips.
+3. **Evaluate Risk**: Apply transparent, explainable multi-factor scoring (severity, lead time, available buffer, alternative suppliers, SLA penalty exposure) without black-box hallucination.
+4. **Recommend**: Deliver actionable, evidence-backed recommendations (air expedite, stock reallocation, split-fulfillment, proactive rescheduling) with clear financial trade-offs.
+5. **Track Resolution**: Centralize incident response, assign tasks, enforce role-based approvals, and log audit trails.
 
 ---
 
-## 🚀 Quickstart & Running the Application
+## 🎨 Enterprise Design System
+
+The user interface adheres to a clean, minimal enterprise SaaS design system engineered for high-density operational data:
+
+| Token | Hex Value | Application |
+|---|---|---|
+| **Background** | `#F5F7FB` | Main workspace canvas |
+| **Main Surface** | `#FFFFFF` | Cards, tables, drawers, modal sheets |
+| **Primary** | `#4F46E5` | Active states, primary CTAs, links |
+| **Primary Hover** | `#4338CA` | Interactive hover transitions |
+| **Main Text** | `#0F172A` | Primary typography, headers, metric values |
+| **Secondary Text** | `#64748B` | Labels, captions, table subheaders |
+| **Borders** | `#E2E8F0` | Dividers, card boundaries, table cell lines |
+| **Critical Risk** | `#DC2626` | Critical severity, stockouts, overdue SLAs |
+| **Warning** | `#D97706` | Medium/high risk, approaching delivery dates |
+| **Success** | `#16A34A` | Resolved incidents, on-time shipments, fulfilled orders |
+
+### Key UI Features
+- **Collapsible Sidebar**: Quick switching across all 15 operational modules.
+- **Top Bar with Global Search**: Instant filtering across disruptions, suppliers, SKUs, and shipments.
+- **Notification Drawer**: In-app center for critical incidents and approaching deadlines.
+- **Profile & Role Switching**: Test as Admin, Supply Chain Manager, Analyst, or Viewer.
+- **Light & Dark Themes**: System-aware with persistent local storage.
+- **Responsive Layout**: Designed for 1920x1080 command centers, laptops, and tablets.
+
+---
+
+## 🖥️ Application Modules (15 Complete Modules)
+
+1. **Landing Page (`#landing`)**:
+   - Hero section with tagline, platform overview, dynamic KPI counters, feature deep dives, and 6-step operational workflow.
+2. **Dashboard (`#dashboard`)**:
+   - Real-time operational metrics calculated strictly from system state (Active Disruptions, Critical Incidents, At-Risk Orders, Affected Shipments, Affected SKUs, and Financial Penalty Exposure).
+   - Severity distribution chart, disruption timeline, at-risk order queue, and supplier risk overview.
+3. **Disruption Management (`#disruptions`)**:
+   - Searchable, sortable, and filterable incident registry with filters for severity, status, supplier, and date.
+   - 1-click drill-down to impact analysis.
+4. **Create Disruption (`#create`)**:
+   - Structured entry form combined with an intelligent text extractor that parses informal notices into structured entities with confirmation.
+5. **Impact Analysis Engine (`#impact`)**:
+   - Deep dive into Disruption Summary, Supplier Dependencies, Multi-Warehouse Inventory (Physical, Reserved, Available), Shipment Tracking, and Affected Customer Orders with traceable citations.
+6. **Risk Assessment (`#risk`)**:
+   - Explainable multi-factor scoring analyzing shortage depth, order tiers, SLA penalties, and supplier lead times with data-completeness metrics.
+7. **Recommended Actions (`#recommendations`)**:
+   - Urgency-ranked operational playbooks (Expedite Air Freight, Stock Reallocation, Part-Ship, Reschedule) with plain financial trade-offs, status tracking, and rejection reasoning.
+8. **Supplier Management (`#suppliers`)**:
+   - Supplier registry tracking contact data, location, active disruptions, lead times, reliability scores, and risk classifications.
+9. **Inventory Management (`#inventory`)**:
+   - Multi-warehouse inventory catalog (`WH-MAIN`, `WH-WEST`, `WH-EAST`, `WH-SOUTH`) showing on-hand, reserved, and available quantities, reorder points, unit costs, and stockout risk badges.
+10. **Shipment Tracking (`#shipments`)**:
+    - Inbound and outbound logistics tracking with carriers, origin/destination, planned vs. actual delivery dates, delay durations, and demonstration timeline events.
+11. **Customer Orders (`#orders`)**:
+    - High-visibility customer order book displaying contractual delivery dates, required SKUs, quantities, fulfillment status, disruption risk, and calculated SLA penalty exposure.
+12. **Resolution Center (`#resolution`)**:
+    - Centralized incident management workspace for tracking open disruptions, assigned actions, pending decisions, resolution methods, and final sign-off.
+13. **Reports & Analytics (`#reports`)**:
+    - Disruption type breakdowns, average resolution times, supplier performance trends, action completion rates, and real-time CSV data export.
+14. **In-App Notification Center (`#notifications`)**:
+    - Interactive notifications drawer for critical incident alerts, high-risk order warnings, and action assignments with read/unread toggle and mark-all-read.
+15. **User Management & Settings (`#settings`)**:
+    - Role-Based Access Control (Admin, Supply Chain Manager, Analyst, Viewer), profile management, notification preferences, and system data reset.
+
+---
+
+## 🗄️ Database Design (PostgreSQL Schema)
+
+The platform includes a normalized PostgreSQL schema ([`schema.sql`](file:///c:/Users/mohan/OneDrive/Pictures/Desktop/chain/schema.sql)) with 17 relational tables, foreign key constraints, indexes, and audit logging:
+
+```
+roles ──< users ──< action_assignments
+                ──< activity_logs
+                ──< notifications
+
+suppliers ──< products ──< inventory >── warehouses
+          ──< shipments ──< shipment_items
+                        ──< shipment_events
+
+customer_orders ──< order_items
+
+disruptions ──< disruption_impacts
+            ──< recommendations ──< action_assignments
+```
+
+### Table Catalog
+1. `roles`: Role definitions and permission bitmaps.
+2. `users`: Enterprise user accounts with bcrypt password hashes.
+3. `suppliers`: Supplier directory, locations, lead times, and reliability metrics.
+4. `products`: Catalog items, SKUs, categories, and unit costs.
+5. `warehouses`: Distribution centers (`WH-MAIN`, `WH-WEST`, `WH-EAST`, `WH-SOUTH`).
+6. `inventory`: Multi-warehouse stock tracking (on-hand, reserved, available, reorder points).
+7. `shipments`: Inbound/outbound logistics shipments, tracking numbers, and delivery dates.
+8. `shipment_items`: Line items and quantities per shipment.
+9. `shipment_events`: Milestone audit tracking for carrier events.
+10. `customer_orders`: Customer orders, priority tiers, and delivery commitments.
+11. `order_items`: Quantities and SKUs per customer order.
+12. `disruptions`: Incident records, types, reported dates, durations, and statuses.
+13. `disruption_impacts`: Traceable linkage records connecting disruptions to affected inventory and orders.
+14. `recommendations`: Actionable response alternatives with financial trade-offs.
+15. `action_assignments`: Task assignments with assignees and due dates.
+16. `notifications`: In-app alert queue with read/unread statuses.
+17. `activity_logs`: Immutable audit trail of all operational decisions.
+
+---
+
+## 📊 Demo Data Benchmark
+
+The system includes realistic, consistent demonstration data in [`data/seed_data.json`](file:///c:/Users/mohan/OneDrive/Pictures/Desktop/chain/data/seed_data.json):
+- **8 Suppliers**: Apex Optics (`SUP-001`), Silicon Dynamics (`SUP-002`), Nippon Precision (`SUP-003`), EuroSensors BV (`SUP-004`), FlexLogistics Global (`SUP-005`), Acme Freight Corp (`SUP-006` - false alarm benchmark), Bosch Automotive (`SUP-007`), Murata Electronics (`SUP-008`).
+- **4 Warehouses**: Central Hub (`WH-MAIN`), Pacific Coast (`WH-WEST`), Atlantic DC (`WH-EAST`), Midwest Hub (`WH-SOUTH`).
+- **20 Catalog SKUs**: High-precision optical sensors, microcontrollers, brushless motors, display assemblies, MEMS sensors, lithium batteries, CAN transceivers, and optical lenses.
+- **80 Inventory Records**: Multi-warehouse stock balances with clean physical, reserved, and available tracking.
+- **25 Shipments**: In-transit and scheduled sea, air, and truck consignments.
+- **30 Customer Orders**: Committed orders for VIP accounts (Tesla, Siemens, Honeywell, Apple, Medtronic, Raytheon, Rivian).
+- **5 Disruption Scenarios**:
+  1. *Apex Optics Factory Halt* (Catastrophic supplier downtime affecting VIP orders).
+  2. *Suez Canal Freight Delay* (Carrier delay slipping high-priority automotive orders).
+  3. *Main Warehouse Sprinkler Failure* (Physical stock destruction requiring immediate alternative allocation).
+  4. *Acme Freight Road Closure (False Alarm)* (Demonstrates system discipline: checks dependencies, verifies zero impact, refuses to hallucinate).
+  5. *Typhoon Island Alert (Ambiguity)* (Vague regional alert triggering operator disambiguation).
+
+---
+
+## 🚀 Quickstart & Installation
 
 ### 1. Requirements
-- Python 3.10+
+- Python 3.10+ (or Python 3.14)
 - Modern Web Browser (Chrome, Edge, Firefox, Safari)
 
 ### 2. Setup
 ```bash
 # Clone the repository
-git clone <repo-url>
-cd chain
+git clone https://github.com/Mohan5047/Supply-Chain.git
+cd Supply-Chain
+
+# Create a virtual environment (optional but recommended)
+python -m venv venv
+# Windows:
+.\venv\Scripts\activate
+# Linux/macOS:
+source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
 ```
 
-### 3. Launch Application
+### 3. Configure Environment
+Copy the example configuration:
+```bash
+cp .env.example .env
+```
+*(Optional)* Add a `GEMINI_API_KEY` in `.env` if you wish to enable Google Gemini for natural language synthesis. The platform includes a robust, heuristic NLP extractor and deterministic reasoning engine that operates with 100% functionality without external API keys.
+
+### 4. Run the Server
 ```bash
 python app.py
 ```
-*The application starts immediately on **`http://127.0.0.1:8000`** within seconds.*
-
-- **Interactive Operator Command Center**: Open [`http://127.0.0.1:8000`](http://127.0.0.1:8000)
-- **FastAPI Interactive Swagger Docs**: Open [`http://127.0.0.1:8000/docs`](http://127.0.0.1:8000/docs)
-- **Health Check**: [`http://127.0.0.1:8000/health`](http://127.0.0.1:8000/health)
+Open your browser to:
+- **Enterprise Web App**: `http://127.0.0.1:8000`
+- **Interactive OpenAPI/Swagger Docs**: `http://127.0.0.1:8000/docs`
+- **System Health Check**: `http://127.0.0.1:8000/health`
 
 ---
 
-## 🧪 Automated Test Suite
+## 🧪 Automated Testing
 
-Run the full pytest suite covering entity extraction, grounding discipline, false alarms, deterministic slip math, urgency ranking, and operator decision committing:
+The repository features 40 automated tests across 5 test suites validating entity extraction, grounding discipline, mathematical stock simulation, SLA penalties, trade-off optimization, and REST API contracts:
 
 ```bash
 python -m pytest tests/ -v
 ```
 
-Output:
-```
-============================= test session starts =============================
-tests/test_extraction.py::test_extract_supplier_halt PASSED              [  7%]
-tests/test_extraction.py::test_extract_carrier_delay PASSED              [ 15%]
-tests/test_extraction.py::test_extract_warehouse_incident PASSED         [ 23%]
-tests/test_extraction.py::test_extract_false_alarm PASSED                [ 30%]
-tests/test_extraction.py::test_extract_ambiguous_regional_notice PASSED  [ 38%]
-tests/test_grounding.py::test_grounding_exact_po_and_shipment PASSED     [ 46%]
-tests/test_grounding.py::test_grounding_false_alarm_discipline_to_refuse PASSED [ 53%]
-tests/test_grounding.py::test_grounding_regional_ambiguity_detection PASSED [ 61%]
-tests/test_impact.py::test_impact_apex_supplier_halt PASSED              [ 69%]
-tests/test_impact.py::test_impact_false_alarm_returns_zero_impact PASSED [ 76%]
-tests/test_impact.py::test_impact_warehouse_physical_incident PASSED     [ 84%]
-tests/test_recommender.py::test_recommender_generates_options_with_tradeoffs PASSED [ 92%]
-tests/test_recommender.py::test_operator_commits_decision PASSED         [100%]
-============================= 13 passed in 0.34s ==============================
-```
+### Test Coverage Highlights
+- `tests/test_extraction.py`: Unstructured text parsing, date normalization, and entity extraction.
+- `tests/test_grounding.py`: Entity resolution, alias matching, candidate ranking, and false alarm refusal.
+- `tests/test_impact.py`: Multi-warehouse inventory simulation, stockout timelines, and order slip calculations.
+- `tests/test_recommender.py`: Air expediting, reallocation, part-shipping, and customer draft synthesis.
+- `tests/test_enterprise_endpoints.py`: All REST API routes, filtering, RBAC, CSV report generation, and resolution persistence.
 
 ---
 
-## 🎯 5 Benchmark Scenarios (Built-in for Judges)
+## 🌐 REST API Catalog
 
-The operator command center includes one-click buttons for five diverse operational scenarios:
-
-### 1. ⚡ Critical: Apex Dynamics Factory Pump Failure
-- **Notice**: Email from supplier Apex Precision reporting Line 3 pump failure delaying `PO-4482` / `SH-8921` (part `APX-902`) by 14 days.
-- **Grounding**: Maps to `SUP-001`, `SH-8921`, `SKU-1049`.
-- **Impact**: Impacts **Tesla Energy Solutions** (Platinum, promised Sept 10) and **Siemens Mobility Systems** (Platinum, promised Sept 11). \$50,400 revenue at risk, \$10,700 in contractual SLA delay penalties.
-- **Recommendation**:
-  - **Tesla (`ORD-501`)**: Recommend **Air Expedite** (\$1,250 expedite fee saves \$6,500 in SLA penalty = **\$5,250 net operational savings**).
-  - **Siemens (`ORD-502`)**: Recommend **Stock Reallocation** from later research order `ORD-504` at **\$0 cost**.
-
-### 2. 🚢 Carrier Delay: Maersk Long Beach Port Congestion
-- **Notice**: Carrier alert detailing crane operator shortages delaying container `MSKU-8839210` (Inbound `SH-7714`) by 10 days.
-- **Grounding**: Maps to `SUP-002`, `SH-7714`, `SKU-2088` (Automotive Edge Microcontroller).
-- **Impact**: Impacts **Rivian Automotive** (`ORD-503`, Gold Tier, promised Sept 16).
-- **Recommendation**: Recommend **Part-Ship** (80 units currently in warehouse shipped immediately to prevent vehicle assembly halt; remaining 220 backordered to delayed shipment).
-
-### 3. 💥 Warehouse Physical Incident: Bay C-12 Forklift Crush
-- **Notice**: Internal incident report detailing forklift mast cable failure destroying 150 units of `BAT-4400` (`SKU-3150`) in Chicago hub.
-- **Grounding**: Maps to `WH-MAIN`, `SKU-3150`. Physical on-hand stock immediately drops from 180 to 30.
-- **Impact**: Immediate stockout impacting **General Industrial Robotics** (`ORD-505`).
-- **Recommendation**: Emergency supplier replenishment cycle with proactive delivery rescheduling.
-
-### 4. 🛑 False Alarm: Acme Freight Regional Road Closure
-- **Notice**: Emergency bulletin announcing closure of Route 9 near Denver suspending Acme freight operations for 5 days.
-- **Grounding**: Checks distributor database. Acme is listed as a potential partner, but **zero active purchase orders or pending shipments route through Acme or Denver**.
-- **System Discipline**: Returns **Verified Zero Operational Impact**. Explains why no action is necessary, preventing operator panic.
-
-### 5. ❓ Regional Ambiguity: Taiwan Typhoon Disruption
-- **Notice**: Weather advisory stating all shipments departing Taiwan suppliers are stalled by 6 days.
-- **Grounding**: Identifies 2 active Taiwan suppliers: **TSMC Micro Systems** (`SUP-002`) and **Foxconn Components** (`SUP-003`).
-- **System Discipline**: Refuses to guess. Escalates ambiguity to the operator with interactive 1-click confirmation buttons for each candidate.
-
----
-
-## 📹 2-3 Minute Demo Video Guide
-
-Use this script to demonstrate the system during video recording:
-
-| Time | Action | What to Say / Highlight |
+| Method | Endpoint | Description |
 |---|---|---|
-| **0:00 - 0:35** | Launch `python app.py`, open `http://localhost:8000`. Click **Scenario 1 (Apex Factory Halt)**. | *"Here is the Disruption Response Assistant running locally on port 8000. In Scenario 1, a supplier emails about a hydraulic pump failure delaying optical sensors by 14 days. Notice how the system extracts the noisy entities and grounds them into our database—linking the notice directly to Shipment SH-8921 and SKU-1049."* |
-| **0:35 - 1:15** | Scroll through **Urgency Ranked Orders**, expand **Grounded Data Citations**, review **Trade-off Options**. | *"The deterministic impact engine traces the downstream shock: Tesla and Siemens have orders slipping by up to 13 days, putting \$10,700 of contractual SLA penalties at risk. The system ranks Tesla #1 by urgency and presents plain trade-offs. For Tesla, expediting by air costs \$1,250 but saves \$6,500 in penalties—a net savings of \$5,250. For Siemens, it recommends reallocating stock from a later order at zero cash cost."* |
-| **1:15 - 1:45** | Click **Preview Customer Email Draft**, then click **Commit & Apply Resolution**. Open **Audit Trail**. | *"The system is built for a human operator—it recommends, it does not act autonomously. We can preview a professional, grounded email draft for Tesla, select our resolution, and click 'Commit & Apply Resolution'. This immediately updates our database state and records the decision in the audit trail."* |
-| **1:45 - 2:20** | Click **Scenario 4 (Acme Road Closure - False Alarm)**. | *"Now let's test a difficult edge case: Scenario 4. An alarming bulletin about a 5-day road closure from Acme Freight. Notice how the system checks our database and discovers zero active purchase orders or shipments tied to Acme. Instead of hallucinating, it displays 'Verified Zero Operational Impact' with full citation proof."* |
-| **2:20 - 2:45** | Click **Scenario 5 (Taiwan Ambiguity)**. Conclude video. | *"Finally, in Scenario 5, a vague typhoon alert mentions 'Taiwan suppliers'. Rather than guessing, the system detects ambiguity between TSMC and Foxconn, prompting the operator to confirm. Clean separation of deterministic logic and AI reasoning, 100% resilient, and fully auditable."* |
+| `POST` | `/api/auth/login` | Authenticate user & return JWT token |
+| `POST` | `/api/auth/register` | Register new user account |
+| `GET` | `/api/auth/me` | Fetch active user profile and roles |
+| `GET` | `/api/dashboard/summary` | Real-time enterprise KPI metrics |
+| `GET` | `/api/dashboard/analytics` | Severity distributions and timeline trends |
+| `GET` | `/api/disruptions` | Filterable disruption incident registry |
+| `POST` | `/api/disruptions` | Report new disruption incident |
+| `GET` | `/api/disruptions/{id}` | Retrieve incident details |
+| `PATCH`| `/api/disruptions/{id}` | Update incident attributes and status |
+| `POST` | `/api/disruptions/{id}/analyze` | Trigger full impact and risk analysis |
+| `POST` | `/api/disruptions/{id}/resolve` | Record formal resolution method and notes |
+| `GET` | `/api/disruptions/{id}/impact` | Fetch structured impact assessment |
+| `GET` | `/api/disruptions/{id}/recommendations` | Fetch actionable response alternatives |
+| `PATCH`| `/api/recommendations/{id}` | Accept, reject, or assign recommendation |
+| `GET` | `/api/suppliers` | Supplier master directory with filters |
+| `GET` | `/api/inventory` | Multi-facility inventory catalog |
+| `GET` | `/api/shipments` | Inbound/outbound logistics tracking |
+| `GET` | `/api/orders` | Customer order book with SLA penalty risk |
+| `GET` | `/api/reports/summary` | Aggregated resolution and performance metrics |
+| `GET` | `/api/reports/export` | Download live reports as CSV |
+| `GET` | `/api/notifications` | Fetch notification feed |
+| `POST` | `/api/notifications/{id}/read` | Mark individual notification as read |
+| `POST` | `/api/notifications/mark-all-read` | Mark all notifications as read |
+| `POST` | `/api/system/reset` | Restore demo baseline database |
 
 ---
 
-## 📂 Project Structure
+## 🚢 Deployment Guide
 
-```
-chain/
-├── app.py                      # Main entry point (starts server on port 8000)
-├── requirements.txt            # Python dependencies
-├── .env.example                # Configuration template
-├── README.md                   # Comprehensive documentation & demo script
-├── data/
-│   ├── seed_data.json          # Realistic baseline database (suppliers, SKUs, inventory, shipments, orders)
-│   └── test_notices.json       # 5 curated benchmark test disruption notices
-├── src/
-│   ├── core/
-│   │   ├── config.py           # Settings, port, environment variables
-│   │   └── types.py            # Enums (Tiers, Urgency, ResolutionOptionType, MatchConfidence)
-│   ├── models/
-│   │   ├── supply_chain.py     # Pydantic data models for core supply chain assets
-│   │   └── disruption.py       # Pydantic models for extraction, grounding, impacts, and action plans
-│   ├── db/
-│   │   └── repository.py       # Thread-safe in-memory/JSON state repository with audit logging & reset
-│   ├── engine/
-│   │   ├── extractor.py        # Dual extraction engine (Gemini LLM + resilient heuristic NLP)
-│   │   ├── grounding.py        # Entity resolution engine linking text to DB records with ambiguity detection
-│   │   ├── impact_analyzer.py  # Pure deterministic stockout simulation and order slip calculator
-│   │   ├── recommender.py      # Trade-off recommender (Expedite, Reallocate, Part-Ship, Reschedule)
-│   │   └── explainer.py        # Grounded briefing and communication drafting engine
-│   ├── api/
-│   │   └── routes.py           # FastAPI REST API endpoints
-│   └── static/
-│       ├── index.html          # Human Operator Command Center UI
-│       ├── app.js              # Frontend reactive client
-│       └── styles.css          # Custom styling and animations
-└── tests/
-    ├── test_extraction.py      # Extraction tests across noisy notices
-    ├── test_grounding.py       # Grounding, alias matching, and false alarm refusal tests
-    ├── test_impact.py          # Deterministic inventory and slip calculation tests
-    └── test_recommender.py     # Trade-off evaluation and decision commit tests
+### Deploying to Render / Linux Server
+1. Create a **Web Service** on Render pointing to this GitHub repository.
+2. Select **Python** runtime.
+3. Build Command: `pip install -r requirements.txt`
+4. Start Command: `uvicorn app:app --host 0.0.0.0 --port $PORT`
+5. Set Environment Variables:
+   - `PYTHON_VERSION`: `3.11.0` or `3.10.0`
+   - `JWT_SECRET`: Your production secret key.
+
+### Deploying with Docker
+A production [`Dockerfile`](file:///c:/Users/mohan/OneDrive/Pictures/Desktop/chain/Dockerfile) is included:
+```bash
+docker build -t supply-chain-assistant .
+docker run -p 8000:8000 --env-file .env supply-chain-assistant
 ```
 
 ---
 
-## 🏆 Hackathon Evaluation Criteria Checklist
-
-- [x] **A working application**: `python app.py` starts and the app comes up on port 8000 within seconds.
-- [x] **Real commit history**: Progressive, modular git commits reflecting authentic software engineering progression across all components.
-- [x] **Sound engineering**: Strict separation between LLM parsing and deterministic mathematical simulation. Resilient dual-engine architecture guarantees zero crashes even without an external API key.
-- [x] **Working solution end-to-end**: Traces from raw notice text -> grounded DB entities -> inventory deficits -> customer order slips -> ranked options with plain trade-offs.
-- [x] **Handles edge cases**: Tested and verified on false alarms (zero impact), ambiguous entity descriptions, physical warehouse stock destruction, and partial ship allocations.
-- [x] **Well-grounded GenAI**: Every impact claim and recommendation contains explicit citations to underlying database records. The system refuses to invent when data is absent.
-- [x] **Operator-centric design**: Recommends; does not act. Allows human review, option comparison, communication drafting, and decision committing.
+## 📄 License
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
